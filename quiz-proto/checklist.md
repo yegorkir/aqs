@@ -17,3 +17,5 @@
 - [x] Add new sig/scene/reference questions with gating in bundle.
 - [x] Add reference followups and reduce evidence weights.
 - [x] Add new dilemma questions with gating in bundle.
+- [x] Add "unsure" followups for new dilemma questions.
+- [x] Add content sanity check blockers in Debug Panel.

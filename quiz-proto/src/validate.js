@@ -59,6 +59,86 @@ export function validateBundleLight(bundle) {
   return warnings;
 }
 
+export function validateBundleSanity(bundle) {
+  const blockers = [];
+  const questionIds = new Set();
+
+  for (const q of bundle.questions ?? []) {
+    if (!q?.id) {
+      blockers.push("Question missing id.");
+      continue;
+    }
+    if (questionIds.has(q.id)) {
+      blockers.push(`Duplicate question id: ${q.id}`);
+    }
+    questionIds.add(q.id);
+
+    const optionIds = new Set();
+    for (const o of q.options ?? []) {
+      if (!o?.id) {
+        blockers.push(`Question ${q.id}: option missing id.`);
+        continue;
+      }
+      if (optionIds.has(o.id)) {
+        blockers.push(`Question ${q.id}: duplicate option id ${o.id}.`);
+      }
+      optionIds.add(o.id);
+    }
+
+    for (const rule of q.followups ?? []) {
+      for (const id of rule?.policy?.pool ?? []) {
+        if (!questionIds.has(id) && !existsQuestion(bundle, id)) {
+          blockers.push(`Question ${q.id}: followup pool references unknown question ${id}.`);
+        }
+      }
+    }
+
+    for (const rule of q.followups_by_range ?? []) {
+      for (const id of rule?.policy?.pool ?? []) {
+        if (!questionIds.has(id) && !existsQuestion(bundle, id)) {
+          blockers.push(`Question ${q.id}: followup_by_range pool references unknown question ${id}.`);
+        }
+      }
+    }
+  }
+
+  const axisIds = new Set((bundle.axes ?? []).map((a) => a.id));
+  const moduleIds = new Set((bundle.modules ?? []).map((m) => m.id));
+  const modeIds = new Set((bundle.modes ?? []).map((m) => m.id));
+
+  for (const q of bundle.questions ?? []) {
+    for (const o of q.options ?? []) {
+      collectEffectRefs(blockers, q.id, o.effects, axisIds, moduleIds, modeIds);
+    }
+    for (const r of q.effects_by_range ?? []) {
+      collectEffectRefs(blockers, q.id, r.effects, axisIds, moduleIds, modeIds);
+    }
+  }
+
+  return blockers;
+}
+
+function collectEffectRefs(blockers, qid, effects, axisIds, moduleIds, modeIds) {
+  if (!effects) return;
+  checkIds(blockers, qid, effects.axis_deltas, axisIds, "axis_deltas");
+  checkIds(blockers, qid, effects.axis_evidence, axisIds, "axis_evidence");
+  checkIds(blockers, qid, effects.module_delta_levels, moduleIds, "module_delta_levels");
+  checkIds(blockers, qid, effects.set_module_level, moduleIds, "set_module_level");
+  checkIds(blockers, qid, effects.module_evidence, moduleIds, "module_evidence");
+  checkIds(blockers, qid, effects.set_modes, modeIds, "set_modes");
+}
+
+function checkIds(blockers, qid, obj, ids, label) {
+  if (!obj) return;
+  for (const key of Object.keys(obj)) {
+    if (!ids.has(key)) blockers.push(`Question ${qid}: ${label} references unknown id ${key}.`);
+  }
+}
+
+function existsQuestion(bundle, id) {
+  return (bundle.questions ?? []).some((q) => q.id === id);
+}
+
 function checkIdUniqueness(list, label) {
   const seen = new Set();
   const warnings = [];

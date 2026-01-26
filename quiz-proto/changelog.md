@@ -12,3 +12,5 @@
 - Added 15 new sig/scene/reference questions with anonymized reference vibes and eligibility gating.
 - Added followups for reference questions and reduced evidence weights in new questions.
 - Added 12 new dilemma questions to the bundle with min_asked gating.
+- Added "unsure" followups for new dilemma questions.
+- Added content sanity checks with blocker reporting before starting the prototype.

@@ -86,6 +86,13 @@ export function renderPlayer(root, view, handlers) {
 export function renderDebug(root, view) {
   root.innerHTML = "";
 
+  if (view.validationBlockers?.length) {
+    const block = document.createElement("div");
+    block.className = "warning";
+    block.innerHTML = `<strong>BLOCKER:</strong><br>${view.validationBlockers.join("<br>")}`;
+    root.appendChild(block);
+  }
+
   if (view.validationWarnings?.length) {
     const warn = document.createElement("div");
     warn.className = "warning";

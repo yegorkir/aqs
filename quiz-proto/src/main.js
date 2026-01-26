@@ -1,5 +1,5 @@
 import { loadBundleAndSchema, indexBundle } from "./load.js";
-import { validateBundleLight } from "./validate.js";
+import { validateBundleLight, validateBundleSanity } from "./validate.js";
 import { initState } from "./engine/state.js";
 import { applyAnswer } from "./engine/applyAnswer.js";
 import { pickNextQuestion } from "./engine/pickNext.js";
@@ -18,6 +18,7 @@ const continueBtn = document.querySelector("#continueBtn");
 let bundle = null;
 let state = null;
 let validationWarnings = [];
+let validationBlockers = [];
 let lastLog = null;
 let nextDebug = null;
 let stopInfo = null;
@@ -64,6 +65,11 @@ async function init() {
     const res = await loadBundleAndSchema();
     bundle = indexBundle(res.bundle);
     validationWarnings = validateBundleLight(bundle);
+    validationBlockers = validateBundleSanity(bundle);
+    if (validationBlockers.length) {
+      renderStatus("error", "Content sanity check failed.");
+      return;
+    }
     resetFlow();
   } catch (err) {
     renderStatus("error", err.message);
@@ -136,6 +142,7 @@ function renderStatus(status, message = "") {
   renderPlayer(playerRoot, { status, message }, { onAnswer });
   renderDebug(debugRoot, {
     validationWarnings,
+    validationBlockers,
     logCount: logger.count(),
     state: state ?? { asked: [], axes: {}, modules: {}, modes: {}, phase: status },
     nextDebug,
@@ -160,6 +167,7 @@ function render() {
 
   renderDebug(debugRoot, {
     validationWarnings,
+    validationBlockers,
     logCount: logger.count(),
     state,
     nextDebug,
