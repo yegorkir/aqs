@@ -1,0 +1,5430 @@
+```json
+{
+  "schema_version": "1.0.0",
+  "content_version": "mvp-0.1.0",
+  "axes": [
+    {
+      "id": "tone",
+      "title": "Тон",
+      "description": "Общая эмоциональная окраска истории.",
+      "polarity": {
+        "neg_label": "Уютный",
+        "pos_label": "Мрачный"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "humor",
+      "title": "Лёгкость и юмор",
+      "description": "Насколько уместны шутки, странности и абсурд как стиль.",
+      "polarity": {
+        "neg_label": "Серьёзно",
+        "pos_label": "Смешно/странно"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "pressure",
+      "title": "Давление",
+      "description": "Можно ли выдыхать между событиями или мир постоянно поджимает.",
+      "polarity": {
+        "neg_label": "Есть паузы",
+        "pos_label": "Постоянно давит"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "consequence",
+      "title": "Цена ошибки",
+      "description": "Насколько дорого стоят провалы и ошибки.",
+      "polarity": {
+        "neg_label": "Бережно",
+        "pos_label": "Жёстко"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "agency",
+      "title": "Стиль решений",
+      "description": "Планирование и подготовка vs импровизация по ходу.",
+      "polarity": {
+        "neg_label": "Планирование",
+        "pos_label": "Импровизация"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "structure",
+      "title": "Формат кампании",
+      "description": "Свободная песочница vs миссии/эпизоды.",
+      "polarity": {
+        "neg_label": "Свободно",
+        "pos_label": "Эпизоды"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "focus",
+      "title": "Фокус опыта",
+      "description": "Камера на персонажах/отношениях vs на мире/открытиях.",
+      "polarity": {
+        "neg_label": "Персонажи",
+        "pos_label": "Мир/открытия"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "moral",
+      "title": "Моральная текстура",
+      "description": "Ясные решения vs серые дилеммы без хорошего ответа.",
+      "polarity": {
+        "neg_label": "Ясно",
+        "pos_label": "Серо"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    },
+    {
+      "id": "resolution",
+      "title": "Способ решать проблемы",
+      "description": "Больше через разговоры/влияние vs через действие/прорыв.",
+      "polarity": {
+        "neg_label": "Разговоры",
+        "pos_label": "Действие"
+      },
+      "scale": {
+        "min": -2,
+        "max": 2,
+        "step": 1
+      },
+      "score_range": {
+        "min": -10,
+        "max": 10
+      },
+      "defaults": {
+        "score": 0,
+        "confidence": 0,
+        "evidence": 0
+      },
+      "decay": {
+        "enabled": false,
+        "half_life_questions": 999
+      },
+      "conflict": {
+        "window": 6,
+        "strong_delta": 2.0,
+        "penalty": 0.15,
+        "threshold": 1
+      }
+    }
+  ],
+  "modules": [
+    {
+      "id": "m_detective",
+      "title": "Детективность",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_world_mystery",
+      "title": "Мистерия мира",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_politics",
+      "title": "Политика/фракции",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_romance",
+      "title": "Романтика (как тема)",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_horror",
+      "title": "Хоррор/жуть",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_travel",
+      "title": "Экспедиции/путешествия",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_craft",
+      "title": "Крафт/добыча/прогресс",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_epic",
+      "title": "Большие угрозы/эпик",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_party_drama",
+      "title": "Социальная драма в партии",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_heist",
+      "title": "Авантюры/операции",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_downtime",
+      "title": "Быт/даунтайм",
+      "levels": [
+        "нет",
+        "фоном",
+        "заметно",
+        "в центре"
+      ],
+      "defaults": {
+        "level": 0,
+        "confidence": 0,
+        "evidence": 0
+      }
+    },
+    {
+      "id": "m_encounters",
+      "title": "Частота острых сцен",
+      "levels": [
+        "редко",
+        "иногда",
+        "часто",
+        "почти всегда"
+      ],
+      "defaults": {
+        "level": 1,
+        "confidence": 0,
+        "evidence": 0
+      }
+    }
+  ],
+  "modes": [
+    {
+      "id": "romance.pc_npc",
+      "type": "tri_bool",
+      "title": "Романтика PC↔NPC допустима",
+      "default": "unknown"
+    },
+    {
+      "id": "romance.pc_pc",
+      "type": "tri_bool",
+      "title": "Романтика PC↔PC допустима",
+      "default": "unknown"
+    },
+    {
+      "id": "romance.npc_npc",
+      "type": "tri_bool",
+      "title": "Романтика NPC↔NPC (фон) допустима",
+      "default": "unknown"
+    },
+    {
+      "id": "romance.explicitness",
+      "type": "enum",
+      "title": "Явность романтики",
+      "default": "hints",
+      "options": [
+        "hints",
+        "scenes",
+        "explicit"
+      ]
+    },
+    {
+      "id": "party_conflict",
+      "type": "enum",
+      "title": "Внутрипартийный конфликт",
+      "default": "soft",
+      "options": [
+        "avoid",
+        "soft",
+        "hard"
+      ]
+    },
+    {
+      "id": "character_loss",
+      "type": "enum",
+      "title": "Потеря персонажа",
+      "default": "rare",
+      "options": [
+        "never",
+        "rare",
+        "ok"
+      ]
+    },
+    {
+      "id": "rules_complexity",
+      "type": "enum",
+      "title": "Комфорт со сложностью правил",
+      "default": "simple",
+      "options": [
+        "simple",
+        "medium",
+        "complex"
+      ]
+    },
+    {
+      "id": "narration_explicitness",
+      "type": "enum",
+      "title": "Явность описаний",
+      "default": "moderate",
+      "options": [
+        "fade",
+        "moderate",
+        "detailed"
+      ]
+    },
+    {
+      "id": "ambiguity_tolerance",
+      "type": "enum",
+      "title": "Терпимость к неопределённости",
+      "default": "balance",
+      "options": [
+        "clarity",
+        "balance",
+        "mystery"
+      ]
+    }
+  ],
+  "safety_tags": [
+    {
+      "id": "romance",
+      "label": "Романтика (в целом)",
+      "group": "relationships",
+      "aliases": [],
+      "ui_topic": "relationships"
+    },
+    {
+      "id": "romance_pc_pc",
+      "label": "Романтика PC↔PC",
+      "group": "relationships",
+      "aliases": [],
+      "ui_topic": "relationships"
+    },
+    {
+      "id": "sexual_violence",
+      "label": "Сексуализированное насилие",
+      "group": "sex",
+      "aliases": [],
+      "ui_topic": "sex"
+    },
+    {
+      "id": "explicit_gore",
+      "label": "Подробное насилие/кровь",
+      "group": "violence",
+      "aliases": [
+        "gore"
+      ],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "dismemberment",
+      "label": "Расчленение",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "torture",
+      "label": "Пытки",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "self_harm",
+      "label": "Самоповреждение",
+      "group": "selfharm",
+      "aliases": [],
+      "ui_topic": "selfharm"
+    },
+    {
+      "id": "suicide",
+      "label": "Самоубийство",
+      "group": "selfharm",
+      "aliases": [],
+      "ui_topic": "selfharm"
+    },
+    {
+      "id": "child_harm",
+      "label": "Насилие над детьми",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "spiders",
+      "label": "Пауки (фобия)",
+      "group": "phobia",
+      "aliases": [],
+      "ui_topic": "phobia"
+    },
+    {
+      "id": "claustrophobia",
+      "label": "Клаустрофобия",
+      "group": "phobia",
+      "aliases": [],
+      "ui_topic": "phobia"
+    }
+  ],
+  "safety_config": {
+    "sensitive_groups": [
+      "sex",
+      "violence",
+      "selfharm"
+    ]
+  },
+  "questions": [
+    {
+      "id": "q_seed_tone_01",
+      "type": "choice",
+      "title": "Общее ощущение",
+      "prompt": "Тебе комфортнее, когда история скорее согревает и даёт надежду, а не давит и становится тяжёлой?",
+      "help": "Нет правильного ответа. Выбирай интуитивно.",
+      "tags": [
+        "seed",
+        "vibe",
+        "tone"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Скорее да",
+          "effects": {
+            "axis_deltas": {
+              "tone": -2
+            },
+            "axis_evidence": {
+              "tone": 0.18
+            },
+            "set_tags": [
+              "pref_warm_tone"
+            ],
+            "unset_tags": [],
+            "notes": "warm tone"
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Скорее нет",
+          "effects": {
+            "axis_deltas": {
+              "tone": 2
+            },
+            "axis_evidence": {
+              "tone": 0.18
+            },
+            "set_tags": [
+              "pref_dark_tone"
+            ],
+            "unset_tags": [],
+            "notes": "dark tone"
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "tone": 0.06
+            },
+            "set_tags": [
+              "unsure_tone"
+            ],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "clarify_unsure_seed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_seed_consequence_01",
+      "type": "choice",
+      "title": "Про последствия",
+      "prompt": "Тебе интересно, когда решения ощутимо меняют ситуацию и имеют последствия, а не просто двигают историю дальше?",
+      "help": "Речь про ощущение веса решений, а не про «правильно/неправильно».",
+      "tags": [
+        "seed",
+        "vibe",
+        "consequence"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Да, люблю вес решений",
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.14
+            },
+            "set_tags": [
+              "pref_consequences"
+            ],
+            "unset_tags": [],
+            "notes": "likes consequences"
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Нет, хочу проще",
+          "effects": {
+            "axis_deltas": {
+              "consequence": -1
+            },
+            "axis_evidence": {
+              "consequence": 0.14
+            },
+            "set_tags": [
+              "pref_simple_choices"
+            ],
+            "unset_tags": [],
+            "notes": "pref simple"
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "consequence": 0.06
+            },
+            "set_tags": [
+              "unsure_consequence"
+            ],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_02"
+            ],
+            "why": "clarify_unsure_consequence"
+          }
+        },
+        {
+          "when": {
+            "option_id_in": [
+              "like"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_followup_consequence_moral_01"
+            ],
+            "why": "separate_consequence_from_moral"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_consequence_moral_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Когда решения имеют вес, тебе важнее, чтобы они были морально “правильными”, или чтобы они приносили лучший результат, даже если это серо?",
+      "help": "Это про моральную рамку, а не про силу последствий.",
+      "tags": [
+        "followup",
+        "moral"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "clear",
+          "label": "Важно, чтобы было “правильно”",
+          "effects": {
+            "axis_deltas": {
+              "moral": -1
+            },
+            "axis_evidence": {
+              "moral": 0.12
+            },
+            "set_tags": [
+              "pref_clear_morals"
+            ],
+            "unset_tags": [],
+            "notes": "pref clear morals"
+          }
+        },
+        {
+          "id": "gray",
+          "label": "Ок, если результат важнее, даже без простого ответа",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1
+            },
+            "axis_evidence": {
+              "moral": 0.12
+            },
+            "set_tags": [
+              "pref_gray_morals"
+            ],
+            "unset_tags": [],
+            "notes": "pref gray morals"
+          }
+        },
+        {
+          "id": "mix",
+          "label": "Зависит от ситуации",
+          "effects": {
+            "axis_evidence": {
+              "moral": 0.08
+            },
+            "set_tags": [
+              "pref_moral_mix"
+            ],
+            "unset_tags": [],
+            "notes": "moral mix"
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_seed_humor_01",
+      "type": "choice",
+      "title": "Про юмор",
+      "prompt": "Тебе ближе, когда игра в целом серьёзная, или когда странности и юмор — нормальная часть происходящего?",
+      "help": "Даже в серьёзной истории может быть юмор — вопрос про частоту и уместность.",
+      "tags": [
+        "seed",
+        "vibe",
+        "humor"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Хочу больше юмора",
+          "effects": {
+            "axis_deltas": {
+              "humor": 2
+            },
+            "axis_evidence": {
+              "humor": 0.18
+            },
+            "set_tags": [
+              "pref_humor"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Хочу серьёзнее",
+          "effects": {
+            "axis_deltas": {
+              "humor": -2
+            },
+            "axis_evidence": {
+              "humor": 0.18
+            },
+            "set_tags": [
+              "pref_serious"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "humor": 0.06
+            },
+            "set_tags": [
+              "unsure_humor"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_03"
+            ],
+            "why": "clarify_unsure_humor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_a5_prep_01",
+      "type": "choice",
+      "title": "Перед вылазкой",
+      "prompt": "Перед опасной вылазкой есть час на подготовку. Что тебе приятнее?",
+      "help": "Выбирай то, что кажется интереснее играть чаще.",
+      "tags": [
+        "core",
+        "scenario",
+        "agency"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 2,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "a",
+          "label": "Собрать сведения и подготовиться",
+          "effects": {
+            "axis_deltas": {
+              "agency": -2
+            },
+            "axis_evidence": {
+              "agency": 0.22
+            },
+            "set_tags": [
+              "pref_planning"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "b",
+          "label": "Пойти сразу и разбираться по ходу",
+          "effects": {
+            "axis_deltas": {
+              "agency": 2
+            },
+            "axis_evidence": {
+              "agency": 0.22
+            },
+            "set_tags": [
+              "pref_improv"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "c",
+          "label": "Найти трюк, чтобы выиграть время (отвлечь/подслушать/подкупить)",
+          "effects": {
+            "axis_deltas": {
+              "agency": 1
+            },
+            "axis_evidence": {
+              "agency": 0.18
+            },
+            "set_tags": [
+              "pref_trick"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "agency": 0.08
+            },
+            "set_tags": [
+              "unsure_agency"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_clarify_center_01"
+            ],
+            "why": "clarify_unsure_agency"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_a3_rest_01",
+      "type": "choice",
+      "title": "Ночь в дороге",
+      "prompt": "Вы разбили лагерь. Что тебе интереснее как ощущение игры?",
+      "help": "Речь про атмосферу: можно ли выдохнуть между событиями.",
+      "tags": [
+        "core",
+        "vibe",
+        "pressure"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 2,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "a",
+          "label": "Ночь обычно проходит спокойно, без сюрпризов",
+          "effects": {
+            "axis_deltas": {
+              "pressure": -2
+            },
+            "axis_evidence": {
+              "pressure": 0.2
+            },
+            "set_tags": [
+              "pref_breathing_room"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "b",
+          "label": "Иногда что-то может найти вас — и это нормально",
+          "effects": {
+            "axis_deltas": {
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "pressure": 0.18
+            },
+            "set_tags": [
+              "pref_tension"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "c",
+          "label": "Отдых тоже риск: мир редко отпускает",
+          "effects": {
+            "axis_deltas": {
+              "pressure": 2
+            },
+            "axis_evidence": {
+              "pressure": 0.22
+            },
+            "set_tags": [
+              "pref_constant_threat"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "pressure": 0.08
+            },
+            "set_tags": [
+              "unsure_pressure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_clarify_center_02"
+            ],
+            "why": "clarify_unsure_pressure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_a6_format_01",
+      "type": "choice",
+      "title": "Как удобнее играть",
+      "prompt": "Что тебе комфортнее: свободно выбирать направление или иметь миссию на вечер с понятной целью?",
+      "help": "Оба формата могут быть интересными. Выбери, что ближе по ощущениям.",
+      "tags": [
+        "core",
+        "vibe",
+        "structure"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "a",
+          "label": "Свобода: мир и направления, мы выбираем",
+          "effects": {
+            "axis_deltas": {
+              "structure": -2
+            },
+            "axis_evidence": {
+              "structure": 0.2
+            },
+            "set_tags": [
+              "pref_sandbox"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "b",
+          "label": "Эпизоды: миссия/глава с началом и концом",
+          "effects": {
+            "axis_deltas": {
+              "structure": 2
+            },
+            "axis_evidence": {
+              "structure": 0.2
+            },
+            "set_tags": [
+              "pref_missions"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "c",
+          "label": "Баланс: и свобода, и главы",
+          "effects": {
+            "axis_deltas": {
+              "structure": 0
+            },
+            "axis_evidence": {
+              "structure": 0.12
+            },
+            "set_tags": [
+              "pref_balance_structure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "structure": 0.08
+            },
+            "set_tags": [
+              "unsure_structure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_clarify_center_03"
+            ],
+            "why": "clarify_unsure_structure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_a7_focus_01",
+      "type": "choice",
+      "title": "Что главное",
+      "prompt": "Что для тебя интереснее как «основной вкус» игры?",
+      "help": "Речь про то, на что чаще «камера» в истории.",
+      "tags": [
+        "core",
+        "vibe",
+        "focus"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 2,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "a",
+          "label": "Личные истории и отношения персонажей",
+          "effects": {
+            "axis_deltas": {
+              "focus": -2
+            },
+            "axis_evidence": {
+              "focus": 0.2
+            },
+            "set_tags": [
+              "pref_character_focus"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "b",
+          "label": "Открытия, места, устройство мира",
+          "effects": {
+            "axis_deltas": {
+              "focus": 2
+            },
+            "axis_evidence": {
+              "focus": 0.2
+            },
+            "set_tags": [
+              "pref_world_focus"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "c",
+          "label": "Баланс: и то и другое",
+          "effects": {
+            "axis_deltas": {
+              "focus": 0
+            },
+            "axis_evidence": {
+              "focus": 0.12
+            },
+            "set_tags": [
+              "pref_balance_focus"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "focus": 0.08
+            },
+            "set_tags": [
+              "unsure_focus"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_clarify_center_04"
+            ],
+            "why": "clarify_unsure_focus"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_a8_gray_01",
+      "type": "choice",
+      "title": "Моральная сложность",
+      "prompt": "Тебе интереснее истории с понятными «правильными» решениями — или где почти любой выбор имеет цену?",
+      "help": "Речь не про «как правильно», а про то, что интереснее переживать в игре.",
+      "tags": [
+        "core",
+        "vibe",
+        "moral"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 2,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "a",
+          "label": "Понятные решения (героически и комфортно)",
+          "effects": {
+            "axis_deltas": {
+              "moral": -2
+            },
+            "axis_evidence": {
+              "moral": 0.2
+            },
+            "set_tags": [
+              "pref_clear_morals"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "b",
+          "label": "Серые дилеммы (нет хорошего ответа)",
+          "effects": {
+            "axis_deltas": {
+              "moral": 2
+            },
+            "axis_evidence": {
+              "moral": 0.22
+            },
+            "set_tags": [
+              "pref_gray_morals"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "c",
+          "label": "Иногда так, иногда так",
+          "effects": {
+            "axis_deltas": {
+              "moral": 0
+            },
+            "axis_evidence": {
+              "moral": 0.12
+            },
+            "set_tags": [
+              "pref_moral_mix"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "moral": 0.08
+            },
+            "set_tags": [
+              "unsure_moral"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_clarify_center_05"
+            ],
+            "why": "clarify_unsure_moral"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_a9_gate_01",
+      "type": "choice",
+      "title": "Вас не пускают",
+      "prompt": "На входе вас не пускают. Какой подход тебе приятнее играть чаще?",
+      "help": "Это про стиль решения проблем, а не про «правильность».",
+      "tags": [
+        "core",
+        "scenario",
+        "resolution"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 2,
+      "cooldown": {
+        "questions": 2
+      },
+      "options": [
+        {
+          "id": "a",
+          "label": "Договориться / убедить / пообещать",
+          "effects": {
+            "axis_deltas": {
+              "resolution": -2
+            },
+            "axis_evidence": {
+              "resolution": 0.2
+            },
+            "set_tags": [
+              "pref_talk"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "b",
+          "label": "Обойти правила: прокрасться / подкупить / взломать",
+          "effects": {
+            "axis_deltas": {
+              "resolution": 1
+            },
+            "axis_evidence": {
+              "resolution": 0.18
+            },
+            "set_tags": [
+              "pref_sneak"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "c",
+          "label": "Продавить действием: рискнуть и пройти силой",
+          "effects": {
+            "axis_deltas": {
+              "resolution": 2
+            },
+            "axis_evidence": {
+              "resolution": 0.22
+            },
+            "set_tags": [
+              "pref_action"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "resolution": 0.08
+            },
+            "set_tags": [
+              "unsure_resolution"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_clarify_center_06"
+            ],
+            "why": "clarify_unsure_resolution"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_a4_cost_01",
+      "type": "slider",
+      "title": "Цена ошибки",
+      "prompt": "Насколько тебе комфортно, если ошибки в игре стоят дорого? (1 — бережно, 5 — жёстко)",
+      "tags": [
+        "refine",
+        "core",
+        "consequence"
+      ],
+      "content_tags": [],
+      "slider": {
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 3,
+        "labels": {
+          "min": "Бережно",
+          "max": "Жёстко"
+        },
+        "snap_points": [
+          1,
+          3,
+          5
+        ]
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 2
+          },
+          "effects": {
+            "axis_deltas": {
+              "consequence": -1
+            },
+            "axis_evidence": {
+              "consequence": 0.18
+            }
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "axis_deltas": {
+              "consequence": 0
+            },
+            "axis_evidence": {
+              "consequence": 0.1
+            }
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 5
+          },
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.18
+            }
+          }
+        }
+      ],
+      "followups_by_range": [
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_slider_center_01"
+            ],
+            "why": "center_reason_consequence"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_module_detective",
+      "type": "slider",
+      "title": "Интерес: детективность",
+      "prompt": "Насколько тебе хочется расследований и загадок?",
+      "help": "Не про сложность, а про частоту и важность.",
+      "tags": [
+        "module",
+        "m_detective"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "slider": {
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "default": 2,
+        "min_label": "Не хочу",
+        "max_label": "В центре",
+        "labels": {
+          "1": "Не хочу",
+          "2": "Фоном",
+          "3": "Заметно",
+          "4": "В центре"
+        }
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 1
+          },
+          "effects": {
+            "set_module_level": {
+              "m_detective": 0
+            },
+            "module_evidence": {
+              "m_detective": 0.22
+            },
+            "unset_tags": [],
+            "set_tags": [
+              "m_detective_0"
+            ],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2
+          },
+          "effects": {
+            "set_module_level": {
+              "m_detective": 1
+            },
+            "module_evidence": {
+              "m_detective": 0.22
+            },
+            "unset_tags": [],
+            "set_tags": [
+              "m_detective_1"
+            ],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "set_module_level": {
+              "m_detective": 2
+            },
+            "module_evidence": {
+              "m_detective": 0.22
+            },
+            "unset_tags": [],
+            "set_tags": [
+              "m_detective_2"
+            ],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 4
+          },
+          "effects": {
+            "set_module_level": {
+              "m_detective": 3
+            },
+            "module_evidence": {
+              "m_detective": 0.22
+            },
+            "unset_tags": [],
+            "set_tags": [
+              "m_detective_3"
+            ],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_module_romance",
+      "type": "slider",
+      "title": "Интерес: романтика",
+      "prompt": "Насколько романтические линии вообще уместны в истории?",
+      "help": "Формат (между кем) уточним отдельно, если нужно.",
+      "tags": [
+        "module",
+        "m_romance"
+      ],
+      "content_tags": [
+        "romance"
+      ],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "veil_variants": {
+        "prompt": "Насколько уместны «личные отношения» как тема в истории?",
+        "help": "Можно выбрать «не хочу», и это нормально.",
+        "options": {
+          "l0": "Не хочу",
+          "l1": "Фоном",
+          "l2": "Заметно",
+          "l3": "В центре"
+        }
+      },
+      "slider": {
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "default": 2,
+        "min_label": "Не хочу",
+        "max_label": "В центре",
+        "labels": {
+          "1": "Не хочу",
+          "2": "Фоном",
+          "3": "Заметно",
+          "4": "В центре"
+        }
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 1
+          },
+          "effects": {
+            "set_module_level": {
+              "m_romance": 0
+            },
+            "module_evidence": {
+              "m_romance": 0.22
+            },
+            "set_tags": [
+              "m_romance_0"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2
+          },
+          "effects": {
+            "set_module_level": {
+              "m_romance": 1
+            },
+            "module_evidence": {
+              "m_romance": 0.22
+            },
+            "set_tags": [
+              "m_romance_1"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "set_module_level": {
+              "m_romance": 2
+            },
+            "module_evidence": {
+              "m_romance": 0.22
+            },
+            "set_tags": [
+              "m_romance_2"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 4
+          },
+          "effects": {
+            "set_module_level": {
+              "m_romance": 3
+            },
+            "module_evidence": {
+              "m_romance": 0.22
+            },
+            "set_tags": [
+              "m_romance_3"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_mode_party_conflict",
+      "type": "slider",
+      "title": "Формат: конфликт в партии",
+      "prompt": "Насколько допустимы конфликты между персонажами внутри партии?",
+      "help": "Это про формат игры, не про «плохую игру».",
+      "tags": [
+        "mode",
+        "party_conflict"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "slider": {
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 3,
+        "min_label": "Нельзя",
+        "max_label": "Допустимы часто",
+        "labels": {
+          "1": "Нельзя",
+          "2": "Редко",
+          "3": "Иногда",
+          "4": "Часто",
+          "5": "Очень часто"
+        }
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 1
+          },
+          "effects": {
+            "set_modes": {
+              "party_conflict": "avoid"
+            },
+            "set_tags": [
+              "mode_party_conflict_avoid"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2
+          },
+          "effects": {
+            "set_modes": {
+              "party_conflict": "avoid"
+            },
+            "set_tags": [
+              "mode_party_conflict_avoid"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "set_modes": {
+              "party_conflict": "soft"
+            },
+            "set_tags": [
+              "mode_party_conflict_soft"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 4
+          },
+          "effects": {
+            "set_modes": {
+              "party_conflict": "hard"
+            },
+            "set_tags": [
+              "mode_party_conflict_hard"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 5,
+            "max": 5
+          },
+          "effects": {
+            "set_modes": {
+              "party_conflict": "hard"
+            },
+            "set_tags": [
+              "mode_party_conflict_hard"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_meta_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Когда ты отвечаешь «не знаю», чаще это потому что…",
+      "help": "Это поможет задавать более понятные вопросы.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Мне подходят оба варианта",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от ситуации",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Я не до конца понял вопрос",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_meta_unsure_02",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Когда речь про последствия, «не знаю» для тебя скорее…",
+      "help": "Это не тест, просто уточнение.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "need_examples",
+          "label": "Мне нужны примеры, чтобы представить",
+          "effects": {
+            "set_tags": [
+              "needs_examples"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "both_ok",
+          "label": "Оба варианта звучат нормально",
+          "effects": {
+            "set_tags": [
+              "both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "avoid",
+          "label": "Не хочу думать об этом часто",
+          "effects": {
+            "axis_deltas": {
+              "consequence": -1
+            },
+            "axis_evidence": {
+              "consequence": 0.1
+            },
+            "set_tags": [
+              "avoid_heavy_topics"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_meta_unsure_03",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про юмор: тебе скорее хочется, чтобы он был…",
+      "help": "Даже в серьёзной игре юмор бывает — вопрос про роль.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "relief",
+          "label": "Отдушиной в напряжении",
+          "effects": {
+            "axis_deltas": {
+              "humor": 1
+            },
+            "axis_evidence": {
+              "humor": 0.1
+            },
+            "set_tags": [
+              "humor_relief"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "style",
+          "label": "Главным стилем игры",
+          "effects": {
+            "axis_deltas": {
+              "humor": 2
+            },
+            "axis_evidence": {
+              "humor": 0.14
+            },
+            "set_tags": [
+              "humor_style"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "rare",
+          "label": "Редко или почти никак",
+          "effects": {
+            "axis_deltas": {
+              "humor": -1
+            },
+            "axis_evidence": {
+              "humor": 0.1
+            },
+            "set_tags": [
+              "humor_rare"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_clarify_center_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Что ближе: тебе подходят оба подхода, или зависит от ставки, или просто сложно представить?",
+      "help": "Это поможет точнее подбирать вопросы.",
+      "tags": [
+        "followup",
+        "clarify",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба подхода ок",
+          "effects": {
+            "set_tags": [
+              "center_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "stakes",
+          "label": "Зависит от ставки и ситуации",
+          "effects": {
+            "set_tags": [
+              "center_depends_stakes"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Сложно представить в игре",
+          "effects": {
+            "set_tags": [
+              "center_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_clarify_center_02",
+      "type": "slider",
+      "title": "Уточнение",
+      "prompt": "Если говорить про напряжение: тебе хочется больше спокойных пауз или больше постоянного давления?",
+      "help": "Можно выбрать интуитивно.",
+      "tags": [
+        "followup",
+        "clarify",
+        "pressure",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "slider": {
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 3,
+        "min_label": "Больше пауз",
+        "max_label": "Больше давления",
+        "labels": {
+          "1": "Паузы",
+          "2": "Скорее паузы",
+          "3": "Баланс",
+          "4": "Скорее давление",
+          "5": "Давление"
+        }
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 1
+          },
+          "effects": {
+            "axis_deltas": {
+              "pressure": -1
+            },
+            "axis_evidence": {
+              "pressure": 0.1
+            },
+            "set_tags": [
+              "pref_pauses"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2
+          },
+          "effects": {
+            "axis_deltas": {
+              "pressure": -1
+            },
+            "axis_evidence": {
+              "pressure": 0.1
+            },
+            "set_tags": [
+              "pref_pauses"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "axis_evidence": {
+              "pressure": 0.08
+            },
+            "set_tags": [
+              "pref_pressure_mix"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 4
+          },
+          "effects": {
+            "axis_deltas": {
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "pressure": 0.1
+            },
+            "set_tags": [
+              "pref_more_pressure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 5,
+            "max": 5
+          },
+          "effects": {
+            "axis_deltas": {
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "pressure": 0.1
+            },
+            "set_tags": [
+              "pref_more_pressure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_clarify_center_03",
+      "type": "slider",
+      "title": "Уточнение",
+      "prompt": "Про формат: тебе важно завершать «главу» за вечер или скорее важно выбирать направление?",
+      "help": "Оба варианта нормальны.",
+      "tags": [
+        "followup",
+        "clarify",
+        "structure",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "slider": {
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 3,
+        "min_label": "Главу за вечер",
+        "max_label": "Свободное направление",
+        "labels": {
+          "1": "Главу",
+          "2": "Скорее главу",
+          "3": "Баланс",
+          "4": "Скорее свобода",
+          "5": "Свобода"
+        }
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 1
+          },
+          "effects": {
+            "axis_deltas": {
+              "structure": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1
+            },
+            "set_tags": [
+              "pref_closure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2
+          },
+          "effects": {
+            "axis_deltas": {
+              "structure": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1
+            },
+            "set_tags": [
+              "pref_closure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "axis_evidence": {
+              "structure": 0.08
+            },
+            "set_tags": [
+              "pref_structure_mix"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 4
+          },
+          "effects": {
+            "axis_deltas": {
+              "structure": -1
+            },
+            "axis_evidence": {
+              "structure": 0.1
+            },
+            "set_tags": [
+              "pref_direction_choice"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 5,
+            "max": 5
+          },
+          "effects": {
+            "axis_deltas": {
+              "structure": -1
+            },
+            "axis_evidence": {
+              "structure": 0.1
+            },
+            "set_tags": [
+              "pref_direction_choice"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_clarify_center_04",
+      "type": "slider",
+      "title": "Уточнение",
+      "prompt": "Если выбирать, что важнее для удовольствия: люди/отношения или открытия/мир — что ближе?",
+      "help": "Можно выбрать «баланс», если так честнее.",
+      "tags": [
+        "followup",
+        "clarify",
+        "focus",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "slider": {
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 3,
+        "min_label": "Люди/отношения",
+        "max_label": "Открытия/мир",
+        "labels": {
+          "1": "Люди",
+          "2": "Скорее люди",
+          "3": "Баланс",
+          "4": "Скорее мир",
+          "5": "Мир"
+        }
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 1
+          },
+          "effects": {
+            "axis_deltas": {
+              "focus": -1
+            },
+            "axis_evidence": {
+              "focus": 0.1
+            },
+            "set_tags": [
+              "focus_people"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2
+          },
+          "effects": {
+            "axis_deltas": {
+              "focus": -1
+            },
+            "axis_evidence": {
+              "focus": 0.1
+            },
+            "set_tags": [
+              "focus_people"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "axis_evidence": {
+              "focus": 0.08
+            },
+            "set_tags": [
+              "focus_mix"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 4
+          },
+          "effects": {
+            "axis_deltas": {
+              "focus": 1
+            },
+            "axis_evidence": {
+              "focus": 0.1
+            },
+            "set_tags": [
+              "focus_world"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 5,
+            "max": 5
+          },
+          "effects": {
+            "axis_deltas": {
+              "focus": 1
+            },
+            "axis_evidence": {
+              "focus": 0.1
+            },
+            "set_tags": [
+              "focus_world"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_clarify_center_05",
+      "type": "slider",
+      "title": "Уточнение",
+      "prompt": "Про моральные дилеммы: тебе скорее хочется их редко или часто?",
+      "help": "Это только про комфорт, не про «правильность».",
+      "tags": [
+        "followup",
+        "clarify",
+        "moral",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "slider": {
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "default": 2,
+        "min_label": "Редко",
+        "max_label": "Часто",
+        "labels": {
+          "1": "Редко",
+          "2": "Иногда",
+          "3": "Часто",
+          "4": "Очень часто"
+        }
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 1
+          },
+          "effects": {
+            "axis_deltas": {
+              "moral": -1
+            },
+            "axis_evidence": {
+              "moral": 0.1
+            },
+            "set_tags": [
+              "moral_rare"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2
+          },
+          "effects": {
+            "axis_evidence": {
+              "moral": 0.08
+            },
+            "set_tags": [
+              "moral_mix"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "axis_deltas": {
+              "moral": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1
+            },
+            "set_tags": [
+              "moral_often"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 4
+          },
+          "effects": {
+            "axis_deltas": {
+              "moral": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1
+            },
+            "set_tags": [
+              "moral_often"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_clarify_center_06",
+      "type": "slider",
+      "title": "Уточнение",
+      "prompt": "В целом тебе приятнее побеждать словами или поступком?",
+      "help": "Можно выбрать баланс.",
+      "tags": [
+        "followup",
+        "clarify",
+        "resolution",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "slider": {
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 3,
+        "min_label": "Словами",
+        "max_label": "Поступком",
+        "labels": {
+          "1": "Словами",
+          "2": "Скорее словами",
+          "3": "Баланс",
+          "4": "Скорее поступком",
+          "5": "Поступком"
+        }
+      },
+      "effects_by_range": [
+        {
+          "range": {
+            "min": 1,
+            "max": 1
+          },
+          "effects": {
+            "axis_deltas": {
+              "resolution": -1
+            },
+            "axis_evidence": {
+              "resolution": 0.1
+            },
+            "set_tags": [
+              "resolution_talk"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 2,
+            "max": 2
+          },
+          "effects": {
+            "axis_deltas": {
+              "resolution": -1
+            },
+            "axis_evidence": {
+              "resolution": 0.1
+            },
+            "set_tags": [
+              "resolution_talk"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 3,
+            "max": 3
+          },
+          "effects": {
+            "axis_evidence": {
+              "resolution": 0.08
+            },
+            "set_tags": [
+              "resolution_mix"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 4,
+            "max": 4
+          },
+          "effects": {
+            "axis_deltas": {
+              "resolution": 1
+            },
+            "axis_evidence": {
+              "resolution": 0.1
+            },
+            "set_tags": [
+              "resolution_act"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "range": {
+            "min": 5,
+            "max": 5
+          },
+          "effects": {
+            "axis_deltas": {
+              "resolution": 1
+            },
+            "axis_evidence": {
+              "resolution": 0.1
+            },
+            "set_tags": [
+              "resolution_act"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_slider_center_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Ты выбрал середину, потому что…",
+      "help": "Это поможет точнее понять профиль.",
+      "tags": [
+        "followup",
+        "slider_center",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "И так, и так ок",
+          "effects": {
+            "set_tags": [
+              "slider_center_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от ситуации",
+          "effects": {
+            "set_tags": [
+              "slider_center_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не уверен, что правильно понял вопрос",
+          "effects": {
+            "set_tags": [
+              "slider_center_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_sig_last_refuge_01",
+      "type": "choice",
+      "title": "Крючок: последний огонь",
+      "prompt": "Тебе нравится вайб «последний островок тепла среди опасного мира»?",
+      "help": "Не про конкретный жанр, а про ощущение мира.",
+      "tags": [
+        "sig",
+        "vibe",
+        "tone",
+        "pressure"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Да, цепляет",
+          "effects": {
+            "axis_deltas": {
+              "tone": 1,
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "tone": 0.128,
+              "pressure": 0.112
+            },
+            "set_tags": [
+              "sig_last_refuge_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Нет, не моё",
+          "effects": {
+            "axis_deltas": {
+              "tone": -1,
+              "pressure": -1
+            },
+            "axis_evidence": {
+              "tone": 0.112,
+              "pressure": 0.112
+            },
+            "set_tags": [
+              "sig_last_refuge_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "tone": 0.048,
+              "pressure": 0.048
+            },
+            "set_tags": [
+              "sig_last_refuge_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "sig_unsure_meta"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_sig_active_nature_01",
+      "type": "choice",
+      "title": "Крючок: природа живая",
+      "prompt": "Тебе нравится, когда природа — не фон, а активная сила: лес/болото/странная экология?",
+      "help": "Это может быть и красиво, и опасно — важен сам «вкус».",
+      "tags": [
+        "sig",
+        "vibe",
+        "focus",
+        "m_world_mystery",
+        "m_travel"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Да, хочу такое",
+          "effects": {
+            "axis_deltas": {
+              "focus": 1
+            },
+            "axis_evidence": {
+              "focus": 0.096
+            },
+            "module_delta_levels": {
+              "m_travel": 1
+            },
+            "module_evidence": {
+              "m_travel": 0.08
+            },
+            "set_tags": [
+              "sig_active_nature_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Скорее нет",
+          "effects": {
+            "axis_deltas": {
+              "focus": -1
+            },
+            "axis_evidence": {
+              "focus": 0.08
+            },
+            "module_evidence": {
+              "m_travel": 0.048
+            },
+            "set_tags": [
+              "sig_active_nature_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "focus": 0.048
+            },
+            "set_tags": [
+              "sig_active_nature_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "sig_unsure_meta"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_sig_tech_mystique_01",
+      "type": "choice",
+      "title": "Крючок: техно-мистика",
+      "prompt": "Тебе нравится вайб «руины, механизмы, сеть/сигналы, древние устройства»?",
+      "help": "Не про «сайфай», а про ощущение загадочной технологии.",
+      "tags": [
+        "sig",
+        "vibe",
+        "m_world_mystery"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Да, очень",
+          "effects": {
+            "module_delta_levels": {
+              "m_world_mystery": 1
+            },
+            "module_evidence": {
+              "m_world_mystery": 0.112
+            },
+            "axis_deltas": {
+              "focus": 1
+            },
+            "axis_evidence": {
+              "focus": 0.08
+            },
+            "set_tags": [
+              "sig_tech_mystique_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Нет, не цепляет",
+          "effects": {
+            "module_evidence": {
+              "m_world_mystery": 0.064
+            },
+            "axis_evidence": {
+              "focus": 0.048
+            },
+            "set_tags": [
+              "sig_tech_mystique_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "module_evidence": {
+              "m_world_mystery": 0.048
+            },
+            "set_tags": [
+              "sig_tech_mystique_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_sig_epic_scale_01",
+      "type": "choice",
+      "title": "Крючок: масштаб",
+      "prompt": "Тебе нравится ощущение «угроза выше тебя на порядок» — и нужно придумать, как вообще с этим жить?",
+      "help": "Это не обязательно бой. Важен масштаб и «невозможность».",
+      "tags": [
+        "sig",
+        "vibe",
+        "m_epic",
+        "pressure"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Да, кайф",
+          "effects": {
+            "module_delta_levels": {
+              "m_epic": 1
+            },
+            "module_evidence": {
+              "m_epic": 0.112
+            },
+            "axis_deltas": {
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "pressure": 0.08
+            },
+            "set_tags": [
+              "sig_epic_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Нет, хочу камернее",
+          "effects": {
+            "module_evidence": {
+              "m_epic": 0.064
+            },
+            "axis_deltas": {
+              "pressure": -1
+            },
+            "axis_evidence": {
+              "pressure": 0.064
+            },
+            "set_tags": [
+              "sig_epic_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "module_evidence": {
+              "m_epic": 0.048
+            },
+            "set_tags": [
+              "sig_epic_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_sig_craft_progress_01",
+      "type": "choice",
+      "title": "Крючок: прогресс руками",
+      "prompt": "Тебе нравится, когда прогресс ощущается через добычу/обмен/улучшения (собрали → сделали → стало лучше)?",
+      "help": "Не про математику, а про ощущение роста.",
+      "tags": [
+        "sig",
+        "vibe",
+        "m_craft"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Да",
+          "effects": {
+            "module_delta_levels": {
+              "m_craft": 1
+            },
+            "module_evidence": {
+              "m_craft": 0.112
+            },
+            "set_tags": [
+              "sig_craft_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Нет",
+          "effects": {
+            "module_evidence": {
+              "m_craft": 0.064
+            },
+            "set_tags": [
+              "sig_craft_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "module_evidence": {
+              "m_craft": 0.048
+            },
+            "set_tags": [
+              "sig_craft_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_sig_politics_intrigue_01",
+      "type": "choice",
+      "title": "Крючок: интриги",
+      "prompt": "Тебе интересны истории про фракции, договоры и предательства (где важно «кто с кем»)?",
+      "help": "Можно любить политику и ненавидеть длинные разговоры — это отдельно.",
+      "tags": [
+        "sig",
+        "vibe",
+        "m_politics"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Да, хочу такое",
+          "effects": {
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.112
+            },
+            "set_tags": [
+              "sig_politics_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Нет, не хочу",
+          "effects": {
+            "module_evidence": {
+              "m_politics": 0.064
+            },
+            "set_tags": [
+              "sig_politics_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "module_evidence": {
+              "m_politics": 0.048
+            },
+            "set_tags": [
+              "sig_politics_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_sig_horror_edge_01",
+      "type": "choice",
+      "title": "Крючок: жуть",
+      "prompt": "Тебе нравится, когда иногда становится тревожно и жутковато (мурашки), или лучше без этого?",
+      "help": "Это про эмоцию, не про кровь.",
+      "tags": [
+        "sig",
+        "vibe",
+        "m_horror"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "like",
+          "label": "Нравится, если дозированно",
+          "effects": {
+            "module_delta_levels": {
+              "m_horror": 1
+            },
+            "module_evidence": {
+              "m_horror": 0.112
+            },
+            "set_tags": [
+              "sig_horror_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "Лучше без хоррора",
+          "effects": {
+            "module_evidence": {
+              "m_horror": 0.08
+            },
+            "set_tags": [
+              "sig_horror_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "module_evidence": {
+              "m_horror": 0.048
+            },
+            "set_tags": [
+              "sig_horror_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_scene_sarcophagus_01",
+      "type": "choice",
+      "title": "Сцена: золото и принцесса",
+      "prompt": "Ты идёшь спасать принцессу из подземелья. По пути — саркофаг из чистого золота. Что тебе ближе как реакция?",
+      "help": "Это не «правильно/неправильно». Выбирай, что интереснее играть.",
+      "tags": [
+        "scene",
+        "dilemma",
+        "moral",
+        "humor"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "hero",
+          "label": "Пройду мимо: цель важнее награды",
+          "effects": {
+            "axis_deltas": {
+              "moral": -1,
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "moral": 0.112,
+              "pressure": 0.08
+            },
+            "set_tags": [
+              "scene_hero"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "loot",
+          "label": "Заберу саркофаг: награда важнее обещаний",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "moral": 0.112,
+              "consequence": 0.08
+            },
+            "set_tags": [
+              "scene_loot_first"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "both",
+          "label": "Попытаюсь успеть и то и другое (риск/импровизация)",
+          "effects": {
+            "axis_deltas": {
+              "agency": 1,
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "agency": 0.096,
+              "pressure": 0.08
+            },
+            "set_tags": [
+              "scene_both"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "mummy",
+          "label": "Попробую договориться с мумией (да, я такой человек)",
+          "effects": {
+            "axis_deltas": {
+              "humor": 1,
+              "resolution": -1
+            },
+            "axis_evidence": {
+              "humor": 0.08,
+              "resolution": 0.08
+            },
+            "set_tags": [
+              "scene_mummy"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_scene_truth_vs_peace_01",
+      "type": "choice",
+      "title": "Сцена: правда или мир",
+      "prompt": "Ты узнаёшь правду, которая может разрушить хрупкий мир между сторонами. Что интереснее как выбор?",
+      "help": "Про удовольствие от драматургии, не про моральный экзамен.",
+      "tags": [
+        "scene",
+        "dilemma",
+        "moral",
+        "consequence"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "reveal",
+          "label": "Раскрыть правду, даже если станет хуже",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "moral": 0.096,
+              "consequence": 0.096
+            },
+            "set_tags": [
+              "scene_truth_reveal"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "hide",
+          "label": "Скрыть правду ради мира сейчас",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1
+            },
+            "axis_evidence": {
+              "moral": 0.096
+            },
+            "set_tags": [
+              "scene_truth_hide"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "gradual",
+          "label": "Раскрывать постепенно, готовя почву",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1
+            },
+            "axis_evidence": {
+              "structure": 0.08
+            },
+            "set_tags": [
+              "scene_truth_gradual"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "leverage",
+          "label": "Использовать правду как рычаг для сделки",
+          "effects": {
+            "axis_deltas": {
+              "resolution": -1,
+              "moral": 1
+            },
+            "axis_evidence": {
+              "resolution": 0.08,
+              "moral": 0.08
+            },
+            "set_tags": [
+              "scene_truth_leverage"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_scene_infected_system_01",
+      "type": "choice",
+      "title": "Сцена: заражённая система",
+      "prompt": "Есть система, без которой живёт город. Но она ведёт себя опасно и ломает людей. Что интереснее играть?",
+      "help": "Это может быть магия, сеть, ритуал или механизм — важен выбор.",
+      "tags": [
+        "scene",
+        "dilemma",
+        "m_world_mystery",
+        "consequence"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "shut",
+          "label": "Вырубить сейчас — остановить вред немедленно",
+          "effects": {
+            "axis_deltas": {
+              "pressure": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "pressure": 0.08,
+              "consequence": 0.096
+            },
+            "module_evidence": {
+              "m_world_mystery": 0.08
+            },
+            "set_tags": [
+              "scene_system_shut"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "repair",
+          "label": "Чинить по живому — дольше, но сохранить жизнь города",
+          "effects": {
+            "axis_deltas": {
+              "agency": -1
+            },
+            "axis_evidence": {
+              "agency": 0.08
+            },
+            "module_delta_levels": {
+              "m_world_mystery": 1
+            },
+            "module_evidence": {
+              "m_world_mystery": 0.096
+            },
+            "set_tags": [
+              "scene_system_repair"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "isolate",
+          "label": "Изолировать часть, сохранить часть (компромисс)",
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.08
+            },
+            "set_tags": [
+              "scene_system_isolate"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_scene_operation_entry_01",
+      "type": "choice",
+      "title": "Сцена: попасть внутрь",
+      "prompt": "Нужно попасть в охраняемое место. Какой путь тебе приятнее играть чаще?",
+      "help": "Не про «правильный способ», а про удовольствие от формата.",
+      "tags": [
+        "scene",
+        "scenario",
+        "resolution",
+        "m_heist"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "talk",
+          "label": "Договориться / убедить / сыграть словами",
+          "effects": {
+            "axis_deltas": {
+              "resolution": -1
+            },
+            "axis_evidence": {
+              "resolution": 0.08
+            },
+            "module_evidence": {
+              "m_heist": 0.048
+            },
+            "set_tags": [
+              "scene_entry_talk"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "sneak",
+          "label": "Прокрасться / отвлечь / провернуть операцию",
+          "effects": {
+            "axis_deltas": {
+              "resolution": 1
+            },
+            "axis_evidence": {
+              "resolution": 0.08
+            },
+            "module_delta_levels": {
+              "m_heist": 1
+            },
+            "module_evidence": {
+              "m_heist": 0.08
+            },
+            "set_tags": [
+              "scene_entry_heist"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "force",
+          "label": "Продавить действием: быстро и рисково",
+          "effects": {
+            "axis_deltas": {
+              "resolution": 1,
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "resolution": 0.064,
+              "pressure": 0.064
+            },
+            "module_evidence": {
+              "m_heist": 0.048
+            },
+            "set_tags": [
+              "scene_entry_force"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "resolution": 0.048
+            },
+            "set_tags": [
+              "scene_entry_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "scene_unsure_meta"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_scene_downtime_rhythm_01",
+      "type": "choice",
+      "title": "Ритм игры",
+      "prompt": "Что приятнее как ритм: больше спокойных сцен между опасностями — или почти всегда быть “в деле”?",
+      "help": "Не про боёвку. Про темп и передышки.",
+      "tags": [
+        "scene",
+        "vibe",
+        "pressure",
+        "m_downtime",
+        "m_encounters"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "breath",
+          "label": "Больше передышек и жизни персонажей",
+          "effects": {
+            "axis_deltas": {
+              "pressure": -1
+            },
+            "axis_evidence": {
+              "pressure": 0.08
+            },
+            "module_delta_levels": {
+              "m_downtime": 1
+            },
+            "module_evidence": {
+              "m_downtime": 0.096
+            },
+            "set_tags": [
+              "rhythm_breath"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "mix",
+          "label": "Баланс",
+          "effects": {
+            "axis_evidence": {
+              "pressure": 0.064
+            },
+            "module_evidence": {
+              "m_downtime": 0.064,
+              "m_encounters": 0.064
+            },
+            "set_tags": [
+              "rhythm_mix"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "action",
+          "label": "Почти всегда быть “в деле”",
+          "effects": {
+            "axis_deltas": {
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "pressure": 0.08
+            },
+            "module_delta_levels": {
+              "m_encounters": 1
+            },
+            "module_evidence": {
+              "m_encounters": 0.096
+            },
+            "set_tags": [
+              "rhythm_action"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_ref_cold_throne_01",
+      "type": "choice",
+      "title": "Reference (опционально)",
+      "prompt": "Вайб «северный холодный эпос с интригами и тяжёлыми решениями» тебе скорее нравится?",
+      "help": "Если не знаком(а) с таким вайбом — выбери «не знаком(а)».",
+      "tags": [
+        "reference",
+        "late",
+        "pool_exclude",
+        "m_politics"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 3,
+      "options": [
+        {
+          "id": "like",
+          "label": "👍 Нравится",
+          "effects": {
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "axis_deltas": {
+              "moral": 1
+            },
+            "axis_evidence": {
+              "moral": 0.064
+            },
+            "set_tags": [
+              "ref_cold_throne_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "👎 Не нравится",
+          "effects": {
+            "module_evidence": {
+              "m_politics": 0.064
+            },
+            "set_tags": [
+              "ref_cold_throne_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "🤷 Не знаю",
+          "effects": {
+            "module_evidence": {
+              "m_politics": 0.048
+            },
+            "set_tags": [
+              "ref_cold_throne_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unknown",
+          "label": "❓ Не знаком(а)",
+          "effects": {
+            "set_tags": [
+              "ref_cold_throne_unknown"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "reference_unsure_meta"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_ref_ashen_ruins_01",
+      "type": "choice",
+      "title": "Reference (опционально)",
+      "prompt": "Вайб «мрачный мир руин и упадка, где даже победа даётся тяжело» тебе скорее нравится?",
+      "help": "Если не знаком(а) с таким вайбом — выбери «не знаком(а)».",
+      "tags": [
+        "reference",
+        "late",
+        "pool_exclude",
+        "tone",
+        "pressure"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 3,
+      "options": [
+        {
+          "id": "like",
+          "label": "👍 Нравится",
+          "effects": {
+            "axis_deltas": {
+              "tone": 1,
+              "pressure": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "tone": 0.08,
+              "pressure": 0.064,
+              "consequence": 0.064
+            },
+            "set_tags": [
+              "ref_ashen_ruins_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "👎 Не нравится",
+          "effects": {
+            "axis_deltas": {
+              "tone": -1
+            },
+            "axis_evidence": {
+              "tone": 0.064
+            },
+            "set_tags": [
+              "ref_ashen_ruins_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "🤷 Не знаю",
+          "effects": {
+            "axis_evidence": {
+              "tone": 0.048
+            },
+            "set_tags": [
+              "ref_ashen_ruins_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unknown",
+          "label": "❓ Не знаком(а)",
+          "effects": {
+            "set_tags": [
+              "ref_ashen_ruins_unknown"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "reference_unsure_meta"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_ref_green_tech_01",
+      "type": "choice",
+      "title": "Reference (опционально)",
+      "prompt": "Вайб «природа + технологии‑руины + охота» тебе скорее нравится?",
+      "help": "Если не знаком(а) с таким вайбом — выбери «не знаком(а)».",
+      "tags": [
+        "reference",
+        "late",
+        "pool_exclude",
+        "m_world_mystery"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 3,
+      "options": [
+        {
+          "id": "like",
+          "label": "👍 Нравится",
+          "effects": {
+            "module_delta_levels": {
+              "m_world_mystery": 1
+            },
+            "module_evidence": {
+              "m_world_mystery": 0.08
+            },
+            "axis_deltas": {
+              "focus": 1
+            },
+            "axis_evidence": {
+              "focus": 0.064
+            },
+            "set_tags": [
+              "ref_green_tech_like"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "dislike",
+          "label": "👎 Не нравится",
+          "effects": {
+            "module_evidence": {
+              "m_world_mystery": 0.064
+            },
+            "set_tags": [
+              "ref_green_tech_dislike"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "🤷 Не знаю",
+          "effects": {
+            "module_evidence": {
+              "m_world_mystery": 0.048
+            },
+            "set_tags": [
+              "ref_green_tech_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unknown",
+          "label": "❓ Не знаком(а)",
+          "effects": {
+            "set_tags": [
+              "ref_green_tech_unknown"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "reference_unsure_meta"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_water_01",
+      "type": "choice",
+      "title": "Дилемма: вода для города",
+      "prompt": "Город держится на единственном источнике воды. Ты можешь починить его быстро, но это закрепит зависимость от одной семьи/группы. Или можно сделать систему честнее, но это дольше и часть города будет жить хуже какое-то время. Что тебе интереснее играть?",
+      "help": "Это про вкус истории: быстрый результат vs долгий справедливый путь.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "consequence",
+        "m_politics"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "fast",
+          "label": "Быстро починить, принять зависимость",
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1,
+              "moral": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.12,
+              "moral": 0.1
+            },
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.1
+            },
+            "set_tags": [
+              "d_water_fast"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "fair",
+          "label": "Дольше, но сделать систему честнее",
+          "effects": {
+            "axis_deltas": {
+              "moral": -1,
+              "structure": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1,
+              "structure": 0.1
+            },
+            "module_evidence": {
+              "m_politics": 0.1
+            },
+            "set_tags": [
+              "d_water_fair"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "mix",
+          "label": "Компромисс: временная заплатка + план реформы",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1,
+              "consequence": 0.1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "set_tags": [
+              "d_water_mix"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_powergrid_01",
+      "type": "choice",
+      "title": "Дилемма: энергия и отключения",
+      "prompt": "В регионе не хватает энергии. Можно ввести плановые отключения (всем понемногу), или обеспечить полную мощность важным местам (больница/связь), оставив окраины без света. Что тебе интереснее играть?",
+      "help": "Тут нет “правильного”. Важно, какой тип решений тебе интереснее переживать.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "consequence",
+        "pressure"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "equal",
+          "label": "Всем понемногу: честные отключения",
+          "effects": {
+            "axis_deltas": {
+              "moral": -1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1,
+              "consequence": 0.1
+            },
+            "set_tags": [
+              "d_grid_equal"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "priority",
+          "label": "Приоритет критичным местам, окраины терпят",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1,
+              "consequence": 1,
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1,
+              "consequence": 0.1,
+              "pressure": 0.08
+            },
+            "set_tags": [
+              "d_grid_priority"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "local",
+          "label": "Дать районам решать самим, даже если начнётся конфликт",
+          "effects": {
+            "axis_deltas": {
+              "structure": -1,
+              "moral": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1,
+              "moral": 0.1
+            },
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "set_tags": [
+              "d_grid_local"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_truth_01",
+      "type": "choice",
+      "title": "Дилемма: правда и паника",
+      "prompt": "Ты узнаёшь, что скоро случится большая проблема. Если сообщить всем — будет паника и хаос. Если молчать — люди не успеют подготовиться. Что тебе интереснее играть?",
+      "help": "Это про драму решений и цену информации.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "pressure",
+        "m_detective"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "tell_all",
+          "label": "Сказать всем честно и сразу",
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1,
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.1,
+              "pressure": 0.1
+            },
+            "set_tags": [
+              "d_truth_all"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "tell_some",
+          "label": "Сообщить только тем, кто может действовать",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1,
+              "consequence": 0.1
+            },
+            "module_evidence": {
+              "m_detective": 0.08
+            },
+            "set_tags": [
+              "d_truth_some"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "stage",
+          "label": "Готовить людей постепенно, не раскрывая всё сразу",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1
+            },
+            "axis_evidence": {
+              "structure": 0.12
+            },
+            "set_tags": [
+              "d_truth_stage"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_bridge_01",
+      "type": "choice",
+      "title": "Дилемма: мост и торговля",
+      "prompt": "Единственный мост соединяет два сообщества. Он рушится. Можно быстро закрыть его для всех и сохранить остатки, или оставить открытым ещё немного ради торговли и связи, рискуя, что он упадёт в худший момент. Что тебе интереснее играть?",
+      "help": "Компромисс: безопасность vs жизнь региона.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "consequence",
+        "m_travel"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "close",
+          "label": "Закрыть сейчас: безопасность важнее",
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1,
+              "pressure": -1
+            },
+            "axis_evidence": {
+              "consequence": 0.1,
+              "pressure": 0.08
+            },
+            "module_evidence": {
+              "m_travel": 0.1
+            },
+            "set_tags": [
+              "d_bridge_close"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "keep_open",
+          "label": "Оставить открытым ради людей и экономики",
+          "effects": {
+            "axis_deltas": {
+              "pressure": 1,
+              "moral": 1
+            },
+            "axis_evidence": {
+              "pressure": 0.1,
+              "moral": 0.08
+            },
+            "module_evidence": {
+              "m_travel": 0.1
+            },
+            "set_tags": [
+              "d_bridge_open"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "schedule",
+          "label": "Ограничить графиком: пропуск по очереди/время",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1,
+              "consequence": 0.1
+            },
+            "set_tags": [
+              "d_bridge_schedule"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_refugees_01",
+      "type": "choice",
+      "title": "Дилемма: принять людей",
+      "prompt": "В ваше поселение приходят люди, которым негде жить. Если принять — ресурсов не хватит и всем станет тяжелее. Если отказать — они пострадают. Что тебе интереснее играть?",
+      "help": "Это про социальную цену и ответственность.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "m_politics",
+        "m_downtime"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "accept",
+          "label": "Принять и ужаться: справимся вместе",
+          "effects": {
+            "axis_deltas": {
+              "moral": -1,
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1,
+              "pressure": 0.1
+            },
+            "module_delta_levels": {
+              "m_downtime": 1
+            },
+            "module_evidence": {
+              "m_downtime": 0.08
+            },
+            "set_tags": [
+              "d_refugees_accept"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "refuse",
+          "label": "Отказать: иначе развалимся все",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1,
+              "consequence": 0.1
+            },
+            "set_tags": [
+              "d_refugees_refuse"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "deal",
+          "label": "Принять частично: условия, квоты, обязанности",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1,
+              "consequence": 0.1
+            },
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "set_tags": [
+              "d_refugees_deal"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_market_control_01",
+      "type": "choice",
+      "title": "Дилемма: рынок и контроль",
+      "prompt": "В городе дефицит. Можно ввести жёсткий контроль цен и распределение, или оставить свободный рынок (будет спекуляция, но товары появятся). Что тебе интереснее играть?",
+      "help": "Это про системные решения и их побочные эффекты.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "m_politics",
+        "consequence"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "control",
+          "label": "Контроль и распределение",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1,
+              "consequence": 0.1
+            },
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "set_tags": [
+              "d_market_control"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "market",
+          "label": "Свободный рынок: пусть выживет сильнейший",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1,
+              "consequence": 0.1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "set_tags": [
+              "d_market_free"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "hybrid",
+          "label": "Гибрид: контроль базового, остальное рынок",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1
+            },
+            "set_tags": [
+              "d_market_hybrid"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_secret_invention_01",
+      "type": "choice",
+      "title": "Дилемма: опасное изобретение",
+      "prompt": "Ты находишь технологию/ритуал, который может резко улучшить жизнь региона. Но есть риск, что он сломает привычный порядок и усилит сильных. Что тебе интереснее играть?",
+      "help": "Про цену прогресса и ответственность.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "m_world_mystery",
+        "m_politics"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "publish",
+          "label": "Раскрыть всем: пусть пользуются",
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1,
+              "moral": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.1,
+              "moral": 0.1
+            },
+            "module_delta_levels": {
+              "m_world_mystery": 1
+            },
+            "module_evidence": {
+              "m_world_mystery": 0.1
+            },
+            "set_tags": [
+              "d_invention_publish"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "guard",
+          "label": "Держать под контролем: доступ по условиям",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1,
+              "consequence": 0.1
+            },
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "set_tags": [
+              "d_invention_guard"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "hide",
+          "label": "Спрятать/уничтожить: риск слишком велик",
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.1
+            },
+            "set_tags": [
+              "d_invention_hide"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_resource_tradeoff_01",
+      "type": "choice",
+      "title": "Дилемма: редкий ресурс",
+      "prompt": "У вас есть редкий ресурс. Его можно потратить на улучшение защиты (меньше рисков в будущем) или на помощь людям сейчас (больше доверия и стабильности). Что интереснее играть?",
+      "help": "Про выбор «сейчас vs потом».",
+      "tags": [
+        "dilemma",
+        "scene",
+        "m_craft",
+        "m_downtime"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "defense",
+          "label": "Улучшить защиту: подготовка важнее",
+          "effects": {
+            "axis_deltas": {
+              "agency": -1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "agency": 0.1,
+              "consequence": 0.1
+            },
+            "module_delta_levels": {
+              "m_craft": 1
+            },
+            "module_evidence": {
+              "m_craft": 0.1
+            },
+            "set_tags": [
+              "d_resource_defense"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "help_now",
+          "label": "Помочь людям сейчас: жизнь важнее апгрейда",
+          "effects": {
+            "axis_deltas": {
+              "moral": -1
+            },
+            "axis_evidence": {
+              "moral": 0.1
+            },
+            "module_delta_levels": {
+              "m_downtime": 1
+            },
+            "module_evidence": {
+              "m_downtime": 0.08
+            },
+            "set_tags": [
+              "d_resource_help"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "split",
+          "label": "Разделить: чуть защиты, чуть помощи",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1
+            },
+            "set_tags": [
+              "d_resource_split"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_reputation_01",
+      "type": "choice",
+      "title": "Дилемма: репутация",
+      "prompt": "Чтобы добиться результата, нужно испортить репутацию невиновного человека. Это можно будет исправить позже, но не факт. Что тебе интереснее играть?",
+      "help": "Про цену результата без прямого вреда телу/жизни.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "m_politics",
+        "consequence"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "do_it",
+          "label": "Сделать: цель важнее",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1,
+              "consequence": 0.1
+            },
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "set_tags": [
+              "d_rep_do"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "refuse",
+          "label": "Отказаться: так нельзя",
+          "effects": {
+            "axis_deltas": {
+              "moral": -1
+            },
+            "axis_evidence": {
+              "moral": 0.1
+            },
+            "set_tags": [
+              "d_rep_refuse"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "alt",
+          "label": "Искать третий путь: другой рычаг/другие доказательства",
+          "effects": {
+            "axis_deltas": {
+              "agency": 1
+            },
+            "axis_evidence": {
+              "agency": 0.1
+            },
+            "module_delta_levels": {
+              "m_detective": 1
+            },
+            "module_evidence": {
+              "m_detective": 0.08
+            },
+            "set_tags": [
+              "d_rep_alt"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_promise_01",
+      "type": "choice",
+      "title": "Дилемма: обещание",
+      "prompt": "Ты дал обещание помочь одному человеку. Потом выясняется, что это помешает помочь гораздо большему числу людей. Что тебе интереснее играть?",
+      "help": "Про столкновение личного и общего.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "moral",
+        "consequence"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "keep",
+          "label": "Сдержать обещание: личное важно",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1
+            },
+            "set_tags": [
+              "d_promise_keep"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "break",
+          "label": "Нарушить ради большего блага",
+          "effects": {
+            "axis_deltas": {
+              "moral": 1,
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "moral": 0.1,
+              "consequence": 0.1
+            },
+            "set_tags": [
+              "d_promise_break"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "delegate",
+          "label": "Найти замену: кто-то другой поможет",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1
+            },
+            "set_tags": [
+              "d_promise_delegate"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_knowledge_trade_01",
+      "type": "choice",
+      "title": "Дилемма: знание за цену",
+      "prompt": "У тебя есть шанс узнать важную тайну, но за это нужно отдать что-то ценное (время, ресурс, репутацию, возможность). Что тебе интереснее играть?",
+      "help": "Про цену знания и приоритеты.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "m_world_mystery",
+        "m_detective"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "pay",
+          "label": "Заплатить: знание стоит того",
+          "effects": {
+            "module_delta_levels": {
+              "m_world_mystery": 1
+            },
+            "module_evidence": {
+              "m_world_mystery": 0.1
+            },
+            "axis_deltas": {
+              "consequence": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.1
+            },
+            "set_tags": [
+              "d_know_pay"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "refuse",
+          "label": "Отказаться: цена слишком высока",
+          "effects": {
+            "axis_deltas": {
+              "consequence": -1
+            },
+            "axis_evidence": {
+              "consequence": 0.1
+            },
+            "set_tags": [
+              "d_know_refuse"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "bargain",
+          "label": "Торговаться/искать другой способ",
+          "effects": {
+            "axis_deltas": {
+              "agency": 1
+            },
+            "axis_evidence": {
+              "agency": 0.1
+            },
+            "module_delta_levels": {
+              "m_detective": 1
+            },
+            "module_evidence": {
+              "m_detective": 0.08
+            },
+            "set_tags": [
+              "d_know_bargain"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_dilemma_public_work_01",
+      "type": "choice",
+      "title": "Дилемма: общественные работы",
+      "prompt": "Чтобы быстро восстановить город, лидер предлагает обязать всех работать без оплаты некоторое время. Это спасёт инфраструктуру, но нарушит доверие. Что тебе интереснее играть?",
+      "help": "Про эффективность vs согласие людей.",
+      "tags": [
+        "dilemma",
+        "scene",
+        "m_politics",
+        "consequence"
+      ],
+      "content_tags": [],
+      "complexity": 3,
+      "fatigue_cost": 2,
+      "eligibility": {
+        "requires": {
+          "min_asked": 3
+        }
+      },
+      "options": [
+        {
+          "id": "force",
+          "label": "Поддержать: иначе город не выживет",
+          "effects": {
+            "axis_deltas": {
+              "consequence": 1,
+              "pressure": 1
+            },
+            "axis_evidence": {
+              "consequence": 0.1,
+              "pressure": 0.08
+            },
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.08
+            },
+            "set_tags": [
+              "d_work_force"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "refuse",
+          "label": "Отказаться: без согласия нельзя",
+          "effects": {
+            "axis_deltas": {
+              "moral": -1
+            },
+            "axis_evidence": {
+              "moral": 0.1
+            },
+            "set_tags": [
+              "d_work_refuse"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "incentive",
+          "label": "Компромисс: стимулы/льготы вместо принуждения",
+          "effects": {
+            "axis_deltas": {
+              "structure": 1
+            },
+            "axis_evidence": {
+              "structure": 0.1
+            },
+            "set_tags": [
+              "d_work_incentive"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    }
+  ]
+}
+```

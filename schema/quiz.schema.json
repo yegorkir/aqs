@@ -1,0 +1,424 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/quiz.schema.json",
+  "title": "Adaptive Questionnaire Contracts",
+  "$ref": "#/$defs/QuizContentBundle",
+  "$defs": {
+    "IdString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.-]+$"
+    },
+    "NonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "AxisDefinition": {
+      "type": "object",
+      "required": ["id", "title", "polarity", "scale", "score_range", "defaults", "conflict"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/IdString" },
+        "title": { "$ref": "#/$defs/NonEmptyString" },
+        "description": { "type": "string" },
+        "polarity": {
+          "type": "object",
+          "required": ["neg_label", "pos_label"],
+          "additionalProperties": false,
+          "properties": {
+            "neg_label": { "$ref": "#/$defs/NonEmptyString" },
+            "pos_label": { "$ref": "#/$defs/NonEmptyString" }
+          }
+        },
+        "scale": {
+          "type": "object",
+          "required": ["min", "max", "step"],
+          "additionalProperties": false,
+          "properties": {
+            "min": { "type": "number" },
+            "max": { "type": "number" },
+            "step": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+        "score_range": {
+          "type": "object",
+          "required": ["min", "max"],
+          "additionalProperties": false,
+          "properties": {
+            "min": { "type": "number" },
+            "max": { "type": "number" }
+          }
+        },
+        "defaults": {
+          "type": "object",
+          "required": ["score", "confidence", "evidence"],
+          "additionalProperties": false,
+          "properties": {
+            "score": { "type": "number" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+            "evidence": { "type": "number", "minimum": 0 }
+          }
+        },
+        "decay": {
+          "type": "object",
+          "required": ["enabled", "half_life_questions"],
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "half_life_questions": { "type": "number", "minimum": 0 }
+          }
+        },
+        "conflict": {
+          "type": "object",
+          "required": ["window", "strong_delta", "penalty", "threshold"],
+          "additionalProperties": false,
+          "properties": {
+            "window": { "type": "integer", "minimum": 1 },
+            "strong_delta": { "type": "number", "minimum": 0 },
+            "penalty": { "type": "number", "minimum": 0 },
+            "threshold": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "AxisState": {
+      "type": "object",
+      "required": ["score", "confidence", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "score": { "type": "number" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence": { "type": "number", "minimum": 0 },
+        "recent_deltas": { "type": "array", "items": { "type": "number" } },
+        "conflicts": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "ModuleDefinition": {
+      "type": "object",
+      "required": ["id", "title", "levels", "defaults"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/IdString" },
+        "title": { "$ref": "#/$defs/NonEmptyString" },
+        "levels": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/NonEmptyString" } },
+        "defaults": {
+          "type": "object",
+          "required": ["level", "confidence", "evidence"],
+          "additionalProperties": false,
+          "properties": {
+            "level": { "type": "integer", "minimum": 0 },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+            "evidence": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "ModuleState": {
+      "type": "object",
+      "required": ["level", "confidence", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "level": { "type": "integer", "minimum": 0 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence": { "type": "number", "minimum": 0 }
+      }
+    },
+    "ModeDefinition": {
+      "type": "object",
+      "required": ["id", "type", "title", "default"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/IdString" },
+        "type": { "enum": ["bool", "tri_bool", "enum"] },
+        "title": { "$ref": "#/$defs/NonEmptyString" },
+        "default": { "type": "string" },
+        "options": { "type": "array", "items": { "$ref": "#/$defs/NonEmptyString" }, "minItems": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "enum" } } },
+          "then": { "required": ["options"] }
+        }
+      ]
+    },
+    "SafetyTagDefinition": {
+      "type": "object",
+      "required": ["id", "label", "group"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/IdString" },
+        "label": { "$ref": "#/$defs/NonEmptyString" },
+        "group": { "$ref": "#/$defs/IdString" },
+        "aliases": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "ui_topic": { "$ref": "#/$defs/IdString" }
+      }
+    },
+    "SafetyProfileState": {
+      "type": "object",
+      "required": ["lines", "veils", "completion_mode"],
+      "additionalProperties": false,
+      "properties": {
+        "lines": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "veils": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "completion_mode": { "enum": ["unset", "completed"] }
+      }
+    },
+    "SafetyConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sensitive_groups": { "type": "array", "items": { "$ref": "#/$defs/IdString" } }
+      }
+    },
+    "Cooldown": {
+      "type": "object",
+      "required": ["questions"],
+      "additionalProperties": false,
+      "properties": {
+        "questions": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "Eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requires": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "axes_confidence_lt": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 } },
+            "axes_confidence_gte": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 } },
+            "tags_all": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+            "tags_any": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+            "modes": { "type": "object", "additionalProperties": { "type": "string" } }
+          }
+        },
+        "forbids": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "tags_any": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+            "modes": { "type": "object", "additionalProperties": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "VeilVariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "prompt": { "type": "string" },
+        "help": { "type": "string" },
+        "options": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "min": { "type": "string" },
+            "max": { "type": "string" }
+          }
+        }
+      }
+    },
+    "Effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "axis_deltas": { "type": "object", "additionalProperties": { "type": "number" } },
+        "axis_evidence": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0 } },
+        "module_delta_levels": { "type": "object", "additionalProperties": { "type": "integer" } },
+        "set_module_level": { "type": "object", "additionalProperties": { "type": "integer" } },
+        "module_evidence": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0 } },
+        "set_modes": { "type": "object", "additionalProperties": { "type": "string" } },
+        "set_tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "unset_tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "notes": { "type": "string" }
+      }
+    },
+    "OptionContract": {
+      "type": "object",
+      "required": ["id", "label", "effects"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/IdString" },
+        "label": { "$ref": "#/$defs/NonEmptyString" },
+        "sub": { "type": "string" },
+        "content_tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "effects": { "$ref": "#/$defs/Effects" },
+        "answer_meta": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "FollowupPolicy": {
+      "type": "object",
+      "required": ["mode"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "enum": ["pick_from_pool", "global_selector"] },
+        "pool": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "constraints": { "type": "object", "additionalProperties": true },
+        "priority": { "type": "object", "additionalProperties": true },
+        "fallback": { "type": "object", "additionalProperties": true },
+        "why": { "type": "string" }
+      }
+    },
+    "FollowupRule": {
+      "type": "object",
+      "required": ["when", "policy"],
+      "additionalProperties": false,
+      "properties": {
+        "when": { "type": "object", "additionalProperties": true },
+        "policy": { "$ref": "#/$defs/FollowupPolicy" }
+      }
+    },
+    "SliderRange": {
+      "type": "object",
+      "required": ["min", "max"],
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "number" },
+        "max": { "type": "number" }
+      }
+    },
+    "EffectsByRange": {
+      "type": "object",
+      "required": ["range", "effects"],
+      "additionalProperties": false,
+      "properties": {
+        "range": { "$ref": "#/$defs/SliderRange" },
+        "effects": { "$ref": "#/$defs/Effects" }
+      }
+    },
+    "FollowupsByRange": {
+      "type": "object",
+      "required": ["range", "policy"],
+      "additionalProperties": false,
+      "properties": {
+        "range": { "$ref": "#/$defs/SliderRange" },
+        "policy": { "$ref": "#/$defs/FollowupPolicy" }
+      }
+    },
+    "ChoiceQuestionContract": {
+      "type": "object",
+      "required": ["id", "type", "title", "prompt", "options"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/IdString" },
+        "type": { "const": "choice" },
+        "title": { "$ref": "#/$defs/NonEmptyString" },
+        "prompt": { "$ref": "#/$defs/NonEmptyString" },
+        "help": { "type": "string" },
+        "tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "content_tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "complexity": { "type": "integer", "minimum": 0 },
+        "fatigue_cost": { "type": "integer", "minimum": 0 },
+        "cooldown": { "$ref": "#/$defs/Cooldown" },
+        "eligibility": { "$ref": "#/$defs/Eligibility" },
+        "veil_variants": { "$ref": "#/$defs/VeilVariants" },
+        "options": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/OptionContract" } },
+        "followups": { "type": "array", "items": { "$ref": "#/$defs/FollowupRule" } }
+      }
+    },
+    "SliderQuestionContract": {
+      "type": "object",
+      "required": ["id", "type", "title", "prompt", "slider", "effects_by_range"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/IdString" },
+        "type": { "const": "slider" },
+        "title": { "$ref": "#/$defs/NonEmptyString" },
+        "prompt": { "$ref": "#/$defs/NonEmptyString" },
+        "help": { "type": "string" },
+        "tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "content_tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "complexity": { "type": "integer", "minimum": 0 },
+        "fatigue_cost": { "type": "integer", "minimum": 0 },
+        "cooldown": { "$ref": "#/$defs/Cooldown" },
+        "eligibility": { "$ref": "#/$defs/Eligibility" },
+        "veil_variants": { "$ref": "#/$defs/VeilVariants" },
+        "coverage_policy": { "enum": ["full", "gaps_allowed"] },
+        "slider": {
+          "type": "object",
+          "required": ["min", "max", "step", "default"],
+          "additionalProperties": false,
+          "properties": {
+            "min": { "type": "number" },
+            "max": { "type": "number" },
+            "step": { "type": "number", "exclusiveMinimum": 0 },
+            "default": { "type": "number" },
+            "labels": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "min": { "type": "string" },
+                "max": { "type": "string" }
+              }
+            },
+            "snap_points": { "type": "array", "items": { "type": "number" } }
+          }
+        },
+        "effects_by_range": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/EffectsByRange" } },
+        "followups_by_range": { "type": "array", "items": { "$ref": "#/$defs/FollowupsByRange" } }
+      }
+    },
+    "OtherQuestionContract": {
+      "type": "object",
+      "required": ["id", "type", "title", "prompt"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/IdString" },
+        "type": { "enum": ["mode", "safety"] },
+        "title": { "$ref": "#/$defs/NonEmptyString" },
+        "prompt": { "$ref": "#/$defs/NonEmptyString" },
+        "help": { "type": "string" },
+        "tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "content_tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "complexity": { "type": "integer", "minimum": 0 },
+        "fatigue_cost": { "type": "integer", "minimum": 0 },
+        "cooldown": { "$ref": "#/$defs/Cooldown" },
+        "eligibility": { "$ref": "#/$defs/Eligibility" },
+        "veil_variants": { "$ref": "#/$defs/VeilVariants" },
+        "options": { "type": "array", "items": { "$ref": "#/$defs/OptionContract" } }
+      }
+    },
+    "QuestionContract": {
+      "oneOf": [
+        { "$ref": "#/$defs/ChoiceQuestionContract" },
+        { "$ref": "#/$defs/SliderQuestionContract" },
+        { "$ref": "#/$defs/OtherQuestionContract" }
+      ]
+    },
+    "RuntimeState": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "session_id": { "type": "string" },
+        "phase": { "type": "string" },
+        "asked": { "type": "array", "items": { "$ref": "#/$defs/IdString" } },
+        "answers": { "type": "array" },
+        "axes": { "type": "object", "additionalProperties": { "$ref": "#/$defs/AxisState" } },
+        "modules": { "type": "object", "additionalProperties": { "$ref": "#/$defs/ModuleState" } },
+        "modes": { "type": "object", "additionalProperties": { "type": "string" } },
+        "safety": { "$ref": "#/$defs/SafetyProfileState" },
+        "tags": { "type": "array", "items": { "$ref": "#/$defs/IdString" } }
+      }
+    },
+    "QuizContentBundle": {
+      "type": "object",
+      "required": ["schema_version", "content_version", "axes", "modules", "modes", "safety_tags", "questions"],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "type": "string" },
+        "content_version": { "type": "string" },
+        "axes": { "type": "array", "items": { "$ref": "#/$defs/AxisDefinition" } },
+        "modules": { "type": "array", "items": { "$ref": "#/$defs/ModuleDefinition" } },
+        "modes": { "type": "array", "items": { "$ref": "#/$defs/ModeDefinition" } },
+        "safety_tags": { "type": "array", "items": { "$ref": "#/$defs/SafetyTagDefinition" } },
+        "questions": { "type": "array", "items": { "$ref": "#/$defs/QuestionContract" } },
+        "safety_config": { "$ref": "#/$defs/SafetyConfig" }
+      }
+    }
+  }
+}
