@@ -4380,6 +4380,22 @@
             "notes": "unsure"
           }
         }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
+          }
+        }
       ]
     },
     {
@@ -4477,6 +4493,22 @@
             "notes": "unsure"
           }
         }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
+          }
+        }
       ]
     },
     {
@@ -4565,6 +4597,22 @@
             "set_tags": [],
             "unset_tags": [],
             "notes": "unsure"
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
           }
         }
       ]
@@ -4660,6 +4708,22 @@
             "set_tags": [],
             "unset_tags": [],
             "notes": "unsure"
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
           }
         }
       ]
@@ -4763,6 +4827,22 @@
             "notes": "unsure"
           }
         }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
+          }
+        }
       ]
     },
     {
@@ -4857,6 +4937,22 @@
             "set_tags": [],
             "unset_tags": [],
             "notes": "unsure"
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
           }
         }
       ]
@@ -4958,6 +5054,22 @@
             "notes": "unsure"
           }
         }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
+          }
+        }
       ]
     },
     {
@@ -5053,6 +5165,22 @@
             "set_tags": [],
             "unset_tags": [],
             "notes": "unsure"
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
           }
         }
       ]
@@ -5152,6 +5280,22 @@
             "notes": "unsure"
           }
         }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
+          }
+        }
       ]
     },
     {
@@ -5235,6 +5379,22 @@
             "set_tags": [],
             "unset_tags": [],
             "notes": "unsure"
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
           }
         }
       ]
@@ -5332,6 +5492,22 @@
             "notes": "unsure"
           }
         }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
+          }
+        }
       ]
     },
     {
@@ -5421,6 +5597,22 @@
             "set_tags": [],
             "unset_tags": [],
             "notes": "unsure"
+          }
+        }
+      ],
+      "followups": [
+        {
+          "when": {
+            "option_id_in": [
+              "unsure"
+            ]
+          },
+          "policy": {
+            "mode": "pick_from_pool",
+            "pool": [
+              "q_meta_unsure_01"
+            ],
+            "why": "dilemma_unsure_meta"
           }
         }
       ]
