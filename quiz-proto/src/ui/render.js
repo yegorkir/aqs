@@ -48,7 +48,24 @@ export function renderPlayer(root, view, handlers) {
 
   const q = view.question;
   if (!q) {
-    root.appendChild(makeParagraph("No question available."));
+    root.appendChild(makeTitle("Вопросы закончились"));
+    root.appendChild(
+      makeParagraph(
+        "Вопросы закончились. Можете перейти к результату или начать заново."
+      )
+    );
+    const actions = document.createElement("div");
+    actions.className = "result-actions";
+    const showBtn = document.createElement("button");
+    showBtn.textContent = "Перейти к результату";
+    showBtn.addEventListener("click", () => handlers.onShowResult?.());
+    const resetBtn = document.createElement("button");
+    resetBtn.className = "secondary";
+    resetBtn.textContent = "Начать заново";
+    resetBtn.addEventListener("click", () => handlers.onReset?.());
+    actions.appendChild(showBtn);
+    actions.appendChild(resetBtn);
+    root.appendChild(actions);
     return;
   }
 
@@ -240,10 +257,12 @@ function bucketValue(score, scale) {
 
 function confidenceLabel(value, thresholds) {
   const high = thresholds?.high ?? 0.66;
-  const medium = thresholds?.medium ?? 0.33;
+  const medium = thresholds?.medium ?? 0.4;
+  const low = thresholds?.low ?? 0.2;
   if (value >= high) return "уверенно";
   if (value >= medium) return "средне";
-  return "нужно уточнить";
+  if (value >= low) return "нужно уточнить";
+  return "неопределено";
 }
 
 function modeLabel(mode, value) {

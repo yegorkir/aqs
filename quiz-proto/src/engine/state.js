@@ -44,7 +44,6 @@ export function initState(bundle) {
     candidates: null,
     stop: bundle.stop ?? {
       min_questions: 10,
-      max_questions: 22,
       target_margin: 0.12,
       min_axis_confidence: 0.35,
     },

@@ -94,6 +94,7 @@ function resetFlow() {
 function stepPick() {
   const next = pickNextQuestion(state, bundle);
   nextDebug = next.debug;
+  state.candidates = next.debug ? { margin: next.debug.margin } : null;
   if (next.pick) {
     state.next_qid = next.pick;
   } else {
@@ -107,6 +108,19 @@ function stepPick() {
 
 function onAnswer(answer) {
   if (!bundle || !state) return;
+  if (answer?.type === "choice") {
+    logEvent("ui_click", {
+      action: "answer_choice",
+      qid: answer.qid,
+      choice: answer.oid ?? null,
+    });
+  } else if (answer?.type === "slider") {
+    logEvent("ui_click", {
+      action: "answer_slider",
+      qid: answer.qid,
+      choice: answer.value ?? null,
+    });
+  }
   const sourceQuestion = bundle.questionsById[answer.qid];
   const result = applyAnswer(state, bundle, answer);
   lastLog = result.log;
@@ -228,6 +242,7 @@ function render() {
       onAnswer,
       onContinue: () => {
         if (state?.phase === "propose_result" || state?.phase === "result") {
+          logEvent("ui_click", { action: "continue_answers", phase: state?.phase ?? "unknown" });
           state.phase = "quiz";
           stopInfo = null;
           stepPick();
@@ -236,18 +251,21 @@ function render() {
       },
       onShowResult: () => {
         if (state && (state.phase === "propose_result" || proposeSeen)) {
+          logEvent("ui_click", { action: "show_result", phase: state?.phase ?? "unknown" });
           state.phase = "result";
           logEvent("result_view", { reason: "user_accept" });
           render();
         }
       },
       onShare: () => {
+        logEvent("ui_click", { action: "share_result", phase: state?.phase ?? "unknown" });
         const text = logger.exportLines();
         copyToClipboard(text);
       },
       onEditAxis: (axisId) => {
         if (!state || !bundle) return;
         if (!bundle.axesById?.[axisId]) return;
+        logEvent("ui_click", { action: "refine_axis", id: axisId, phase: state?.phase ?? "unknown" });
         state.focus = { type: "axis", id: axisId };
         proposeSeen = true;
         state.phase = "quiz";
@@ -268,6 +286,7 @@ function render() {
       onEditModule: (moduleId) => {
         if (!state || !bundle) return;
         if (!bundle.modulesById?.[moduleId]) return;
+        logEvent("ui_click", { action: "refine_module", id: moduleId, phase: state?.phase ?? "unknown" });
         state.focus = { type: "module", id: moduleId };
         proposeSeen = true;
         state.phase = "quiz";
@@ -288,6 +307,7 @@ function render() {
       onEditMode: (modeId) => {
         if (!state || !bundle) return;
         if (!bundle.modesById?.[modeId]) return;
+        logEvent("ui_click", { action: "refine_mode", id: modeId, phase: state?.phase ?? "unknown" });
         state.focus = { type: "mode", id: modeId };
         proposeSeen = true;
         state.phase = "quiz";
@@ -304,6 +324,10 @@ function render() {
           state.phase = "result";
         }
         render();
+      },
+      onReset: () => {
+        logEvent("ui_click", { action: "reset_flow", phase: state?.phase ?? "unknown" });
+        resetFlow();
       },
     }
   );
@@ -367,9 +391,19 @@ async function copyToClipboard(text) {
 
 function computeStopMetrics(state, bundle) {
   const keyAxes = bundle.key_axes ?? (bundle.axes ?? []).map((a) => a.id);
-  const min_axis_confidence = Math.min(
-    ...keyAxes.map((id) => state.axes[id]?.confidence ?? 0)
-  );
+  const axis_ids = keyAxes;
+  const axis_conf = axis_ids.map((id) => state.axes[id]?.confidence ?? 0);
+  const min_axis_confidence = Math.min(...axis_conf);
+  const thresholds = { low: 0.2, medium: 0.4, high: 0.66 };
+  const axis_counts = {
+    high: axis_conf.filter((v) => v >= thresholds.high).length,
+    medium: axis_conf.filter((v) => v >= thresholds.medium && v < thresholds.high).length,
+    low: axis_conf.filter((v) => v >= thresholds.low && v < thresholds.medium).length,
+    unknown: axis_conf.filter((v) => v < thresholds.low).length,
+  };
+  const module_ids = Object.keys(state.modules ?? {});
+  const module_conf = module_ids.map((id) => state.modules[id]?.confidence ?? 0);
+  const module_min_confidence = module_conf.length ? Math.min(...module_conf) : 0;
   const conflicts = keyAxes.reduce(
     (sum, id) => sum + (state.axes[id]?.conflicts ?? 0),
     0
@@ -377,6 +411,13 @@ function computeStopMetrics(state, bundle) {
   return {
     key_axes: keyAxes,
     min_axis_confidence,
+    axis_ids,
+    axis_conf,
+    module_ids,
+    module_conf,
+    thresholds,
+    axis_counts,
+    module_min_confidence,
     conflicts,
     margin: state.candidates?.margin ?? null,
   };

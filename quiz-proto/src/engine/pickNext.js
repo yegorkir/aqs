@@ -73,6 +73,10 @@ export function pickNextQuestion(state, bundle) {
 
   candidates.sort((a, b) => b.score.total - a.score.total);
   const pick = candidates[0] ?? null;
+  const margin =
+    candidates.length >= 2
+      ? candidates[0].score.total - candidates[1].score.total
+      : null;
 
   return {
     pick: pick?.qid ?? null,
@@ -81,6 +85,7 @@ export function pickNextQuestion(state, bundle) {
       count: candidates.length,
       rejected,
       followup_forced: false,
+      margin,
     },
   };
 }
