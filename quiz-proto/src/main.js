@@ -5,6 +5,7 @@ import { applyAnswer } from "./engine/applyAnswer.js";
 import { pickNextQuestion } from "./engine/pickNext.js";
 import { evaluateStop } from "./engine/stop.js";
 import { resolveFollowup } from "./engine/followup.js";
+import { questionSafetyStatus } from "./engine/safety.js";
 import { createLogger, downloadText } from "./log/logger.js";
 import { renderPlayer, renderDebug } from "./ui/render.js";
 
@@ -22,6 +23,7 @@ let validationBlockers = [];
 let lastLog = null;
 let nextDebug = null;
 let stopInfo = null;
+let proposeSeen = false;
 
 const logger = createLogger();
 let eventSeq = 0;
@@ -83,6 +85,7 @@ function resetFlow() {
   eventSeq = 0;
   lastLog = null;
   stopInfo = null;
+  proposeSeen = false;
   logEvent("reset", { session_id: state.session_id });
   stepPick();
   render();
@@ -130,8 +133,63 @@ function onAnswer(answer) {
     metrics: computeStopMetrics(state, bundle),
   });
 
-  if (stopInfo.propose) {
+  if (state.focus) {
+    if (state.focus.type === "axis") {
+      const axisDef = bundle.axesById?.[state.focus.id];
+      const thresholds = axisDef?.result?.confidence_thresholds;
+      const high = thresholds?.high ?? 0.66;
+      const conf = state.axes[state.focus.id]?.confidence ?? 0;
+      if (conf >= high || !hasAvailableFocusQuestion(state, bundle)) {
+        logEvent("focus_exit", {
+          type: "axis",
+          id: state.focus.id,
+          reason: conf >= high ? "confidence_high" : "no_questions",
+          confidence: conf,
+        });
+        state.focus = null;
+        state.phase = "result";
+        render();
+        return;
+      }
+    }
+    if (state.focus.type === "module") {
+      const modDef = bundle.modulesById?.[state.focus.id];
+      const thresholds = modDef?.result?.confidence_thresholds;
+      const high = thresholds?.high ?? 0.66;
+      const conf = state.modules[state.focus.id]?.confidence ?? 0;
+      if (conf >= high || !hasAvailableFocusQuestion(state, bundle)) {
+        logEvent("focus_exit", {
+          type: "module",
+          id: state.focus.id,
+          reason: conf >= high ? "confidence_high" : "no_questions",
+          confidence: conf,
+        });
+        state.focus = null;
+        state.phase = "result";
+        render();
+        return;
+      }
+    }
+    if (state.focus.type === "mode") {
+      const value = state.modes[state.focus.id];
+      if (value !== "unknown" || !hasAvailableFocusQuestion(state, bundle)) {
+        logEvent("focus_exit", {
+          type: "mode",
+          id: state.focus.id,
+          reason: value !== "unknown" ? "answered" : "no_questions",
+          value,
+        });
+        state.focus = null;
+        state.phase = "result";
+        render();
+        return;
+      }
+    }
+  }
+
+  if (stopInfo.propose && !proposeSeen) {
     state.phase = "propose_result";
+    proposeSeen = true;
   }
 
   stepPick();
@@ -161,8 +219,93 @@ function render() {
       status: "ready",
       phase: state.phase,
       question,
+      bundle,
+      state,
+      stopInfo,
+      proposeSeen,
     },
-    { onAnswer }
+    {
+      onAnswer,
+      onContinue: () => {
+        if (state?.phase === "propose_result" || state?.phase === "result") {
+          state.phase = "quiz";
+          stopInfo = null;
+          stepPick();
+          render();
+        }
+      },
+      onShowResult: () => {
+        if (state && (state.phase === "propose_result" || proposeSeen)) {
+          state.phase = "result";
+          logEvent("result_view", { reason: "user_accept" });
+          render();
+        }
+      },
+      onShare: () => {
+        const text = logger.exportLines();
+        copyToClipboard(text);
+      },
+      onEditAxis: (axisId) => {
+        if (!state || !bundle) return;
+        if (!bundle.axesById?.[axisId]) return;
+        state.focus = { type: "axis", id: axisId };
+        proposeSeen = true;
+        state.phase = "quiz";
+        logEvent("focus_enter", { type: "axis", id: axisId });
+        stepPick();
+        if (!state.next_qid) {
+          logEvent("focus_exit", {
+            type: "axis",
+            id: axisId,
+            reason: "no_questions",
+            confidence: state.axes[axisId]?.confidence ?? 0,
+          });
+          state.focus = null;
+          state.phase = "result";
+        }
+        render();
+      },
+      onEditModule: (moduleId) => {
+        if (!state || !bundle) return;
+        if (!bundle.modulesById?.[moduleId]) return;
+        state.focus = { type: "module", id: moduleId };
+        proposeSeen = true;
+        state.phase = "quiz";
+        logEvent("focus_enter", { type: "module", id: moduleId });
+        stepPick();
+        if (!state.next_qid) {
+          logEvent("focus_exit", {
+            type: "module",
+            id: moduleId,
+            reason: "no_questions",
+            confidence: state.modules[moduleId]?.confidence ?? 0,
+          });
+          state.focus = null;
+          state.phase = "result";
+        }
+        render();
+      },
+      onEditMode: (modeId) => {
+        if (!state || !bundle) return;
+        if (!bundle.modesById?.[modeId]) return;
+        state.focus = { type: "mode", id: modeId };
+        proposeSeen = true;
+        state.phase = "quiz";
+        logEvent("focus_enter", { type: "mode", id: modeId });
+        stepPick();
+        if (!state.next_qid) {
+          logEvent("focus_exit", {
+            type: "mode",
+            id: modeId,
+            reason: "no_questions",
+            value: state.modes[modeId],
+          });
+          state.focus = null;
+          state.phase = "result";
+        }
+        render();
+      },
+    }
   );
 
   renderDebug(debugRoot, {
@@ -202,6 +345,26 @@ function resolveAnswerLabel(question, answer) {
   return "";
 }
 
+async function copyToClipboard(text) {
+  if (navigator?.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // fallback below
+    }
+  }
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "");
+  ta.style.position = "absolute";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  document.body.removeChild(ta);
+}
+
 function computeStopMetrics(state, bundle) {
   const keyAxes = bundle.key_axes ?? (bundle.axes ?? []).map((a) => a.id);
   const min_axis_confidence = Math.min(
@@ -217,4 +380,68 @@ function computeStopMetrics(state, bundle) {
     conflicts,
     margin: state.candidates?.margin ?? null,
   };
+}
+
+function hasAvailableFocusQuestion(state, bundle) {
+  if (!state.focus) return false;
+  for (const q of bundle.questions ?? []) {
+    if (q.tags?.includes("pool_exclude")) continue;
+    if (state.asked.includes(q.id)) continue;
+    const cd = state.cooldowns[q.id];
+    if (cd && state.asked.length < cd.until) continue;
+    if (!passesEligibilityLite(q, state)) continue;
+    const safety = questionSafetyStatus(q, state);
+    if (!safety.allowed) continue;
+    const touches = questionTouchesFocus(q, state.focus);
+    if (touches) return true;
+  }
+  return false;
+}
+
+function passesEligibilityLite(q, state) {
+  const req = q.eligibility?.requires;
+  if (req?.axes_confidence_lt) {
+    for (const [axisId, thr] of Object.entries(req.axes_confidence_lt)) {
+      if (state.focus?.type === "axis" && axisId === state.focus.id) continue;
+      if ((state.axes[axisId]?.confidence ?? 0) >= thr) return false;
+    }
+  }
+  return true;
+}
+
+function questionTouchesFocus(q, focus) {
+  if (!focus) return false;
+  if (q.type === "choice") {
+    for (const o of q.options ?? []) {
+      if (focus.type === "axis") {
+        if (o.effects?.axis_deltas?.[focus.id] != null) return true;
+        if (o.effects?.axis_evidence?.[focus.id] != null) return true;
+      }
+      if (focus.type === "module") {
+        if (o.effects?.module_evidence?.[focus.id] != null) return true;
+        if (o.effects?.module_delta_levels?.[focus.id] != null) return true;
+        if (o.effects?.set_module_level?.[focus.id] != null) return true;
+      }
+      if (focus.type === "mode") {
+        if (o.effects?.set_modes?.[focus.id] != null) return true;
+      }
+    }
+  }
+  if (q.type === "slider") {
+    for (const r of q.effects_by_range ?? []) {
+      if (focus.type === "axis") {
+        if (r.effects?.axis_deltas?.[focus.id] != null) return true;
+        if (r.effects?.axis_evidence?.[focus.id] != null) return true;
+      }
+      if (focus.type === "module") {
+        if (r.effects?.module_evidence?.[focus.id] != null) return true;
+        if (r.effects?.module_delta_levels?.[focus.id] != null) return true;
+        if (r.effects?.set_module_level?.[focus.id] != null) return true;
+      }
+      if (focus.type === "mode") {
+        if (r.effects?.set_modes?.[focus.id] != null) return true;
+      }
+    }
+  }
+  return false;
 }

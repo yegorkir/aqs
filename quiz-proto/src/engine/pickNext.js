@@ -38,7 +38,12 @@ export function pickNextQuestion(state, bundle) {
       rejected.cooldown += 1;
       continue;
     }
-    if (!passesEligibility(q, state)) {
+    if (state.focus) {
+      if (!passesEligibilityFocus(q, state)) {
+        rejected.eligibility += 1;
+        continue;
+      }
+    } else if (!passesEligibility(q, state)) {
       rejected.eligibility += 1;
       continue;
     }
@@ -49,6 +54,20 @@ export function pickNextQuestion(state, bundle) {
     }
 
     const score = scoreQuestion(q, state, s.veiled);
+    if (state.focus) {
+      if (state.focus.type === "axis" && !score.touchedAxes.has(state.focus.id)) {
+        rejected.eligibility += 1;
+        continue;
+      }
+      if (state.focus.type === "module" && !score.touchedModules.has(state.focus.id)) {
+        rejected.eligibility += 1;
+        continue;
+      }
+      if (state.focus.type === "mode" && !score.touchedModes.has(state.focus.id)) {
+        rejected.eligibility += 1;
+        continue;
+      }
+    }
     candidates.push({ qid: q.id, score, veiled: s.veiled, why: score.why });
   }
 
@@ -76,9 +95,21 @@ function passesEligibility(q, state) {
   return true;
 }
 
+function passesEligibilityFocus(q, state) {
+  const req = q.eligibility?.requires;
+  if (req?.axes_confidence_lt) {
+    for (const [axisId, thr] of Object.entries(req.axes_confidence_lt)) {
+      if (state.focus?.type === "axis" && axisId === state.focus.id) continue;
+      if ((state.axes[axisId]?.confidence ?? 0) >= thr) return false;
+    }
+  }
+  return true;
+}
+
 function scoreQuestion(q, state, isVeiled) {
   const touchedAxes = new Set();
   const touchedModules = new Set();
+  const touchedModes = new Set();
 
   if (q.type === "choice") {
     for (const o of q.options ?? []) {
@@ -87,11 +118,18 @@ function scoreQuestion(q, state, isVeiled) {
       for (const k of Object.keys(o.effects?.module_evidence ?? {})) touchedModules.add(k);
       for (const k of Object.keys(o.effects?.module_delta_levels ?? {}))
         touchedModules.add(k);
+      for (const k of Object.keys(o.effects?.set_modes ?? {})) touchedModes.add(k);
+      for (const k of Object.keys(o.effects?.set_module_level ?? {})) touchedModules.add(k);
     }
   } else if (q.type === "slider") {
     for (const r of q.effects_by_range ?? []) {
       for (const k of Object.keys(r.effects?.axis_deltas ?? {})) touchedAxes.add(k);
       for (const k of Object.keys(r.effects?.axis_evidence ?? {})) touchedAxes.add(k);
+      for (const k of Object.keys(r.effects?.module_evidence ?? {})) touchedModules.add(k);
+      for (const k of Object.keys(r.effects?.module_delta_levels ?? {}))
+        touchedModules.add(k);
+      for (const k of Object.keys(r.effects?.set_modes ?? {})) touchedModes.add(k);
+      for (const k of Object.keys(r.effects?.set_module_level ?? {})) touchedModules.add(k);
     }
   }
 
@@ -120,5 +158,5 @@ function scoreQuestion(q, state, isVeiled) {
   };
 
   const total = base - penalty;
-  return { total, why, base, penalty };
+  return { total, why, base, penalty, touchedAxes, touchedModules, touchedModes };
 }

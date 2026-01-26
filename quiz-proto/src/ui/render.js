@@ -12,18 +12,37 @@ export function renderPlayer(root, view, handlers) {
   }
 
   if (view.phase === "result") {
-    root.appendChild(makeTitle("Result snapshot"));
-    root.appendChild(makeParagraph("Prototype ended. Review debug panel for state."));
+    root.appendChild(renderResultScreen(view, handlers));
     return;
   }
 
   if (view.phase === "propose_result") {
-    root.appendChild(makeTitle("Ready to stop?"));
+    const forced = view.stopInfo?.reasons?.includes("max_questions_forced");
+    root.appendChild(makeTitle("Можно перейти к результату"));
     root.appendChild(
       makeParagraph(
-        "Stop conditions met. You can continue answering or finish and review result."
+        forced
+          ? "Спасибо, что отвечаешь на так много вопросов. Ты уже можешь посмотреть результат, но мы пока не уверены в нём."
+          : "Уже достаточно данных. Можно посмотреть результат или продолжить отвечать."
       )
     );
+    root.appendChild(
+      makeParagraph(
+        "Ты всегда сможешь вернуться к опросу из результата и наоборот."
+      )
+    );
+    const actions = document.createElement("div");
+    actions.className = "result-actions";
+    const showBtn = document.createElement("button");
+    showBtn.textContent = "Показать результат";
+    showBtn.addEventListener("click", () => handlers.onShowResult?.());
+    const contBtn = document.createElement("button");
+    contBtn.className = "secondary";
+    contBtn.textContent = "Хочу ещё поотвечать на вопросы";
+    contBtn.addEventListener("click", () => handlers.onContinue?.());
+    actions.appendChild(showBtn);
+    actions.appendChild(contBtn);
+    root.appendChild(actions);
     return;
   }
 
@@ -33,7 +52,17 @@ export function renderPlayer(root, view, handlers) {
     return;
   }
 
-  root.appendChild(makeTitle(q.prompt ?? "Question"));
+  const qHeader = document.createElement("div");
+  qHeader.className = "question-header";
+  qHeader.appendChild(makeTitle(q.prompt ?? "Question"));
+  if (view.proposeSeen) {
+    const showBtn = document.createElement("button");
+    showBtn.className = "secondary";
+    showBtn.textContent = "Перейти к результату";
+    showBtn.addEventListener("click", () => handlers.onShowResult?.());
+    qHeader.appendChild(showBtn);
+  }
+  root.appendChild(qHeader);
 
   if (q.type === "choice") {
     const opts = document.createElement("div");
@@ -81,6 +110,320 @@ export function renderPlayer(root, view, handlers) {
     wrapper.appendChild(submit);
     root.appendChild(wrapper);
   }
+}
+
+function renderResultScreen(view, handlers) {
+  const wrapper = document.createElement("div");
+  const header = document.createElement("div");
+  header.className = "result-header";
+
+  const title = document.createElement("h3");
+  title.className = "question-title";
+  title.textContent = "Профиль ожиданий";
+
+  const subtitle = document.createElement("p");
+  subtitle.className = "muted";
+  subtitle.textContent = "Не тип, а карта предпочтений.";
+
+  if (view.state?.focus) {
+    const focusNote = document.createElement("p");
+    focusNote.className = "muted";
+    let focusLabel = view.state.focus.id;
+    if (view.state.focus.type === "axis") {
+      focusLabel = view.bundle?.axesById?.[view.state.focus.id]?.title ?? focusLabel;
+    } else if (view.state.focus.type === "module") {
+      focusLabel = view.bundle?.modulesById?.[view.state.focus.id]?.title ?? focusLabel;
+    } else if (view.state.focus.type === "mode") {
+      focusLabel = view.bundle?.modesById?.[view.state.focus.id]?.title ?? focusLabel;
+    }
+    focusNote.textContent = `Сейчас уточняем: ${focusLabel}.`;
+    header.appendChild(focusNote);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "result-actions";
+  const shareBtn = document.createElement("button");
+  shareBtn.textContent = "Поделиться";
+  shareBtn.addEventListener("click", () => handlers.onShare?.());
+  const continueBtn = document.createElement("button");
+  continueBtn.className = "secondary";
+  continueBtn.textContent = "Хочу ещё поотвечать на вопросы";
+  continueBtn.addEventListener("click", () => handlers.onContinue?.());
+  actions.appendChild(shareBtn);
+  actions.appendChild(continueBtn);
+
+  header.appendChild(title);
+  header.appendChild(subtitle);
+  header.appendChild(actions);
+  wrapper.appendChild(header);
+
+  const resultView = buildResultView(view);
+  wrapper.appendChild(
+    makeSection(
+      "Профиль ожиданий",
+      renderAxisList(resultView.axes, handlers)
+    )
+  );
+  wrapper.appendChild(makeSection("Модули интереса", renderModuleList(resultView.modules, handlers)));
+  wrapper.appendChild(makeSection("Формат игры", renderModeList(resultView.modes, handlers)));
+  return wrapper;
+}
+
+function buildResultView(view) {
+  const bundleAxes = view.bundle?.axes ?? [];
+  const bundleModules = view.bundle?.modules ?? [];
+  const bundleModes = view.bundle?.modes ?? [];
+  const stateAxes = view.state?.axes ?? {};
+  const stateModules = view.state?.modules ?? {};
+  const stateModes = view.state?.modes ?? {};
+
+  const axes = bundleAxes.map((axis) => {
+    const state = stateAxes[axis.id] ?? {};
+    const scale = axis.scale ?? { min: -2, max: 2, step: 1 };
+    const score = Number(state.score ?? 0);
+    const bucket = bucketValue(score, scale);
+    const texts = axis.result?.texts ?? {};
+    const description = texts[String(bucket)] ?? axis.description ?? "";
+    const confidence = Number(state.confidence ?? 0);
+    const thresholds = axis.result?.confidence_thresholds;
+    return {
+      id: axis.id,
+      title: axis.title ?? axis.id,
+      negLabel: axis.polarity?.neg_label ?? "Низко",
+      posLabel: axis.polarity?.pos_label ?? "Высоко",
+      scale,
+      bucket,
+      description,
+      confidenceLabel: confidenceLabel(confidence, thresholds),
+    };
+  });
+
+  const modules = bundleModules.map((mod) => {
+    const state = stateModules[mod.id] ?? {};
+    const level = Number(state.level ?? 0);
+    const confidence = Number(state.confidence ?? 0);
+    const thresholds = mod.result?.confidence_thresholds;
+    return {
+      id: mod.id,
+      title: mod.title ?? mod.id,
+      level,
+      evidence: Number(state.evidence ?? 0),
+      levels: mod.levels ?? [],
+      confidenceLabel: confidenceLabel(confidence, thresholds),
+      canEdit: true,
+    };
+  });
+
+  const modes = bundleModes.map((mode) => {
+    const value = stateModes[mode.id];
+    return {
+      id: mode.id,
+      title: mode.title ?? mode.id,
+      value,
+      label: modeLabel(mode, value),
+      canEdit: true,
+    };
+  });
+
+  return { axes, modules, modes };
+}
+
+function bucketValue(score, scale) {
+  const min = Number(scale.min ?? -2);
+  const max = Number(scale.max ?? 2);
+  const step = Number(scale.step ?? 1);
+  const count = Math.round((max - min) / step) + 1;
+  const idx = Math.max(0, Math.min(count - 1, Math.round((score - min) / step)));
+  const value = min + idx * step;
+  return Number.isInteger(value) ? value : Number(value.toFixed(2));
+}
+
+function confidenceLabel(value, thresholds) {
+  const high = thresholds?.high ?? 0.66;
+  const medium = thresholds?.medium ?? 0.33;
+  if (value >= high) return "уверенно";
+  if (value >= medium) return "средне";
+  return "нужно уточнить";
+}
+
+function modeLabel(mode, value) {
+  if (mode?.labels && value != null) {
+    const label = mode.labels[String(value)];
+    if (label) return label;
+  }
+  if (mode?.type === "tri_bool") {
+    if (value === true || value === "yes") return "да";
+    if (value === false || value === "no") return "нет";
+    return "не знаю";
+  }
+  if (mode?.type === "bool") {
+    return value ? "да" : "нет";
+  }
+  if (value == null) return "не задано";
+  return String(value);
+}
+
+function renderAxisList(axes, handlers) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "result-grid";
+  for (const axis of axes) {
+    const card = document.createElement("div");
+    card.className = "result-card";
+
+    const head = document.createElement("div");
+    head.className = "result-card-head";
+    const title = document.createElement("div");
+    title.className = "result-card-title";
+    title.textContent = axis.title;
+    const headActions = document.createElement("div");
+    headActions.className = "result-card-actions";
+    const badge = document.createElement("span");
+    badge.className = "badge";
+    badge.textContent = axis.confidenceLabel;
+    const editBtn = document.createElement("button");
+    editBtn.className = "secondary edit-btn";
+    editBtn.type = "button";
+    const icon = document.createElement("img");
+    icon.className = "edit-icon";
+    icon.alt = "";
+    icon.src = "./assets/edit_36dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.svg";
+    icon.setAttribute("aria-hidden", "true");
+    editBtn.appendChild(icon);
+    editBtn.appendChild(document.createTextNode("Уточнить"));
+    editBtn.addEventListener("click", () => handlers.onEditAxis?.(axis.id));
+    headActions.appendChild(badge);
+    headActions.appendChild(editBtn);
+    head.appendChild(title);
+    head.appendChild(headActions);
+
+    const scale = document.createElement("div");
+    scale.className = "scale";
+    const min = Number(axis.scale?.min ?? -2);
+    const max = Number(axis.scale?.max ?? 2);
+    const step = Number(axis.scale?.step ?? 1);
+    const steps = Math.round((max - min) / step) + 1;
+    scale.style.gridTemplateColumns = `repeat(${steps}, 1fr)`;
+    for (let i = 0; i < steps; i += 1) {
+      const value = min + i * step;
+      const seg = document.createElement("span");
+      seg.className = "scale-step";
+      if (value === axis.bucket) seg.classList.add("active");
+      scale.appendChild(seg);
+    }
+
+    const labels = document.createElement("div");
+    labels.className = "scale-labels";
+    labels.innerHTML = `<span>${axis.negLabel}</span><span>${axis.posLabel}</span>`;
+
+    const desc = document.createElement("p");
+    desc.className = "muted";
+    desc.textContent = axis.description;
+
+    card.appendChild(head);
+    card.appendChild(scale);
+    card.appendChild(labels);
+    card.appendChild(desc);
+    wrapper.appendChild(card);
+  }
+  return wrapper;
+}
+
+function renderModuleList(modules, handlers) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "result-grid";
+  for (const mod of modules) {
+    const card = document.createElement("div");
+    card.className = "result-card";
+
+    const head = document.createElement("div");
+    head.className = "result-card-head";
+    const title = document.createElement("div");
+    title.className = "result-card-title";
+    title.textContent = mod.title;
+    const headActions = document.createElement("div");
+    headActions.className = "result-card-actions";
+    const badge = document.createElement("span");
+    badge.className = "badge";
+    badge.textContent = mod.confidenceLabel;
+    headActions.appendChild(badge);
+    if (mod.canEdit) {
+      const editBtn = document.createElement("button");
+      editBtn.className = "secondary edit-btn";
+      editBtn.type = "button";
+      const icon = document.createElement("img");
+      icon.className = "edit-icon";
+      icon.alt = "";
+      icon.src = "./assets/edit_36dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.svg";
+      icon.setAttribute("aria-hidden", "true");
+      editBtn.appendChild(icon);
+      editBtn.appendChild(document.createTextNode("Уточнить"));
+      editBtn.addEventListener("click", () => handlers.onEditModule?.(mod.id));
+      headActions.appendChild(editBtn);
+    }
+    head.appendChild(title);
+    head.appendChild(headActions);
+
+    const bar = document.createElement("div");
+    bar.className = "intensity";
+    const steps = Math.max(1, mod.levels?.length ?? 4);
+    bar.style.gridTemplateColumns = `repeat(${steps}, 1fr)`;
+    for (let i = 0; i < steps; i += 1) {
+      const seg = document.createElement("span");
+      seg.className = "intensity-step";
+      if (i <= mod.level) seg.classList.add("active");
+      bar.appendChild(seg);
+    }
+
+    const level = document.createElement("p");
+    level.className = "muted";
+    const levelLabel = mod.levels?.[mod.level] ?? String(mod.level ?? 0);
+    level.textContent = `Уровень: ${levelLabel}`;
+
+    card.appendChild(head);
+    card.appendChild(bar);
+    card.appendChild(level);
+    wrapper.appendChild(card);
+  }
+  return wrapper;
+}
+
+function renderModeList(modes, handlers) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "mode-list";
+  for (const mode of modes) {
+    const row = document.createElement("div");
+    row.className = "mode-row";
+    const title = document.createElement("span");
+    title.textContent = mode.title;
+    const actions = document.createElement("div");
+    actions.className = "result-card-actions";
+    const value = document.createElement("span");
+    value.className = "badge";
+    value.textContent = mode.label;
+    actions.appendChild(value);
+    if (mode.canEdit) {
+      const editBtn = document.createElement("button");
+      editBtn.className = "secondary edit-btn";
+      editBtn.type = "button";
+      const icon = document.createElement("img");
+      icon.className = "edit-icon";
+      icon.alt = "";
+      icon.src = "./assets/edit_36dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.svg";
+      icon.setAttribute("aria-hidden", "true");
+      editBtn.appendChild(icon);
+      editBtn.appendChild(document.createTextNode("Уточнить"));
+      editBtn.addEventListener("click", () => handlers.onEditMode?.(mode.id));
+      actions.appendChild(editBtn);
+    }
+    row.appendChild(title);
+    row.appendChild(actions);
+    wrapper.appendChild(row);
+  }
+  const hint = document.createElement("p");
+  hint.className = "muted";
+  hint.textContent = "Изменить настройки формата (скоро).";
+  wrapper.appendChild(hint);
+  return wrapper;
 }
 
 export function renderDebug(root, view) {

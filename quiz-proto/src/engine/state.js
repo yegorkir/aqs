@@ -30,6 +30,7 @@ export function initState(bundle) {
     asked: [],
     answers: [],
     pending_followups: [],
+    focus: null,
     axes,
     modules,
     modes,
