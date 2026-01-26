@@ -49,5 +49,13 @@ export function evaluateStop(state, bundle) {
     return { propose: false, reasons: ["module_confidence_undefined"] };
   }
 
+  const modeEntries = Object.entries(state.modes ?? {});
+  const unansweredModes = modeEntries
+    .filter(([, value]) => value == null || value === "unknown")
+    .map(([id]) => id);
+  if (unansweredModes.length > 0) {
+    return { propose: false, reasons: ["modes_unanswered", unansweredModes] };
+  }
+
   return { propose: true, reasons: ["saturated"] };
 }

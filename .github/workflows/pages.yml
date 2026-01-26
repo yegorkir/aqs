@@ -27,6 +27,15 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Write Pages runtime config
+        run: |
+          mkdir -p quiz-proto/config
+          cat <<'EOF' > quiz-proto/config/runtime.json
+          {
+            "showDebugPanel": false
+          }
+          EOF
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

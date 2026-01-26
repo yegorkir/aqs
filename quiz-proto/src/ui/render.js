@@ -58,7 +58,7 @@ export function renderPlayer(root, view, handlers) {
     actions.className = "result-actions";
     const showBtn = document.createElement("button");
     showBtn.textContent = "Перейти к результату";
-    showBtn.addEventListener("click", () => handlers.onShowResult?.());
+    showBtn.addEventListener("click", () => handlers.onShowResult?.({ force: true }));
     const resetBtn = document.createElement("button");
     resetBtn.className = "secondary";
     resetBtn.textContent = "Начать заново";

@@ -24,6 +24,7 @@ let lastLog = null;
 let nextDebug = null;
 let stopInfo = null;
 let proposeSeen = false;
+let runtimeConfig = { showDebugPanel: true };
 
 const logger = createLogger();
 let eventSeq = 0;
@@ -64,6 +65,8 @@ async function init() {
   renderStatus("loading");
 
   try {
+    runtimeConfig = await loadRuntimeConfig();
+    applyRuntimeConfig(runtimeConfig);
     const res = await loadBundleAndSchema();
     bundle = indexBundle(res.bundle);
     validationWarnings = validateBundleLight(bundle);
@@ -76,6 +79,22 @@ async function init() {
   } catch (err) {
     renderStatus("error", err.message);
   }
+}
+
+async function loadRuntimeConfig() {
+  try {
+    const res = await fetch("../config/runtime.json", { cache: "no-store" });
+    if (!res.ok) return { showDebugPanel: true };
+    const parsed = await res.json();
+    return { showDebugPanel: parsed.showDebugPanel !== false };
+  } catch {
+    return { showDebugPanel: true };
+  }
+}
+
+function applyRuntimeConfig(config) {
+  const showDebugPanel = config?.showDebugPanel !== false;
+  document.body.dataset.debug = showDebugPanel ? "on" : "off";
 }
 
 function resetFlow() {
@@ -249,8 +268,10 @@ function render() {
           render();
         }
       },
-      onShowResult: () => {
-        if (state && (state.phase === "propose_result" || proposeSeen)) {
+      onShowResult: (options = {}) => {
+        const force = options?.force === true;
+        const noMoreQuestions = !state?.next_qid;
+        if (state && (state.phase === "propose_result" || proposeSeen || force || noMoreQuestions)) {
           logEvent("ui_click", { action: "show_result", phase: state?.phase ?? "unknown" });
           state.phase = "result";
           logEvent("result_view", { reason: "user_accept" });
