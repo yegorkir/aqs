@@ -5,11 +5,33 @@ export function evaluateStop(state, bundle) {
     target_margin,
   } = state.stop;
 
+  const keyAxes = bundle.key_axes ?? (bundle.axes ?? []).map((a) => a.id);
+  const axisConf = keyAxes.map((id) => state.axes[id]?.confidence ?? 0);
+
+  const thresholds = {
+    low: 0.2,
+    medium: 0.4,
+    high: 0.66,
+  };
+  const counts = {
+    high: axisConf.filter((v) => v >= thresholds.high).length,
+    medium: axisConf.filter((v) => v >= thresholds.medium && v < thresholds.high).length,
+    low: axisConf.filter((v) => v >= thresholds.low && v < thresholds.medium).length,
+    unknown: axisConf.filter((v) => v < thresholds.low).length,
+  };
+  const moduleIds = Object.keys(state.modules ?? {});
+  const moduleConf = moduleIds.map((id) => state.modules[id]?.confidence ?? 0);
+  const modulesUnknown = moduleConf.filter((v) => v < thresholds.low).length;
+  if (counts.unknown === 0 && modulesUnknown === 0) {
+    return { propose: true, reasons: ["axis_module_defined_override"] };
+  }
+  if (counts.high >= 1 && counts.medium >= 1) {
+    return { propose: true, reasons: ["axis_mix_override", counts] };
+  }
+
   const n = state.asked.length;
   if (n < min_questions) return { propose: false, reasons: ["min_questions"] };
 
-  const keyAxes = bundle.key_axes ?? (bundle.axes ?? []).map((a) => a.id);
-  const axisConf = keyAxes.map((id) => state.axes[id]?.confidence ?? 0);
   const minConf = Math.min(...axisConf);
   if (minConf < min_axis_confidence) {
     return { propose: false, reasons: ["low_axis_confidence", minConf] };
@@ -26,17 +48,6 @@ export function evaluateStop(state, bundle) {
   );
   if (conflicts > 0) return { propose: false, reasons: ["conflicts", conflicts] };
 
-  const thresholds = {
-    low: 0.2,
-    medium: 0.4,
-    high: 0.66,
-  };
-  const counts = {
-    high: axisConf.filter((v) => v >= thresholds.high).length,
-    medium: axisConf.filter((v) => v >= thresholds.medium && v < thresholds.high).length,
-    low: axisConf.filter((v) => v >= thresholds.low && v < thresholds.medium).length,
-    unknown: axisConf.filter((v) => v < thresholds.low).length,
-  };
   if (counts.unknown > 0) {
     return { propose: false, reasons: ["axis_undefined", counts.unknown] };
   }
