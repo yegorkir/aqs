@@ -35,6 +35,9 @@ jobs:
             "showDebugPanel": false
           }
           EOF
+          rm -rf app/content app/schema
+          cp -R content app/content
+          cp -R schema app/schema
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

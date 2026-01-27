@@ -1,7 +1,7 @@
 export async function loadBundleAndSchema() {
   const [bundleRes, schemaRes] = await Promise.all([
-    fetch("../content/bundle.json"),
-    fetch("../schema/quiz.schema.json"),
+    fetch("./content/bundle.json"),
+    fetch("./schema/quiz.schema.json"),
   ]);
 
   if (!bundleRes.ok) {

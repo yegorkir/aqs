@@ -95,7 +95,7 @@ async function init() {
 
 async function loadRuntimeConfig() {
   try {
-    const res = await fetch("../config/runtime.json", { cache: "no-store" });
+    const res = await fetch("./config/runtime.json", { cache: "no-store" });
     if (!res.ok) return { showDebugPanel: true };
     const parsed = await res.json();
     return { showDebugPanel: parsed.showDebugPanel !== false };
