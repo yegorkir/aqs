@@ -1,16 +1,17 @@
 import { questionSafetyStatus } from "./safety.js";
+import { passesEligibility, passesEligibilityFocus } from "./eligibility.js";
 
 export function pickNextQuestion(state, bundle) {
-  if (state.pending_followups?.length) {
-    const qid = state.pending_followups.shift();
+  const followupPick = pickAllowedFollowup(state, bundle);
+  if (followupPick) {
     return {
-      pick: qid,
+      pick: followupPick,
       debug: {
         top: [],
         count: 0,
         rejected: { asked: 0, cooldown: 0, eligibility: 0, safety: 0 },
         followup_forced: true,
-        followup_qid: qid,
+        followup_qid: followupPick,
       },
     };
   }
@@ -47,7 +48,7 @@ export function pickNextQuestion(state, bundle) {
       rejected.eligibility += 1;
       continue;
     }
-    const s = questionSafetyStatus(q, state);
+    const s = questionSafetyStatus(q, state, bundle);
     if (!s.allowed) {
       rejected.safety += 1;
       continue;
@@ -90,25 +91,20 @@ export function pickNextQuestion(state, bundle) {
   };
 }
 
-function passesEligibility(q, state) {
-  const req = q.eligibility?.requires;
-  if (req?.axes_confidence_lt) {
-    for (const [axisId, thr] of Object.entries(req.axes_confidence_lt)) {
-      if ((state.axes[axisId]?.confidence ?? 0) >= thr) return false;
-    }
+function pickAllowedFollowup(state, bundle) {
+  while (state.pending_followups?.length) {
+    const qid = state.pending_followups.shift();
+    const q = bundle.questionsById?.[qid];
+    if (!q) continue;
+    if (state.asked.includes(qid)) continue;
+    const cd = state.cooldowns[qid];
+    if (cd && state.asked.length < cd.until) continue;
+    if (!passesEligibility(q, state)) continue;
+    const s = questionSafetyStatus(q, state, bundle);
+    if (!s.allowed) continue;
+    return qid;
   }
-  return true;
-}
-
-function passesEligibilityFocus(q, state) {
-  const req = q.eligibility?.requires;
-  if (req?.axes_confidence_lt) {
-    for (const [axisId, thr] of Object.entries(req.axes_confidence_lt)) {
-      if (state.focus?.type === "axis" && axisId === state.focus.id) continue;
-      if ((state.axes[axisId]?.confidence ?? 0) >= thr) return false;
-    }
-  }
-  return true;
+  return null;
 }
 
 function scoreQuestion(q, state, isVeiled) {

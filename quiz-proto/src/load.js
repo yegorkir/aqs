@@ -27,6 +27,7 @@ export function indexBundle(bundle) {
   const modulesById = toIdMap(bundle.modules ?? []);
   const modesById = toIdMap(bundle.modes ?? []);
   const questionsById = toIdMap(bundle.questions ?? []);
+  const safetyTagsById = toIdMapWithAliases(bundle.safety_tags ?? []);
 
   return {
     ...bundle,
@@ -34,6 +35,7 @@ export function indexBundle(bundle) {
     modulesById,
     modesById,
     questionsById,
+    safetyTagsById,
   };
 }
 
@@ -42,6 +44,18 @@ function toIdMap(list) {
   for (const item of list) {
     if (!item?.id) continue;
     map[item.id] = item;
+  }
+  return map;
+}
+
+function toIdMapWithAliases(list) {
+  const map = {};
+  for (const item of list) {
+    if (!item?.id) continue;
+    map[item.id] = item;
+    for (const alias of item.aliases ?? []) {
+      if (!map[alias]) map[alias] = item;
+    }
   }
   return map;
 }

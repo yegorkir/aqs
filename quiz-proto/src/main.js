@@ -6,6 +6,7 @@ import { pickNextQuestion } from "./engine/pickNext.js";
 import { evaluateStop } from "./engine/stop.js";
 import { resolveFollowup } from "./engine/followup.js";
 import { questionSafetyStatus } from "./engine/safety.js";
+import { passesEligibilityFocus } from "./engine/eligibility.js";
 import { createLogger, downloadText } from "./log/logger.js";
 import { renderPlayer, renderDebug } from "./ui/render.js";
 
@@ -51,12 +52,16 @@ let safetyConfigured = false;
 toggleSafetyBtn.addEventListener("click", () => {
   safetyConfigured = !safetyConfigured;
   toggleSafetyBtn.textContent = `Safety configured: ${safetyConfigured ? "on" : "off"}`;
-  state.safety.lines = safetyConfigured ? ["violence"] : [];
+  state.safety.lines = safetyConfigured
+    ? ["explicit_gore", "dismemberment", "torture", "child_harm"]
+    : [];
   state.safety.veils = safetyConfigured ? ["romance"] : [];
+  state.safety.completion_mode = safetyConfigured ? "completed" : "unset";
   logEvent("safety_toggle", {
     enabled: safetyConfigured,
     lines: state.safety.lines,
     veils: state.safety.veils,
+    completion_mode: state.safety.completion_mode,
   });
   render();
 });
@@ -113,7 +118,7 @@ function resetFlow() {
 function stepPick() {
   const next = pickNextQuestion(state, bundle);
   nextDebug = next.debug;
-  state.candidates = next.debug ? { margin: next.debug.margin } : null;
+  state.candidates = next.debug ? { margin: null } : null;
   if (next.pick) {
     state.next_qid = next.pick;
   } else {
@@ -149,7 +154,7 @@ function onAnswer(answer) {
     option_label: resolveAnswerLabel(sourceQuestion, answer),
   });
 
-  const followup = resolveFollowup(state, sourceQuestion, answer);
+  const followup = resolveFollowup(state, bundle, sourceQuestion, answer);
   if (followup) {
     state.pending_followups.push(followup.qid);
     logEvent("followup_enqueued", {
@@ -245,7 +250,9 @@ function renderStatus(status, message = "") {
 function render() {
   if (!bundle || !state) return;
 
-  const question = state.next_qid ? bundle.questionsById[state.next_qid] : null;
+  const rawQ = state.next_qid ? bundle.questionsById[state.next_qid] : null;
+  const safety = rawQ ? questionSafetyStatus(rawQ, state, bundle) : null;
+  const question = rawQ ? applyVeilVariants(rawQ, safety) : null;
   renderPlayer(
     playerRoot,
     {
@@ -451,8 +458,8 @@ function hasAvailableFocusQuestion(state, bundle) {
     if (state.asked.includes(q.id)) continue;
     const cd = state.cooldowns[q.id];
     if (cd && state.asked.length < cd.until) continue;
-    if (!passesEligibilityLite(q, state)) continue;
-    const safety = questionSafetyStatus(q, state);
+    if (!passesEligibilityFocus(q, state)) continue;
+    const safety = questionSafetyStatus(q, state, bundle);
     if (!safety.allowed) continue;
     const touches = questionTouchesFocus(q, state.focus);
     if (touches) return true;
@@ -460,15 +467,28 @@ function hasAvailableFocusQuestion(state, bundle) {
   return false;
 }
 
-function passesEligibilityLite(q, state) {
-  const req = q.eligibility?.requires;
-  if (req?.axes_confidence_lt) {
-    for (const [axisId, thr] of Object.entries(req.axes_confidence_lt)) {
-      if (state.focus?.type === "axis" && axisId === state.focus.id) continue;
-      if ((state.axes[axisId]?.confidence ?? 0) >= thr) return false;
-    }
+function applyVeilVariants(q, safetyStatus) {
+  if (!safetyStatus?.veiled || !q?.veil_variants) return q;
+  const v = q.veil_variants;
+  const qq = {
+    ...q,
+    options: (q.options ?? []).map((o) => ({ ...o })),
+    slider: q.slider ? { ...q.slider } : q.slider,
+  };
+  if (v.prompt) qq.prompt = v.prompt;
+  if (v.help) qq.help = v.help;
+  if (qq.type === "choice" && v.options) {
+    qq.options = (qq.options ?? []).map((o) => ({
+      ...o,
+      label: v.options[o.id] ?? o.label,
+    }));
   }
-  return true;
+  if (qq.type === "slider" && v.labels) {
+    qq.slider = { ...(qq.slider ?? {}) };
+    if (v.labels.min) qq.slider.min_label = v.labels.min;
+    if (v.labels.max) qq.slider.max_label = v.labels.max;
+  }
+  return qq;
 }
 
 function questionTouchesFocus(q, focus) {

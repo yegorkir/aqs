@@ -125,9 +125,7 @@ function detectConflicts(state, bundle, log) {
     const xs = ax.recent_deltas.slice(-w);
     const hasPos = xs.some((d) => d >= strong);
     const hasNeg = xs.some((d) => d <= -strong);
-    if (hasPos && hasNeg) {
-      ax.conflicts += 1;
-    }
+    ax.conflicts = hasPos && hasNeg ? 1 : 0;
   }
 }
 

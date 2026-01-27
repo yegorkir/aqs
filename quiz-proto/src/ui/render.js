@@ -271,12 +271,14 @@ function modeLabel(mode, value) {
     if (label) return label;
   }
   if (mode?.type === "tri_bool") {
-    if (value === true || value === "yes") return "да";
-    if (value === false || value === "no") return "нет";
+    if (value === true || value === "true" || value === "yes") return "да";
+    if (value === false || value === "false" || value === "no") return "нет";
     return "не знаю";
   }
   if (mode?.type === "bool") {
-    return value ? "да" : "нет";
+    if (value === true || value === "true") return "да";
+    if (value === false || value === "false") return "нет";
+    return "не задано";
   }
   if (value == null) return "не задано";
   return String(value);
