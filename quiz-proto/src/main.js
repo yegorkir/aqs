@@ -253,12 +253,14 @@ function render() {
   const rawQ = state.next_qid ? bundle.questionsById[state.next_qid] : null;
   const safety = rawQ ? questionSafetyStatus(rawQ, state, bundle) : null;
   const question = rawQ ? applyVeilVariants(rawQ, safety) : null;
+  const veilApplied = Boolean(safety?.veiled && rawQ?.veil_variants);
   renderPlayer(
     playerRoot,
     {
       status: "ready",
       phase: state.phase,
       question,
+      veilApplied,
       bundle,
       state,
       stopInfo,

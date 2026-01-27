@@ -71,7 +71,27 @@ export function renderPlayer(root, view, handlers) {
 
   const qHeader = document.createElement("div");
   qHeader.className = "question-header";
-  qHeader.appendChild(makeTitle(q.prompt ?? "Question"));
+  const title = makeTitle(q.prompt ?? "Question");
+  qHeader.appendChild(title);
+  if (q.help) {
+    const helpIcon = document.createElement("button");
+    helpIcon.className = "help-icon";
+    helpIcon.type = "button";
+    helpIcon.setAttribute("aria-label", "Пояснение к вопросу");
+    helpIcon.setAttribute("aria-expanded", "false");
+    helpIcon.setAttribute("data-tooltip", q.help);
+    helpIcon.textContent = "?";
+    helpIcon.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const isOpen = helpIcon.classList.toggle("is-open");
+      helpIcon.setAttribute("aria-expanded", String(isOpen));
+    });
+    helpIcon.addEventListener("blur", () => {
+      helpIcon.classList.remove("is-open");
+      helpIcon.setAttribute("aria-expanded", "false");
+    });
+    qHeader.appendChild(helpIcon);
+  }
   if (view.proposeSeen) {
     const showBtn = document.createElement("button");
     showBtn.className = "secondary";
@@ -80,6 +100,11 @@ export function renderPlayer(root, view, handlers) {
     qHeader.appendChild(showBtn);
   }
   root.appendChild(qHeader);
+  if (view.veilApplied) {
+    const note = makeParagraph("Вопрос адаптирован с учётом границ.");
+    note.className = "muted safety-note";
+    root.appendChild(note);
+  }
 
   if (q.type === "choice") {
     const opts = document.createElement("div");
@@ -211,6 +236,7 @@ function buildResultView(view) {
       scale,
       bucket,
       description,
+      confidence,
       confidenceLabel: confidenceLabel(confidence, thresholds),
     };
   });
@@ -226,6 +252,7 @@ function buildResultView(view) {
       level,
       evidence: Number(state.evidence ?? 0),
       levels: mod.levels ?? [],
+      confidence,
       confidenceLabel: confidenceLabel(confidence, thresholds),
       canEdit: true,
     };
@@ -300,7 +327,8 @@ function renderAxisList(axes, handlers) {
     headActions.className = "result-card-actions";
     const badge = document.createElement("span");
     badge.className = "badge";
-    badge.textContent = axis.confidenceLabel;
+    const confPct = Number.isFinite(axis.confidence) ? Math.round(axis.confidence * 100) : null;
+    badge.textContent = confPct == null ? axis.confidenceLabel : `${axis.confidenceLabel} · ${confPct}%`;
     const editBtn = document.createElement("button");
     editBtn.className = "secondary edit-btn";
     editBtn.type = "button";
@@ -365,7 +393,8 @@ function renderModuleList(modules, handlers) {
     headActions.className = "result-card-actions";
     const badge = document.createElement("span");
     badge.className = "badge";
-    badge.textContent = mod.confidenceLabel;
+    const confPct = Number.isFinite(mod.confidence) ? Math.round(mod.confidence * 100) : null;
+    badge.textContent = confPct == null ? mod.confidenceLabel : `${mod.confidenceLabel} · ${confPct}%`;
     headActions.appendChild(badge);
     if (mod.canEdit) {
       const editBtn = document.createElement("button");

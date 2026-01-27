@@ -142,6 +142,56 @@
         flex: 1 1 320px;
       }
 
+      .help-icon {
+        position: relative;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: #e8e3d8;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 14px;
+        cursor: help;
+        box-shadow: none;
+      }
+
+      .help-icon::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 10px);
+        transform: translateX(-50%);
+        width: max-content;
+        max-width: 280px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: #1f1e1b;
+        color: #fff;
+        font-size: 12px;
+        line-height: 1.4;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        white-space: pre-wrap;
+        z-index: 2;
+      }
+
+      .help-icon:hover::after,
+      .help-icon:focus-visible::after,
+      .help-icon.is-open::after {
+        opacity: 1;
+      }
+
+      .safety-note {
+        background: #fff7e8;
+        border: 1px solid #f3c8b6;
+        border-radius: 10px;
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+
       .options {
         display: grid;
         gap: var(--space-2);
