@@ -14,7 +14,7 @@ To validate a specific file:
 node scripts/validate_bundle.js content/bundle.json
 ```
 
-## Prototype server (quiz-proto)
+## Prototype server (aqs)
 
 Serve the static prototype from the repo root so it can fetch `content/bundle.json` and `schema/quiz.schema.json`:
 
@@ -22,4 +22,4 @@ Serve the static prototype from the repo root so it can fetch `content/bundle.js
 python3 -m http.server
 ```
 
-Then open `http://localhost:8000/quiz-proto/` in your browser.
+Then open `http://localhost:8000/aqs/` in your browser.

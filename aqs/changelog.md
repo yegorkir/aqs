@@ -1,4 +1,4 @@
-# Changelog: quiz-proto
+# Changelog: aqs
 
 ## 2026-01-26
 - Added static prototype shell with engine, UI, logging, and validation warnings.

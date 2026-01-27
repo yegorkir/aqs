@@ -1,4 +1,4 @@
-# Checklist: quiz-proto
+# Checklist: aqs
 
 ## 2026-01-26
 - [x] Create minimal static prototype files.

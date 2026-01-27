@@ -1,7 +1,7 @@
 const ICONS = {
-  share: "../share_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
-  info: "../info_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
-  arrow: "../arrow_forward_ios_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+  share: "./assets/share_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+  info: "./assets/info_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+  arrow: "./assets/arrow_forward_ios_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
 };
 
 export function renderPlayer(root, view, handlers) {
