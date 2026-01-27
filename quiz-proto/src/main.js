@@ -32,39 +32,46 @@ let eventSeq = 0;
 
 init();
 
-resetBtn.addEventListener("click", () => resetFlow());
-exportBtn.addEventListener("click", () => {
-  const text = logger.exportLines();
-  downloadText(`quiz-log-${Date.now()}.jsonl`, text);
-});
-
-continueBtn.addEventListener("click", () => {
-  if (state?.phase === "propose_result") {
-    state.phase = "quiz";
-    stopInfo = null;
-    stepPick();
-    render();
-  }
-});
+if (resetBtn) {
+  resetBtn.addEventListener("click", () => resetFlow());
+}
+if (exportBtn) {
+  exportBtn.addEventListener("click", () => {
+    const text = logger.exportLines();
+    downloadText(`quiz-log-${Date.now()}.jsonl`, text);
+  });
+}
+if (continueBtn) {
+  continueBtn.addEventListener("click", () => {
+    if (state?.phase === "propose_result") {
+      state.phase = "quiz";
+      stopInfo = null;
+      stepPick();
+      render();
+    }
+  });
+}
 
 let safetyConfigured = false;
 
-toggleSafetyBtn.addEventListener("click", () => {
-  safetyConfigured = !safetyConfigured;
-  toggleSafetyBtn.textContent = `Safety configured: ${safetyConfigured ? "on" : "off"}`;
-  state.safety.lines = safetyConfigured
-    ? ["explicit_gore", "dismemberment", "torture", "child_harm"]
-    : [];
-  state.safety.veils = safetyConfigured ? ["romance"] : [];
-  state.safety.completion_mode = safetyConfigured ? "completed" : "unset";
-  logEvent("safety_toggle", {
-    enabled: safetyConfigured,
-    lines: state.safety.lines,
-    veils: state.safety.veils,
-    completion_mode: state.safety.completion_mode,
+if (toggleSafetyBtn) {
+  toggleSafetyBtn.addEventListener("click", () => {
+    safetyConfigured = !safetyConfigured;
+    toggleSafetyBtn.textContent = `Safety configured: ${safetyConfigured ? "on" : "off"}`;
+    state.safety.lines = safetyConfigured
+      ? ["explicit_gore", "dismemberment", "torture", "child_harm"]
+      : [];
+    state.safety.veils = safetyConfigured ? ["romance"] : [];
+    state.safety.completion_mode = safetyConfigured ? "completed" : "unset";
+    logEvent("safety_toggle", {
+      enabled: safetyConfigured,
+      lines: state.safety.lines,
+      veils: state.safety.veils,
+      completion_mode: state.safety.completion_mode,
+    });
+    render();
   });
-  render();
-});
+}
 
 async function init() {
   renderStatus("loading");
@@ -105,6 +112,7 @@ function applyRuntimeConfig(config) {
 function resetFlow() {
   if (!bundle) return;
   state = initState(bundle);
+  state.phase = "welcome";
   logger.reset();
   eventSeq = 0;
   lastLog = null;
@@ -271,9 +279,15 @@ function render() {
       state,
       stopInfo,
       proposeSeen,
+      isFollowup: nextDebug?.followup_forced ?? false,
     },
     {
       onAnswer,
+      onStart: () => {
+        logEvent("ui_click", { action: "start", phase: state?.phase ?? "unknown" });
+        state.phase = "quiz";
+        render();
+      },
       onContinue: () => {
         if (state?.phase === "propose_result" || state?.phase === "result") {
           logEvent("ui_click", { action: "continue_answers", phase: state?.phase ?? "unknown" });
@@ -294,9 +308,13 @@ function render() {
         }
       },
       onShare: () => {
-        logEvent("ui_click", { action: "share_result", phase: state?.phase ?? "unknown" });
-        const text = logger.exportLines();
-        copyToClipboard(text);
+        const payload = buildSharePayload(state);
+        logEvent("ui_click", {
+          action: "share_result",
+          phase: state?.phase ?? "unknown",
+          answers_count: payload.answers.length,
+        });
+        copyToClipboard(JSON.stringify(payload, null, 2));
       },
       onEditAxis: (axisId) => {
         if (!state || !bundle) return;
@@ -361,6 +379,19 @@ function render() {
         }
         render();
       },
+      onEditSafety: () => {
+        if (!state || !bundle) return;
+        const safetyQid = (bundle.questions ?? []).find(
+          (q) => q.type === "safety" && (q.tags ?? []).includes("safety_lines_veils")
+        )?.id;
+        if (!safetyQid) return;
+        logEvent("ui_click", { action: "edit_safety", id: safetyQid, phase: state?.phase ?? "unknown" });
+        state.focus = null;
+        state.phase = "quiz";
+        state.pending_followups = [safetyQid];
+        stepPick();
+        render();
+      },
       onReset: () => {
         logEvent("ui_click", { action: "reset_flow", phase: state?.phase ?? "unknown" });
         resetFlow();
@@ -378,7 +409,35 @@ function render() {
     stopInfo,
   });
 
-  continueBtn.disabled = state.phase !== "propose_result";
+  if (continueBtn) {
+    continueBtn.disabled = state.phase !== "propose_result";
+  }
+}
+
+function buildSharePayload(state) {
+  const answers = (state?.answers ?? []).map((entry, index) => {
+    const base = {
+      order: index + 1,
+      qid: entry.qid,
+      type: entry.type,
+      ts: entry.ts,
+    };
+    if (entry.type === "choice") {
+      return { ...base, oid: entry.oid ?? null };
+    }
+    if (entry.type === "slider") {
+      return { ...base, value: entry.value ?? null };
+    }
+    if (entry.type === "safety") {
+      return { ...base, selections: entry.selections ?? [] };
+    }
+    return base;
+  });
+  return {
+    session_id: state?.session_id ?? "unknown",
+    exported_at: Date.now(),
+    answers,
+  };
 }
 
 function logEvent(type, payload) {

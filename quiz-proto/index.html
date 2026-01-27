@@ -1,27 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quiz Prototype</title>
+    <title>Адаптивный опросник</title>
     <style>
       :root {
-        --bg: #f6f2e9;
-        --ink: #1f1e1b;
-        --muted: #5e5a52;
-        --panel: #ffffff;
-        --accent: #c24f2f;
-        --accent-2: #2b5b75;
-        --line: #e2d8c8;
-        --shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
-        --radius: 14px;
-        --space-1: 8px;
+        --bg-deep: #171514;
+        --bg: #221f1c;
+        --bg-soft: #2b2723;
+        --card: #f6efe6;
+        --card-soft: #efe6d8;
+        --ink: #f9f4ec;
+        --ink-dark: #1d1a17;
+        --muted: #b9b0a6;
+        --muted-dark: #6b6259;
+        --accent: #d19a5d;
+        --accent-2: #8a7bbd;
+        --line: rgba(255, 255, 255, 0.1);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        --radius-lg: 24px;
+        --radius-md: 16px;
+        --radius-sm: 10px;
+        --space-1: 6px;
         --space-2: 12px;
-        --space-3: 16px;
+        --space-3: 18px;
         --space-4: 24px;
         --space-5: 32px;
+        --space-6: 48px;
         --font-display: "Fraunces", "Georgia", serif;
-        --font-body: "Work Sans", "Helvetica Neue", system-ui, sans-serif;
+        --font-body: "Plus Jakarta Sans", "Avenir", "Helvetica Neue", system-ui, sans-serif;
       }
 
       * {
@@ -32,141 +40,152 @@
         margin: 0;
         font-family: var(--font-body);
         color: var(--ink);
-        background: radial-gradient(circle at top left, #fdf8f1 0%, var(--bg) 48%, #efe3d1 100%);
+        background:
+          radial-gradient(900px 600px at 10% 0%, rgba(138, 123, 189, 0.15), transparent 60%),
+          radial-gradient(700px 520px at 90% 10%, rgba(209, 154, 93, 0.18), transparent 55%),
+          linear-gradient(160deg, var(--bg-deep), var(--bg));
         min-height: 100vh;
       }
 
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        background: rgba(246, 242, 233, 0.92);
-        backdrop-filter: blur(8px);
-        border-bottom: 1px solid var(--line);
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 32px 32px;
+        opacity: 0.4;
       }
 
-      .topbar {
+      main {
+        position: relative;
+        z-index: 1;
+      }
+
+      .app-root {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: var(--space-6) var(--space-4) var(--space-6);
+      }
+
+      .screen {
+        display: grid;
+        gap: var(--space-4);
+      }
+
+      .screen-top {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--space-2);
-        align-items: center;
         justify-content: space-between;
-        padding: var(--space-3) var(--space-5);
+        gap: var(--space-3);
+        align-items: center;
       }
 
       .brand {
         font-family: var(--font-display);
-        font-size: 20px;
+        font-size: 26px;
         letter-spacing: 0.02em;
+        margin: 0;
       }
 
-      .controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--space-2);
-        align-items: center;
+      .tagline {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
       }
 
-      button {
-        border: none;
-        padding: 10px 16px;
+      .stage-pill {
+        padding: 6px 14px;
         border-radius: 999px;
-        background: var(--accent);
-        color: #fff;
-        font-weight: 600;
-        cursor: pointer;
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-        box-shadow: 0 6px 16px rgba(194, 79, 47, 0.25);
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
-      button.secondary {
-        background: var(--panel);
-        color: var(--ink);
-        border: 1px solid var(--line);
-        box-shadow: none;
-      }
-
-      button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        box-shadow: none;
-      }
-
-      button:hover:not(:disabled) {
-        transform: translateY(-1px);
-      }
-
-      main {
+      .card {
+        background: var(--card);
+        color: var(--ink-dark);
+        border-radius: var(--radius-lg);
         padding: var(--space-5);
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        gap: var(--space-4);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(0, 0, 0, 0.08);
       }
 
-      .panel {
-        background: var(--panel);
-        border-radius: var(--radius);
-        padding: var(--space-4);
-        box-shadow: var(--shadow);
-        border: 1px solid var(--line);
+      .card.soft {
+        background: var(--card-soft);
+      }
+
+      .card.dilemma {
+        background: #1b1917;
+        color: var(--ink);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      .card-tag {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted-dark);
+        margin-bottom: var(--space-2);
+      }
+
+      .question-title {
+        font-family: var(--font-display);
+        font-size: 26px;
+        margin: 0 0 var(--space-3);
+      }
+
+      .question-help {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--muted-dark);
+        margin-top: var(--space-2);
+      }
+
+      .muted {
+        color: var(--muted);
       }
 
       .section-title {
         font-family: var(--font-display);
         font-size: 18px;
         margin: 0 0 var(--space-2);
-      }
-
-      .muted {
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .question-title {
-        font-family: var(--font-display);
-        font-size: 22px;
-        margin: 0 0 var(--space-3);
-      }
-
-      .question-header {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--space-2);
-        margin-bottom: var(--space-2);
-      }
-
-      .question-header .question-title {
-        margin: 0;
-        flex: 1 1 320px;
+        color: currentColor;
       }
 
       .help-icon {
-        position: relative;
         width: 28px;
         height: 28px;
         border-radius: 999px;
-        border: 1px solid var(--line);
-        background: #e8e3d8;
-        color: var(--muted);
-        font-weight: 700;
-        font-size: 14px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
         cursor: help;
-        box-shadow: none;
+      }
+
+      .help-icon img {
+        width: 16px;
+        height: 16px;
       }
 
       .help-icon::after {
         content: attr(data-tooltip);
         position: absolute;
         left: 50%;
-        bottom: calc(100% + 10px);
+        bottom: calc(100% + 12px);
         transform: translateX(-50%);
         width: max-content;
         max-width: 280px;
         padding: 10px 12px;
         border-radius: 10px;
-        background: #1f1e1b;
+        background: #1d1a17;
         color: #fff;
         font-size: 12px;
         line-height: 1.4;
@@ -184,107 +203,170 @@
         opacity: 1;
       }
 
-      .safety-note {
-        background: #fff7e8;
-        border: 1px solid #f3c8b6;
-        border-radius: 10px;
-        padding: 6px 10px;
-        font-size: 12px;
-      }
-
       .options {
         display: grid;
         gap: var(--space-2);
       }
 
-      .option-btn {
+      .option-btn,
+      .option-checkbox {
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: #fff;
+        padding: 14px 16px;
         text-align: left;
-        background: #fdf8f1;
-        border: 1px solid var(--line);
-        color: var(--ink);
-        box-shadow: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
       }
 
-      .option-btn:hover:not(:disabled) {
-        background: #f6ede0;
+      .option-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
       }
 
       .option-checkbox {
         display: flex;
         gap: 10px;
         align-items: flex-start;
-        padding: 10px 12px;
-        border: 1px solid var(--line);
-        background: #fdf8f1;
-        border-radius: 10px;
       }
 
       .option-checkbox input {
         margin-top: 2px;
       }
 
+      .safety-row {
+        display: grid;
+        gap: 8px;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: #fff;
+      }
+
+      .safety-label {
+        font-weight: 600;
+      }
+
+      .safety-choices {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .safety-choice {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        font-size: 14px;
+        cursor: pointer;
+        background: #fafafa;
+      }
+
+      .safety-choice input {
+        margin: 0;
+      }
+
       .slider {
         display: grid;
-        gap: var(--space-2);
+        gap: var(--space-3);
+      }
+
+      .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: var(--muted-dark);
       }
 
       input[type="range"] {
         width: 100%;
       }
 
-      .row {
+      .actions {
         display: flex;
-        gap: var(--space-2);
         flex-wrap: wrap;
-        align-items: center;
+        gap: var(--space-2);
       }
 
-      .pill {
-        background: #f4e5d4;
-        color: #6a3b2c;
-        padding: 2px 10px;
+      .btn {
+        border: none;
+        padding: 12px 18px;
         border-radius: 999px;
-        font-size: 12px;
+        background: var(--accent);
+        color: #1d140a;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        box-shadow: 0 8px 24px rgba(209, 154, 93, 0.35);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
       }
 
-      .debug-grid {
-        display: grid;
-        gap: var(--space-3);
+      .btn.secondary {
+        background: transparent;
+        color: var(--ink-dark);
+        border: 1px solid rgba(0, 0, 0, 0.18);
+        box-shadow: none;
       }
 
-      .table {
-        width: 100%;
-        border-collapse: collapse;
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--ink);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: none;
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+      }
+
+      .icon {
+        width: 18px;
+        height: 18px;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .progress-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         font-size: 13px;
-      }
-
-      .table th,
-      .table td {
-        padding: 6px 8px;
-        border-bottom: 1px solid var(--line);
-        text-align: left;
-      }
-
-      .warning {
-        background: #fff0e8;
-        border: 1px solid #f3c8b6;
-        color: #7b2d16;
-        padding: var(--space-2);
-        border-radius: 10px;
-        font-size: 13px;
+        color: var(--muted);
       }
 
       .result-header {
         display: grid;
         gap: var(--space-2);
-        margin-bottom: var(--space-3);
+        margin-bottom: var(--space-4);
+      }
+
+      .result-title {
+        font-family: var(--font-display);
+        font-size: 28px;
+        margin: 0;
+        color: var(--ink-dark);
       }
 
       .result-actions {
         display: flex;
         flex-wrap: wrap;
         gap: var(--space-2);
-        align-items: center;
       }
 
       .result-grid {
@@ -293,10 +375,10 @@
       }
 
       .result-card {
-        border: 1px solid var(--line);
-        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: var(--radius-md);
         padding: var(--space-3);
-        background: #fdf8f1;
+        background: #fff;
         display: grid;
         gap: var(--space-2);
       }
@@ -308,6 +390,10 @@
         gap: var(--space-2);
       }
 
+      .result-card-title {
+        font-weight: 600;
+      }
+
       .result-card-actions {
         display: flex;
         gap: var(--space-1);
@@ -316,39 +402,57 @@
         justify-content: flex-end;
       }
 
-      .result-card-title {
+      .safety-summary {
+        display: grid;
+        gap: var(--space-3);
+      }
+
+      .safety-summary-head {
+        display: flex;
+        gap: var(--space-2);
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .safety-group {
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 12px 14px;
+        background: #fff;
+      }
+
+      .safety-group-title {
         font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .safety-list {
+        margin: 0;
+        padding-left: 18px;
       }
 
       .badge {
-        background: #e8f0f4;
-        color: #2b5b75;
+        background: rgba(209, 154, 93, 0.2);
+        color: #7b4d1a;
         border-radius: 999px;
         padding: 2px 10px;
         font-size: 12px;
       }
 
       .edit-btn {
-        padding: 6px 10px;
+        padding: 6px 12px;
         font-size: 12px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
       }
 
-      .edit-icon {
-        width: 14px;
-        height: 14px;
-        display: inline-block;
-      }
-
-      .scale {
+      .scale,
+      .intensity {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
         gap: 6px;
       }
 
-      .scale-step {
+      .scale-step,
+      .intensity-step {
         height: 8px;
         border-radius: 999px;
         background: #eadfce;
@@ -358,27 +462,15 @@
         background: var(--accent);
       }
 
+      .intensity-step.active {
+        background: var(--accent-2);
+      }
+
       .scale-labels {
         display: flex;
         justify-content: space-between;
         font-size: 12px;
-        color: var(--muted);
-      }
-
-      .intensity {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 6px;
-      }
-
-      .intensity-step {
-        height: 8px;
-        border-radius: 999px;
-        background: #eadfce;
-      }
-
-      .intensity-step.active {
-        background: var(--accent-2);
+        color: var(--muted-dark);
       }
 
       .mode-list {
@@ -391,41 +483,79 @@
         justify-content: space-between;
         align-items: center;
         padding: var(--space-2);
-        border-radius: 10px;
-        background: #fdf8f1;
-        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
       }
 
-      @media (max-width: 960px) {
-        main {
-          grid-template-columns: 1fr;
+      .debug-panel {
+        max-width: 980px;
+        margin: var(--space-4) auto 0;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius-md);
+        padding: var(--space-3);
+        color: var(--ink);
+      }
+
+      body[data-debug="off"] #debugPanel {
+        display: none;
+      }
+
+      .warning {
+        background: rgba(255, 239, 232, 0.1);
+        border: 1px solid rgba(243, 200, 182, 0.4);
+        color: #ffe6d7;
+        padding: var(--space-2);
+        border-radius: 10px;
+        font-size: 13px;
+      }
+
+      .row {
+        display: flex;
+        gap: var(--space-2);
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .pill {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--ink);
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      .table th,
+      .table td {
+        padding: 6px 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        text-align: left;
+      }
+
+      @media (max-width: 720px) {
+        .app-root {
+          padding: var(--space-5) var(--space-3) var(--space-6);
         }
-        .topbar {
-          padding: var(--space-3);
+        .question-title {
+          font-size: 22px;
+        }
+        .card {
+          padding: var(--space-4);
         }
       }
     </style>
   </head>
   <body>
-    <header>
-      <div class="topbar">
-        <div class="brand">Adaptive Quiz Prototype</div>
-        <div class="controls">
-          <button id="resetBtn" class="secondary">Reset</button>
-          <button id="exportBtn" class="secondary">Export logs</button>
-          <button id="toggleSafetyBtn" class="secondary">Safety configured: off</button>
-          <button id="continueBtn">Continue answering</button>
-        </div>
-      </div>
-    </header>
     <main>
-      <section class="panel" id="playerPanel">
-        <h2 class="section-title">Player view</h2>
-        <div id="playerRoot"></div>
-      </section>
-      <aside class="panel" id="debugPanel">
-        <h2 class="section-title">Debug panel</h2>
-        <div id="debugRoot" class="debug-grid"></div>
+      <div id="playerRoot" class="app-root"></div>
+      <aside class="debug-panel" id="debugPanel">
+        <div id="debugRoot"></div>
       </aside>
     </main>
     <script type="module" src="./src/main.js"></script>

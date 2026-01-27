@@ -1,86 +1,115 @@
+const ICONS = {
+  share: "../share_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+  info: "../info_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+  arrow: "../arrow_forward_ios_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+};
+
 export function renderPlayer(root, view, handlers) {
   root.innerHTML = "";
 
+  const screen = document.createElement("div");
+  screen.className = "screen";
+  screen.appendChild(renderTop(view));
+
   if (view.status === "loading") {
-    root.appendChild(makeParagraph("Loading bundle..."));
+    screen.appendChild(renderCard("Загружаем вопросы", "Секунду, сейчас всё подготовим."));
+    root.appendChild(screen);
     return;
   }
 
   if (view.status === "error") {
-    root.appendChild(makeParagraph(view.message));
+    screen.appendChild(renderCard("Возникла ошибка", view.message));
+    root.appendChild(screen);
+    return;
+  }
+
+  if (view.phase === "welcome") {
+    const intro = renderCard(
+      "Поможем найти твоё приключение",
+      "Не нужно ничего знать заранее. Можно отвечать интуитивно — мы подстроимся."
+    );
+    const actions = document.createElement("div");
+    actions.className = "actions";
+    const startBtn = makeButton("Начать исследование", "btn", ICONS.arrow);
+    startBtn.addEventListener("click", () => handlers.onStart?.());
+    actions.appendChild(startBtn);
+    intro.appendChild(actions);
+    screen.appendChild(intro);
+    screen.appendChild(renderHint("Нет неправильного ответа. Если сложно — это нормально."));
+    root.appendChild(screen);
     return;
   }
 
   if (view.phase === "result") {
-    root.appendChild(renderResultScreen(view, handlers));
+    screen.appendChild(renderResultScreen(view, handlers));
+    root.appendChild(screen);
     return;
   }
 
   if (view.phase === "propose_result") {
     const forced = view.stopInfo?.reasons?.includes("max_questions_forced");
-    root.appendChild(makeTitle("Можно перейти к результату"));
-    root.appendChild(
-      makeParagraph(
-        forced
-          ? "Спасибо, что отвечаешь на так много вопросов. Ты уже можешь посмотреть результат, но мы пока не уверены в нём."
-          : "Уже достаточно данных. Можно посмотреть результат или продолжить отвечать."
-      )
-    );
-    root.appendChild(
-      makeParagraph(
-        "Ты всегда сможешь вернуться к опросу из результата и наоборот."
-      )
-    );
+    const text = forced
+      ? "Спасибо, что отвечаешь так внимательно. Мы уже можем показать результат, но он пока не уверен."
+      : "Кажется, у нас уже достаточно данных. Можно посмотреть результат или продолжить.";
+    const card = renderCard("Можно перейти к результату", text);
     const actions = document.createElement("div");
-    actions.className = "result-actions";
-    const showBtn = document.createElement("button");
-    showBtn.textContent = "Показать результат";
+    actions.className = "actions";
+    const showBtn = makeButton("Показать результат", "btn", ICONS.arrow);
     showBtn.addEventListener("click", () => handlers.onShowResult?.());
-    const contBtn = document.createElement("button");
-    contBtn.className = "secondary";
-    contBtn.textContent = "Хочу ещё поотвечать на вопросы";
+    const contBtn = makeButton("Хочу ещё поотвечать", "btn secondary");
     contBtn.addEventListener("click", () => handlers.onContinue?.());
     actions.appendChild(showBtn);
     actions.appendChild(contBtn);
-    root.appendChild(actions);
+    card.appendChild(actions);
+    screen.appendChild(card);
+    screen.appendChild(renderHint("Ты всегда можешь вернуться к вопросам из результата."));
+    root.appendChild(screen);
     return;
   }
 
   const q = view.question;
   if (!q) {
-    root.appendChild(makeTitle("Вопросы закончились"));
-    root.appendChild(
-      makeParagraph(
-        "Вопросы закончились. Можете перейти к результату или начать заново."
-      )
-    );
+    const card = renderCard("Вопросы закончились", "Можно перейти к результату или начать сначала.");
     const actions = document.createElement("div");
-    actions.className = "result-actions";
-    const showBtn = document.createElement("button");
-    showBtn.textContent = "Перейти к результату";
+    actions.className = "actions";
+    const showBtn = makeButton("Перейти к результату", "btn", ICONS.arrow);
     showBtn.addEventListener("click", () => handlers.onShowResult?.({ force: true }));
-    const resetBtn = document.createElement("button");
-    resetBtn.className = "secondary";
-    resetBtn.textContent = "Начать заново";
+    const resetBtn = makeButton("Начать заново", "btn secondary");
     resetBtn.addEventListener("click", () => handlers.onReset?.());
     actions.appendChild(showBtn);
     actions.appendChild(resetBtn);
-    root.appendChild(actions);
+    card.appendChild(actions);
+    screen.appendChild(card);
+    root.appendChild(screen);
     return;
   }
 
-  const qHeader = document.createElement("div");
-  qHeader.className = "question-header";
-  const title = makeTitle(q.prompt ?? "Question");
-  qHeader.appendChild(title);
+  const isDilemma = q.tags?.includes("dilemma");
+  const questionCard = document.createElement("div");
+  questionCard.className = `card${view.isFollowup ? " soft" : ""}`;
+  if (isDilemma) {
+    questionCard.classList.add("dilemma");
+  }
+  if (view.isFollowup) {
+    const tag = document.createElement("div");
+    tag.className = "card-tag";
+    tag.textContent = "Хочу уточнить";
+    questionCard.appendChild(tag);
+  }
+  const title = document.createElement("h2");
+  title.className = "question-title";
+  title.textContent = q.prompt ?? "Вопрос";
+  questionCard.appendChild(title);
   if (q.help) {
+    const helper = document.createElement("div");
+    helper.className = "question-help";
     const helpIcon = document.createElement("button");
     helpIcon.className = "help-icon";
     helpIcon.type = "button";
     helpIcon.setAttribute("aria-label", "Пояснение к вопросу");
     helpIcon.setAttribute("aria-expanded", "false");
     helpIcon.setAttribute("data-tooltip", q.help);
-    helpIcon.textContent = "?";
+    helpIcon.appendChild(makeIcon(ICONS.info, ""));
     helpIcon.addEventListener("click", (event) => {
       event.stopPropagation();
       const isOpen = helpIcon.classList.toggle("is-open");
@@ -90,21 +119,27 @@ export function renderPlayer(root, view, handlers) {
       helpIcon.classList.remove("is-open");
       helpIcon.setAttribute("aria-expanded", "false");
     });
-    qHeader.appendChild(helpIcon);
+    helper.appendChild(helpIcon);
+    const helperText = document.createElement("span");
+    helperText.textContent = "Пояснение к вопросу";
+    helper.appendChild(helperText);
+    questionCard.appendChild(helper);
   }
   if (view.proposeSeen) {
-    const showBtn = document.createElement("button");
-    showBtn.className = "secondary";
-    showBtn.textContent = "Перейти к результату";
+    const showBtn = makeButton(
+      "Перейти к результату",
+      isDilemma ? "btn ghost" : "btn secondary"
+    );
     showBtn.addEventListener("click", () => handlers.onShowResult?.());
-    qHeader.appendChild(showBtn);
+    questionCard.appendChild(showBtn);
   }
-  root.appendChild(qHeader);
   if (view.veilApplied) {
-    const note = makeParagraph("Вопрос адаптирован с учётом границ.");
-    note.className = "muted safety-note";
-    root.appendChild(note);
+    const note = document.createElement("p");
+    note.className = "hint";
+    note.textContent = "Вопрос адаптирован с учётом границ.";
+    questionCard.appendChild(note);
   }
+  screen.appendChild(questionCard);
 
   if (q.type === "choice") {
     const opts = document.createElement("div");
@@ -118,44 +153,100 @@ export function renderPlayer(root, view, handlers) {
       opts.appendChild(btn);
     }
 
-    root.appendChild(opts);
+    const actionCard = document.createElement("div");
+    actionCard.className = "card soft";
+    actionCard.appendChild(opts);
+    screen.appendChild(actionCard);
+    screen.appendChild(renderHint("Можно выбирать интуитивно. Если не уверены — это нормально."));
+    root.appendChild(screen);
     return;
   }
 
   if (q.type === "safety") {
+    const isTriState = (q.tags ?? []).includes("safety_lines_veils");
     const wrapper = document.createElement("div");
     wrapper.className = "options";
 
-    const selections = new Set();
-
-    for (const o of q.options ?? []) {
-      const label = document.createElement("label");
-      label.className = "option-checkbox";
-      const input = document.createElement("input");
-      input.type = "checkbox";
-      input.value = o.id;
-      input.addEventListener("change", () => {
-        if (input.checked) selections.add(o.id);
-        else selections.delete(o.id);
-      });
-      const text = document.createElement("span");
-      text.textContent = o.label ?? o.id;
-      label.appendChild(input);
-      label.appendChild(text);
-      wrapper.appendChild(label);
+    if (isTriState) {
+      const selections = new Map();
+      for (const o of q.options ?? []) {
+        selections.set(o.id, "ok");
+        const row = document.createElement("div");
+        row.className = "safety-row";
+        const label = document.createElement("div");
+        label.className = "safety-label";
+        label.textContent = o.label ?? o.id;
+        const choices = document.createElement("div");
+        choices.className = "safety-choices";
+        const variants = [
+          { value: "ok", label: "Ок" },
+          { value: "veil", label: "Вуаль" },
+          { value: "line", label: "Линия" },
+        ];
+        for (const v of variants) {
+          const item = document.createElement("label");
+          item.className = "safety-choice";
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = `safety_${q.id}_${o.id}`;
+          input.value = v.value;
+          input.checked = v.value === "ok";
+          input.addEventListener("change", () => {
+            if (input.checked) selections.set(o.id, v.value);
+          });
+          const text = document.createElement("span");
+          text.textContent = v.label;
+          item.appendChild(input);
+          item.appendChild(text);
+          choices.appendChild(item);
+        }
+        row.appendChild(label);
+        row.appendChild(choices);
+        wrapper.appendChild(row);
+      }
+      const submit = makeButton("Продолжить", "btn", ICONS.arrow);
+      submit.addEventListener("click", () =>
+        handlers.onAnswer({
+          qid: q.id,
+          type: q.type,
+          selections: Object.fromEntries(selections),
+        })
+      );
+      wrapper.appendChild(submit);
+    } else {
+      const selections = new Set();
+      for (const o of q.options ?? []) {
+        const label = document.createElement("label");
+        label.className = "option-checkbox";
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.value = o.id;
+        input.addEventListener("change", () => {
+          if (input.checked) selections.add(o.id);
+          else selections.delete(o.id);
+        });
+        const text = document.createElement("span");
+        text.textContent = o.label ?? o.id;
+        label.appendChild(input);
+        label.appendChild(text);
+        wrapper.appendChild(label);
+      }
+      const submit = makeButton("Продолжить", "btn", ICONS.arrow);
+      submit.addEventListener("click", () =>
+        handlers.onAnswer({
+          qid: q.id,
+          type: q.type,
+          selections: Array.from(selections),
+        })
+      );
+      wrapper.appendChild(submit);
     }
-
-    const submit = document.createElement("button");
-    submit.textContent = "Продолжить";
-    submit.addEventListener("click", () =>
-      handlers.onAnswer({
-        qid: q.id,
-        type: q.type,
-        selections: Array.from(selections),
-      })
-    );
-    wrapper.appendChild(submit);
-    root.appendChild(wrapper);
+    const actionCard = document.createElement("div");
+    actionCard.className = "card soft";
+    actionCard.appendChild(wrapper);
+    screen.appendChild(actionCard);
+    screen.appendChild(renderHint("Границы можно изменить позже."));
+    root.appendChild(screen);
     return;
   }
 
@@ -171,11 +262,10 @@ export function renderPlayer(root, view, handlers) {
     input.value = q.slider?.default ?? input.min;
 
     const labels = document.createElement("div");
-    labels.className = "row muted";
-    labels.textContent = `${q.slider?.min_label ?? "Low"} — ${q.slider?.max_label ?? "High"}`;
+    labels.className = "slider-labels";
+    labels.textContent = `${q.slider?.min_label ?? "Минимум"} — ${q.slider?.max_label ?? "Максимум"}`;
 
-    const submit = document.createElement("button");
-    submit.textContent = "Submit";
+    const submit = makeButton("Продолжить", "btn", ICONS.arrow);
     submit.addEventListener("click", () =>
       handlers.onAnswer({
         qid: q.id,
@@ -187,26 +277,106 @@ export function renderPlayer(root, view, handlers) {
     wrapper.appendChild(labels);
     wrapper.appendChild(input);
     wrapper.appendChild(submit);
-    root.appendChild(wrapper);
+    const actionCard = document.createElement("div");
+    actionCard.className = "card soft";
+    actionCard.appendChild(wrapper);
+    screen.appendChild(actionCard);
+    screen.appendChild(renderHint("Это помогает настроить профиль точнее."));
   }
+
+  root.appendChild(screen);
+}
+
+function renderTop(view) {
+  const top = document.createElement("div");
+  top.className = "screen-top";
+  const left = document.createElement("div");
+  const brand = document.createElement("h1");
+  brand.className = "brand";
+  brand.textContent = "Адаптивный опросник";
+  const tagline = document.createElement("p");
+  tagline.className = "tagline";
+  tagline.textContent = "Диалог, который помогает понять себя.";
+  left.appendChild(brand);
+  left.appendChild(tagline);
+  const stage = document.createElement("div");
+  stage.className = "stage-pill";
+  stage.textContent = getProgressStage(view);
+  top.appendChild(left);
+  top.appendChild(stage);
+  return top;
+}
+
+function renderCard(titleText, bodyText) {
+  const card = document.createElement("div");
+  card.className = "card";
+  const title = document.createElement("h2");
+  title.className = "question-title";
+  title.textContent = titleText;
+  const body = document.createElement("p");
+  body.className = "hint";
+  body.textContent = bodyText;
+  card.appendChild(title);
+  card.appendChild(body);
+  return card;
+}
+
+function renderHint(text) {
+  const hint = document.createElement("p");
+  hint.className = "hint";
+  hint.textContent = text;
+  return hint;
+}
+
+function makeButton(label, className, iconSrc) {
+  const btn = document.createElement("button");
+  btn.className = className;
+  btn.type = "button";
+  if (iconSrc) {
+    btn.appendChild(makeIcon(iconSrc, ""));
+  }
+  btn.appendChild(document.createTextNode(label));
+  return btn;
+}
+
+function makeIcon(src, alt) {
+  const icon = document.createElement("img");
+  icon.className = "icon";
+  icon.src = src;
+  icon.alt = alt;
+  if (!alt) icon.setAttribute("aria-hidden", "true");
+  return icon;
+}
+
+function getProgressStage(view) {
+  if (view.status === "loading") return "Подготовка";
+  if (view.phase === "welcome") return "Начинаем";
+  if (view.phase === "result") return "Результат";
+  if (view.phase === "propose_result") return "Почти готово";
+  const asked = view.state?.asked?.length ?? 0;
+  if (asked <= 2) return "Начинаем";
+  if (view.stopInfo?.propose || view.proposeSeen) return "Почти готово";
+  return "Углубляемся";
 }
 
 function renderResultScreen(view, handlers) {
   const wrapper = document.createElement("div");
+  wrapper.className = "card";
+
   const header = document.createElement("div");
   header.className = "result-header";
 
-  const title = document.createElement("h3");
-  title.className = "question-title";
+  const title = document.createElement("h2");
+  title.className = "result-title";
   title.textContent = "Профиль ожиданий";
 
   const subtitle = document.createElement("p");
-  subtitle.className = "muted";
+  subtitle.className = "hint";
   subtitle.textContent = "Не тип, а карта предпочтений.";
 
   if (view.state?.focus) {
     const focusNote = document.createElement("p");
-    focusNote.className = "muted";
+    focusNote.className = "hint";
     let focusLabel = view.state.focus.id;
     if (view.state.focus.type === "axis") {
       focusLabel = view.bundle?.axesById?.[view.state.focus.id]?.title ?? focusLabel;
@@ -221,12 +391,9 @@ function renderResultScreen(view, handlers) {
 
   const actions = document.createElement("div");
   actions.className = "result-actions";
-  const shareBtn = document.createElement("button");
-  shareBtn.textContent = "Поделиться";
+  const shareBtn = makeButton("Поделиться", "btn", ICONS.share);
   shareBtn.addEventListener("click", () => handlers.onShare?.());
-  const continueBtn = document.createElement("button");
-  continueBtn.className = "secondary";
-  continueBtn.textContent = "Хочу ещё поотвечать на вопросы";
+  const continueBtn = makeButton("Хочу ещё поотвечать", "btn secondary");
   continueBtn.addEventListener("click", () => handlers.onContinue?.());
   actions.appendChild(shareBtn);
   actions.appendChild(continueBtn);
@@ -244,6 +411,9 @@ function renderResultScreen(view, handlers) {
     )
   );
   wrapper.appendChild(makeSection("Модули интереса", renderModuleList(resultView.modules, handlers)));
+  if (resultView.safety) {
+    wrapper.appendChild(makeSection("Границы контента", renderSafetySummary(resultView.safety, handlers)));
+  }
   wrapper.appendChild(makeSection("Формат игры", renderModeList(resultView.modes, handlers)));
   return wrapper;
 }
@@ -255,6 +425,22 @@ function buildResultView(view) {
   const stateAxes = view.state?.axes ?? {};
   const stateModules = view.state?.modules ?? {};
   const stateModes = view.state?.modes ?? {};
+  const safetyState = view.state?.safety ?? {};
+  const safetyQuestion = (view.bundle?.questions ?? []).find(
+    (q) => q.type === "safety" && (q.tags ?? []).includes("safety_lines_veils")
+  );
+  const safetyOptions = safetyQuestion?.options ?? [];
+  const safetyLines = new Set(safetyState.lines ?? []);
+  const safetyVeils = new Set(safetyState.veils ?? []);
+  const safety = safetyOptions.length
+    ? {
+        lines: safetyOptions.filter((o) => safetyLines.has(o.id)).map((o) => o.label ?? o.id),
+        veils: safetyOptions.filter((o) => safetyVeils.has(o.id)).map((o) => o.label ?? o.id),
+        ok: safetyOptions
+          .filter((o) => !safetyLines.has(o.id) && !safetyVeils.has(o.id))
+          .map((o) => o.label ?? o.id),
+      }
+    : null;
 
   const axes = bundleAxes.map((axis) => {
     const state = stateAxes[axis.id] ?? {};
@@ -306,7 +492,7 @@ function buildResultView(view) {
     };
   });
 
-  return { axes, modules, modes };
+  return { axes, modules, modes, safety };
 }
 
 function bucketValue(score, scale) {
@@ -348,6 +534,52 @@ function modeLabel(mode, value) {
   return String(value);
 }
 
+function renderSafetySummary(safety, handlers) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "safety-summary";
+
+  const head = document.createElement("div");
+  head.className = "safety-summary-head";
+  const hint = document.createElement("p");
+  hint.className = "hint";
+  hint.textContent = "Линии исключаются полностью, вуали остаются за кадром.";
+  const editBtn = makeButton("Редактировать", "btn secondary edit-btn", ICONS.arrow);
+  editBtn.addEventListener("click", () => handlers.onEditSafety?.());
+  head.appendChild(hint);
+  head.appendChild(editBtn);
+  wrapper.appendChild(head);
+
+  wrapper.appendChild(renderSafetyGroup("Запрещено (линии)", safety.lines));
+  wrapper.appendChild(renderSafetyGroup("За кадром (вуали)", safety.veils));
+  wrapper.appendChild(renderSafetyGroup("Ок в игре", safety.ok));
+  return wrapper;
+}
+
+function renderSafetyGroup(title, items) {
+  const group = document.createElement("div");
+  group.className = "safety-group";
+  const h = document.createElement("div");
+  h.className = "safety-group-title";
+  h.textContent = title;
+  const list = document.createElement("ul");
+  list.className = "safety-list";
+  if (!items?.length) {
+    const empty = document.createElement("li");
+    empty.className = "muted";
+    empty.textContent = "—";
+    list.appendChild(empty);
+  } else {
+    for (const item of items) {
+      const li = document.createElement("li");
+      li.textContent = item;
+      list.appendChild(li);
+    }
+  }
+  group.appendChild(h);
+  group.appendChild(list);
+  return group;
+}
+
 function renderAxisList(axes, handlers) {
   const wrapper = document.createElement("div");
   wrapper.className = "result-grid";
@@ -366,16 +598,7 @@ function renderAxisList(axes, handlers) {
     badge.className = "badge";
     const confPct = Number.isFinite(axis.confidence) ? Math.round(axis.confidence * 100) : null;
     badge.textContent = confPct == null ? axis.confidenceLabel : `${axis.confidenceLabel} · ${confPct}%`;
-    const editBtn = document.createElement("button");
-    editBtn.className = "secondary edit-btn";
-    editBtn.type = "button";
-    const icon = document.createElement("img");
-    icon.className = "edit-icon";
-    icon.alt = "";
-    icon.src = "./assets/edit_36dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.svg";
-    icon.setAttribute("aria-hidden", "true");
-    editBtn.appendChild(icon);
-    editBtn.appendChild(document.createTextNode("Уточнить"));
+    const editBtn = makeButton("Уточнить", "btn secondary edit-btn", ICONS.arrow);
     editBtn.addEventListener("click", () => handlers.onEditAxis?.(axis.id));
     headActions.appendChild(badge);
     headActions.appendChild(editBtn);
@@ -434,16 +657,7 @@ function renderModuleList(modules, handlers) {
     badge.textContent = confPct == null ? mod.confidenceLabel : `${mod.confidenceLabel} · ${confPct}%`;
     headActions.appendChild(badge);
     if (mod.canEdit) {
-      const editBtn = document.createElement("button");
-      editBtn.className = "secondary edit-btn";
-      editBtn.type = "button";
-      const icon = document.createElement("img");
-      icon.className = "edit-icon";
-      icon.alt = "";
-      icon.src = "./assets/edit_36dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.svg";
-      icon.setAttribute("aria-hidden", "true");
-      editBtn.appendChild(icon);
-      editBtn.appendChild(document.createTextNode("Уточнить"));
+      const editBtn = makeButton("Уточнить", "btn secondary edit-btn", ICONS.arrow);
       editBtn.addEventListener("click", () => handlers.onEditModule?.(mod.id));
       headActions.appendChild(editBtn);
     }
@@ -489,16 +703,7 @@ function renderModeList(modes, handlers) {
     value.textContent = mode.label;
     actions.appendChild(value);
     if (mode.canEdit) {
-      const editBtn = document.createElement("button");
-      editBtn.className = "secondary edit-btn";
-      editBtn.type = "button";
-      const icon = document.createElement("img");
-      icon.className = "edit-icon";
-      icon.alt = "";
-      icon.src = "./assets/edit_36dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.svg";
-      icon.setAttribute("aria-hidden", "true");
-      editBtn.appendChild(icon);
-      editBtn.appendChild(document.createTextNode("Уточнить"));
+      const editBtn = makeButton("Уточнить", "btn secondary edit-btn", ICONS.arrow);
       editBtn.addEventListener("click", () => handlers.onEditMode?.(mode.id));
       actions.appendChild(editBtn);
     }
@@ -507,8 +712,8 @@ function renderModeList(modes, handlers) {
     wrapper.appendChild(row);
   }
   const hint = document.createElement("p");
-  hint.className = "muted";
-  hint.textContent = "Изменить настройки формата (скоро).";
+  hint.className = "hint";
+  hint.textContent = "Если нужно — можно уточнить формат позже.";
   wrapper.appendChild(hint);
   return wrapper;
 }

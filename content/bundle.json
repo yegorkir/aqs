@@ -2941,133 +2941,264 @@
       ]
     },
     {
-      "id": "q_safety_lines",
+      "id": "q_safety_content",
       "type": "safety",
-      "title": "Границы контента: линии",
-      "prompt": "Выбери темы, которые ты не хочешь видеть в игре вообще.",
-      "help": "Линии: тема полностью исключается из игры. Можно оставить список пустым.",
+      "title": "Границы контента",
+      "prompt": "Для каждой темы выбери: ок в игре, ок но за кадром (вуаль), или не ок (линия).",
+      "help": "Линия — полностью исключаем тему. Вуаль — можно упоминать, но без подробностей и сцен.",
       "tags": [
         "safety",
-        "safety_lines"
+        "safety_lines_veils"
       ],
       "content_tags": [],
       "complexity": 2,
       "fatigue_cost": 2,
       "options": [
-        { "id": "romance", "label": "Романтика (в целом)", "effects": {} },
-        { "id": "romance_pc_pc", "label": "Романтика PC↔PC", "effects": {} },
-        { "id": "intimacy", "label": "Интимные сцены / секс", "effects": {} },
-        { "id": "sexual_violence", "label": "Сексуализированное насилие", "effects": {} },
-        { "id": "coercion_sex", "label": "Принуждение к сексу (даже без деталей)", "effects": {} },
-        { "id": "bdsm", "label": "Секс с насилием / BDSM", "effects": {} },
-        { "id": "explicit_gore", "label": "Подробное насилие/кровь", "effects": {} },
-        { "id": "dismemberment", "label": "Расчленение", "effects": {} },
-        { "id": "body_horror", "label": "Body horror / гнетущая телесность", "effects": {} },
-        { "id": "forced_body_change", "label": "Невольное изменение тела / потеря частей тела", "effects": {} },
-        { "id": "torture", "label": "Пытки", "effects": {} },
-        { "id": "domestic_violence", "label": "Домашнее насилие", "effects": {} },
-        { "id": "bullying", "label": "Издевательства, буллинг", "effects": {} },
-        { "id": "animal_cruelty", "label": "Жестокость к животным", "effects": {} },
-        { "id": "pet_death", "label": "Жестокость к NPC-животным-компаньонам", "effects": {} },
-        { "id": "elder_abuse", "label": "Престарелые в роли жертв насилия", "effects": {} },
-        { "id": "cannibalism", "label": "Каннибализм", "effects": {} },
-        { "id": "self_harm", "label": "Самоповреждение", "effects": {} },
-        { "id": "suicide", "label": "Самоубийство", "effects": {} },
-        { "id": "suicidal_ideation", "label": "Суицидальные мысли/состояния", "effects": {} },
-        { "id": "child_harm", "label": "Насилие над детьми", "effects": {} },
-        { "id": "child_death", "label": "Жестокая смерть детей", "effects": {} },
-        { "id": "slavery", "label": "Рабство / торговля людьми", "effects": {} },
-        { "id": "forced_kill_innocent", "label": "Вынужденное убийство невиновных", "effects": {} },
-        { "id": "death_close_npcs", "label": "Смерть близких NPC", "effects": {} },
-        { "id": "pc_death", "label": "Смерть персонажа игрока", "effects": {} },
-        { "id": "monster_suffering", "label": "Мучения монстров", "effects": {} },
-        { "id": "racism", "label": "Расизм", "effects": {} },
-        { "id": "sexism", "label": "Сексизм", "effects": {} },
-        { "id": "homophobia", "label": "Гомофобия", "effects": {} },
-        { "id": "religious_hate", "label": "Религиозная ненависть / травля", "effects": {} },
-        { "id": "forced_conversion", "label": "Насильственное обращение в веру / культ", "effects": {} },
-        { "id": "religious_themes", "label": "Религиозные темы", "effects": {} },
-        { "id": "cult_rituals", "label": "Культовые ритуалы / жертвоприношения", "effects": {} },
-        { "id": "historical_tragedy", "label": "Реальные исторические трагедии", "effects": {} },
-        { "id": "alcohol", "label": "Алкоголизм / употребление алкоголя", "effects": {} },
-        { "id": "drugs", "label": "Наркомания / употребление наркотиков", "effects": {} },
-        { "id": "euthanasia", "label": "Эвтаназия", "effects": {} },
-        { "id": "abortion", "label": "Аборт / насильственное вмешательство в репродукцию", "effects": {} },
-        { "id": "pregnancy_childbirth", "label": "Беременность / роды", "effects": {} },
-        { "id": "childbirth_explicit", "label": "Эксплицитные сцены родов", "effects": {} },
-        { "id": "mental_illness", "label": "Ментальные расстройства / психические болезни", "effects": {} },
-        { "id": "psychiatric_institutions", "label": "Психиатрические учреждения", "effects": {} },
-        { "id": "panic_attacks", "label": "Панические атаки, тревога, депрессия", "effects": {} },
-        { "id": "gaslighting", "label": "Психологическое насилие / газлайтинг", "effects": {} },
-        { "id": "dehumanization", "label": "Превращение в монстра / дегуманизация", "effects": {} },
-        { "id": "animal_death", "label": "Смерть животных", "effects": {} },
-        { "id": "spiders", "label": "Пауки (фобия)", "effects": {} },
-        { "id": "claustrophobia", "label": "Клаустрофобия", "effects": {} }
-      ]
-    },
-    {
-      "id": "q_safety_veils",
-      "type": "safety",
-      "title": "Границы контента: вуали",
-      "prompt": "Выбери темы, которые могут быть в мире, но должны оставаться за кадром.",
-      "help": "Вуали: тему можно упоминать, но без подробностей и сцен. Можно оставить список пустым.",
-      "tags": [
-        "safety",
-        "safety_veils"
-      ],
-      "content_tags": [],
-      "complexity": 2,
-      "fatigue_cost": 2,
-      "options": [
-        { "id": "romance", "label": "Романтика (в целом)", "effects": {} },
-        { "id": "romance_pc_pc", "label": "Романтика PC↔PC", "effects": {} },
-        { "id": "intimacy", "label": "Интимные сцены / секс", "effects": {} },
-        { "id": "sexual_violence", "label": "Сексуализированное насилие", "effects": {} },
-        { "id": "coercion_sex", "label": "Принуждение к сексу (даже без деталей)", "effects": {} },
-        { "id": "bdsm", "label": "Секс с насилием / BDSM", "effects": {} },
-        { "id": "explicit_gore", "label": "Подробное насилие/кровь", "effects": {} },
-        { "id": "dismemberment", "label": "Расчленение", "effects": {} },
-        { "id": "body_horror", "label": "Body horror / гнетущая телесность", "effects": {} },
-        { "id": "forced_body_change", "label": "Невольное изменение тела / потеря частей тела", "effects": {} },
-        { "id": "torture", "label": "Пытки", "effects": {} },
-        { "id": "domestic_violence", "label": "Домашнее насилие", "effects": {} },
-        { "id": "bullying", "label": "Издевательства, буллинг", "effects": {} },
-        { "id": "animal_cruelty", "label": "Жестокость к животным", "effects": {} },
-        { "id": "pet_death", "label": "Жестокость к NPC-животным-компаньонам", "effects": {} },
-        { "id": "elder_abuse", "label": "Престарелые в роли жертв насилия", "effects": {} },
-        { "id": "cannibalism", "label": "Каннибализм", "effects": {} },
-        { "id": "self_harm", "label": "Самоповреждение", "effects": {} },
-        { "id": "suicide", "label": "Самоубийство", "effects": {} },
-        { "id": "suicidal_ideation", "label": "Суицидальные мысли/состояния", "effects": {} },
-        { "id": "child_harm", "label": "Насилие над детьми", "effects": {} },
-        { "id": "child_death", "label": "Жестокая смерть детей", "effects": {} },
-        { "id": "slavery", "label": "Рабство / торговля людьми", "effects": {} },
-        { "id": "forced_kill_innocent", "label": "Вынужденное убийство невиновных", "effects": {} },
-        { "id": "death_close_npcs", "label": "Смерть близких NPC", "effects": {} },
-        { "id": "pc_death", "label": "Смерть персонажа игрока", "effects": {} },
-        { "id": "monster_suffering", "label": "Мучения монстров", "effects": {} },
-        { "id": "racism", "label": "Расизм", "effects": {} },
-        { "id": "sexism", "label": "Сексизм", "effects": {} },
-        { "id": "homophobia", "label": "Гомофобия", "effects": {} },
-        { "id": "religious_hate", "label": "Религиозная ненависть / травля", "effects": {} },
-        { "id": "forced_conversion", "label": "Насильственное обращение в веру / культ", "effects": {} },
-        { "id": "religious_themes", "label": "Религиозные темы", "effects": {} },
-        { "id": "cult_rituals", "label": "Культовые ритуалы / жертвоприношения", "effects": {} },
-        { "id": "historical_tragedy", "label": "Реальные исторические трагедии", "effects": {} },
-        { "id": "alcohol", "label": "Алкоголизм / употребление алкоголя", "effects": {} },
-        { "id": "drugs", "label": "Наркомания / употребление наркотиков", "effects": {} },
-        { "id": "euthanasia", "label": "Эвтаназия", "effects": {} },
-        { "id": "abortion", "label": "Аборт / насильственное вмешательство в репродукцию", "effects": {} },
-        { "id": "pregnancy_childbirth", "label": "Беременность / роды", "effects": {} },
-        { "id": "childbirth_explicit", "label": "Эксплицитные сцены родов", "effects": {} },
-        { "id": "mental_illness", "label": "Ментальные расстройства / психические болезни", "effects": {} },
-        { "id": "psychiatric_institutions", "label": "Психиатрические учреждения", "effects": {} },
-        { "id": "panic_attacks", "label": "Панические атаки, тревога, депрессия", "effects": {} },
-        { "id": "gaslighting", "label": "Психологическое насилие / газлайтинг", "effects": {} },
-        { "id": "dehumanization", "label": "Превращение в монстра / дегуманизация", "effects": {} },
-        { "id": "animal_death", "label": "Смерть животных", "effects": {} },
-        { "id": "spiders", "label": "Пауки (фобия)", "effects": {} },
-        { "id": "claustrophobia", "label": "Клаустрофобия", "effects": {} }
+        {
+          "id": "romance",
+          "label": "Романтика (в целом)",
+          "effects": {}
+        },
+        {
+          "id": "romance_pc_pc",
+          "label": "Романтика PC↔PC",
+          "effects": {}
+        },
+        {
+          "id": "intimacy",
+          "label": "Интимные сцены / секс",
+          "effects": {}
+        },
+        {
+          "id": "sexual_violence",
+          "label": "Сексуализированное насилие",
+          "effects": {}
+        },
+        {
+          "id": "coercion_sex",
+          "label": "Принуждение к сексу (даже без деталей)",
+          "effects": {}
+        },
+        {
+          "id": "bdsm",
+          "label": "Секс с насилием / BDSM",
+          "effects": {}
+        },
+        {
+          "id": "explicit_gore",
+          "label": "Подробное насилие/кровь",
+          "effects": {}
+        },
+        {
+          "id": "dismemberment",
+          "label": "Расчленение",
+          "effects": {}
+        },
+        {
+          "id": "body_horror",
+          "label": "Body horror / гнетущая телесность",
+          "effects": {}
+        },
+        {
+          "id": "forced_body_change",
+          "label": "Невольное изменение тела / потеря частей тела",
+          "effects": {}
+        },
+        {
+          "id": "torture",
+          "label": "Пытки",
+          "effects": {}
+        },
+        {
+          "id": "domestic_violence",
+          "label": "Домашнее насилие",
+          "effects": {}
+        },
+        {
+          "id": "bullying",
+          "label": "Издевательства, буллинг",
+          "effects": {}
+        },
+        {
+          "id": "animal_cruelty",
+          "label": "Жестокость к животным",
+          "effects": {}
+        },
+        {
+          "id": "pet_death",
+          "label": "Жестокость к NPC-животным-компаньонам",
+          "effects": {}
+        },
+        {
+          "id": "elder_abuse",
+          "label": "Престарелые в роли жертв насилия",
+          "effects": {}
+        },
+        {
+          "id": "cannibalism",
+          "label": "Каннибализм",
+          "effects": {}
+        },
+        {
+          "id": "self_harm",
+          "label": "Самоповреждение",
+          "effects": {}
+        },
+        {
+          "id": "suicide",
+          "label": "Самоубийство",
+          "effects": {}
+        },
+        {
+          "id": "suicidal_ideation",
+          "label": "Суицидальные мысли/состояния",
+          "effects": {}
+        },
+        {
+          "id": "child_harm",
+          "label": "Насилие над детьми",
+          "effects": {}
+        },
+        {
+          "id": "child_death",
+          "label": "Жестокая смерть детей",
+          "effects": {}
+        },
+        {
+          "id": "slavery",
+          "label": "Рабство / торговля людьми",
+          "effects": {}
+        },
+        {
+          "id": "forced_kill_innocent",
+          "label": "Вынужденное убийство невиновных",
+          "effects": {}
+        },
+        {
+          "id": "death_close_npcs",
+          "label": "Смерть близких NPC",
+          "effects": {}
+        },
+        {
+          "id": "pc_death",
+          "label": "Смерть персонажа игрока",
+          "effects": {}
+        },
+        {
+          "id": "monster_suffering",
+          "label": "Мучения монстров",
+          "effects": {}
+        },
+        {
+          "id": "racism",
+          "label": "Расизм",
+          "effects": {}
+        },
+        {
+          "id": "sexism",
+          "label": "Сексизм",
+          "effects": {}
+        },
+        {
+          "id": "homophobia",
+          "label": "Гомофобия",
+          "effects": {}
+        },
+        {
+          "id": "religious_hate",
+          "label": "Религиозная ненависть / травля",
+          "effects": {}
+        },
+        {
+          "id": "forced_conversion",
+          "label": "Насильственное обращение в веру / культ",
+          "effects": {}
+        },
+        {
+          "id": "religious_themes",
+          "label": "Религиозные темы",
+          "effects": {}
+        },
+        {
+          "id": "cult_rituals",
+          "label": "Культовые ритуалы / жертвоприношения",
+          "effects": {}
+        },
+        {
+          "id": "historical_tragedy",
+          "label": "Реальные исторические трагедии",
+          "effects": {}
+        },
+        {
+          "id": "alcohol",
+          "label": "Алкоголизм / употребление алкоголя",
+          "effects": {}
+        },
+        {
+          "id": "drugs",
+          "label": "Наркомания / употребление наркотиков",
+          "effects": {}
+        },
+        {
+          "id": "euthanasia",
+          "label": "Эвтаназия",
+          "effects": {}
+        },
+        {
+          "id": "abortion",
+          "label": "Аборт / насильственное вмешательство в репродукцию",
+          "effects": {}
+        },
+        {
+          "id": "pregnancy_childbirth",
+          "label": "Беременность / роды",
+          "effects": {}
+        },
+        {
+          "id": "childbirth_explicit",
+          "label": "Эксплицитные сцены родов",
+          "effects": {}
+        },
+        {
+          "id": "mental_illness",
+          "label": "Ментальные расстройства / психические болезни",
+          "effects": {}
+        },
+        {
+          "id": "psychiatric_institutions",
+          "label": "Психиатрические учреждения",
+          "effects": {}
+        },
+        {
+          "id": "panic_attacks",
+          "label": "Панические атаки, тревога, депрессия",
+          "effects": {}
+        },
+        {
+          "id": "gaslighting",
+          "label": "Психологическое насилие / газлайтинг",
+          "effects": {}
+        },
+        {
+          "id": "dehumanization",
+          "label": "Превращение в монстра / дегуманизация",
+          "effects": {}
+        },
+        {
+          "id": "animal_death",
+          "label": "Смерть животных",
+          "effects": {}
+        },
+        {
+          "id": "spiders",
+          "label": "Пауки (фобия)",
+          "effects": {}
+        },
+        {
+          "id": "claustrophobia",
+          "label": "Клаустрофобия",
+          "effects": {}
+        }
       ]
     },
     {
@@ -4870,7 +5001,7 @@
             "axis_evidence": {
               "humor": 0.08,
               "resolution": 0.08,
-              "impulse": 0.12
+              "impulse": 0.2
             },
             "set_tags": [
               "scene_mummy"
@@ -5087,7 +5218,7 @@
               "resolution": 1
             },
             "axis_evidence": {
-              "agency": 0.12,
+              "agency": 0.2,
               "resolution": 0.08
             },
             "set_tags": [
@@ -5625,14 +5756,14 @@
               "moral": 1
             },
             "axis_evidence": {
-              "consequence": 0.18,
-              "moral": 0.15
+              "consequence": 0.3,
+              "moral": 0.25
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.15
+              "m_politics": 0.25
             },
             "set_tags": [
               "d_water_fast"
@@ -5650,11 +5781,11 @@
               "structure": 1
             },
             "axis_evidence": {
-              "moral": 0.15,
-              "structure": 0.15
+              "moral": 0.25,
+              "structure": 0.25
             },
             "module_evidence": {
-              "m_politics": 0.15
+              "m_politics": 0.25
             },
             "set_tags": [
               "d_water_fair"
@@ -5672,11 +5803,11 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.15,
-              "consequence": 0.15
+              "structure": 0.25,
+              "consequence": 0.25
             },
             "module_evidence": {
-              "m_politics": 0.12
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_water_mix"
@@ -5694,8 +5825,8 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "impulse": 0.18,
-              "pressure": 0.12
+              "impulse": 0.3,
+              "pressure": 0.2
             },
             "set_tags": [
               "d_water_rush"
@@ -5761,8 +5892,8 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "moral": 0.15,
-              "consequence": 0.15
+              "moral": 0.25,
+              "consequence": 0.25
             },
             "set_tags": [
               "d_grid_equal"
@@ -5781,9 +5912,9 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "moral": 0.15,
-              "consequence": 0.15,
-              "pressure": 0.12
+              "moral": 0.25,
+              "consequence": 0.25,
+              "pressure": 0.2
             },
             "set_tags": [
               "d_grid_priority"
@@ -5801,14 +5932,14 @@
               "moral": 1
             },
             "axis_evidence": {
-              "structure": 0.15,
-              "moral": 0.15
+              "structure": 0.25,
+              "moral": 0.25
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.12
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_grid_local"
@@ -5826,8 +5957,8 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "impulse": 0.18,
-              "pressure": 0.12
+              "impulse": 0.3,
+              "pressure": 0.2
             },
             "set_tags": [
               "d_grid_flash"
@@ -5893,8 +6024,8 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "consequence": 0.15,
-              "pressure": 0.15
+              "consequence": 0.25,
+              "pressure": 0.25
             },
             "set_tags": [
               "d_truth_all"
@@ -5912,11 +6043,11 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.15,
-              "consequence": 0.15
+              "structure": 0.25,
+              "consequence": 0.25
             },
             "module_evidence": {
-              "m_detective": 0.12
+              "m_detective": 0.2
             },
             "set_tags": [
               "d_truth_some"
@@ -5933,7 +6064,7 @@
               "structure": 1
             },
             "axis_evidence": {
-              "structure": 0.18
+              "structure": 0.3
             },
             "set_tags": [
               "d_truth_stage"
@@ -5950,7 +6081,7 @@
               "impulse": 2
             },
             "axis_evidence": {
-              "impulse": 0.18
+              "impulse": 0.3
             },
             "set_tags": [
               "d_truth_prophecy"
@@ -5968,8 +6099,8 @@
               "focus": -1
             },
             "axis_evidence": {
-              "resolution": 0.12,
-              "focus": 0.12
+              "resolution": 0.2,
+              "focus": 0.2
             },
             "set_tags": [
               "d_truth_circle"
@@ -6035,11 +6166,11 @@
               "pressure": -1
             },
             "axis_evidence": {
-              "consequence": 0.15,
-              "pressure": 0.12
+              "consequence": 0.25,
+              "pressure": 0.2
             },
             "module_evidence": {
-              "m_travel": 0.15
+              "m_travel": 0.25
             },
             "set_tags": [
               "d_bridge_close"
@@ -6057,11 +6188,11 @@
               "moral": 1
             },
             "axis_evidence": {
-              "pressure": 0.15,
-              "moral": 0.12
+              "pressure": 0.25,
+              "moral": 0.2
             },
             "module_evidence": {
-              "m_travel": 0.15
+              "m_travel": 0.25
             },
             "set_tags": [
               "d_bridge_open"
@@ -6079,8 +6210,8 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.15,
-              "consequence": 0.15
+              "structure": 0.25,
+              "consequence": 0.25
             },
             "set_tags": [
               "d_bridge_schedule"
@@ -6098,8 +6229,8 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "impulse": 0.18,
-              "pressure": 0.12
+              "impulse": 0.3,
+              "pressure": 0.2
             },
             "set_tags": [
               "d_bridge_repair_now"
@@ -6165,14 +6296,14 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "moral": 0.15,
-              "pressure": 0.15
+              "moral": 0.25,
+              "pressure": 0.25
             },
             "module_delta_levels": {
               "m_downtime": 1
             },
             "module_evidence": {
-              "m_downtime": 0.12
+              "m_downtime": 0.2
             },
             "set_tags": [
               "d_refugees_accept"
@@ -6190,8 +6321,8 @@
               "pressure": -1
             },
             "axis_evidence": {
-              "consequence": 0.15,
-              "pressure": 0.15
+              "consequence": 0.25,
+              "pressure": 0.25
             },
             "set_tags": [
               "d_refugees_refuse"
@@ -6210,15 +6341,15 @@
               "moral": 1
             },
             "axis_evidence": {
-              "structure": 0.15,
-              "consequence": 0.15,
-              "moral": 0.15
+              "structure": 0.25,
+              "consequence": 0.25,
+              "moral": 0.25
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.12
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_refugees_deal"
@@ -6236,8 +6367,8 @@
               "agency": 1
             },
             "axis_evidence": {
-              "focus": 0.12,
-              "agency": 0.12
+              "focus": 0.2,
+              "agency": 0.2
             },
             "set_tags": [
               "d_refugees_meet"
@@ -6303,14 +6434,14 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.15,
-              "consequence": 0.15
+              "structure": 0.25,
+              "consequence": 0.25
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.12
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_market_control"
@@ -6328,11 +6459,11 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "moral": 0.15,
-              "consequence": 0.15
+              "moral": 0.25,
+              "consequence": 0.25
             },
             "module_evidence": {
-              "m_politics": 0.12
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_market_free"
@@ -6351,9 +6482,9 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.15,
-              "moral": 0.15,
-              "consequence": 0.15
+              "structure": 0.25,
+              "moral": 0.25,
+              "consequence": 0.25
             },
             "set_tags": [
               "d_market_hybrid"
@@ -6419,14 +6550,14 @@
               "moral": 1
             },
             "axis_evidence": {
-              "consequence": 0.15,
-              "moral": 0.15
+              "consequence": 0.25,
+              "moral": 0.25
             },
             "module_delta_levels": {
               "m_world_mystery": 1
             },
             "module_evidence": {
-              "m_world_mystery": 0.15
+              "m_world_mystery": 0.25
             },
             "set_tags": [
               "d_invention_publish"
@@ -6444,14 +6575,14 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.15,
-              "consequence": 0.15
+              "structure": 0.25,
+              "consequence": 0.25
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.12
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_invention_guard"
@@ -6468,7 +6599,7 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "consequence": 0.15
+              "consequence": 0.25
             },
             "set_tags": [
               "d_invention_hide"
@@ -6534,14 +6665,14 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "agency": 0.15,
-              "consequence": 0.15
+              "agency": 0.25,
+              "consequence": 0.25
             },
             "module_delta_levels": {
               "m_craft": 1
             },
             "module_evidence": {
-              "m_craft": 0.15
+              "m_craft": 0.25
             },
             "set_tags": [
               "d_resource_defense"
@@ -6558,13 +6689,13 @@
               "moral": -1
             },
             "axis_evidence": {
-              "moral": 0.15
+              "moral": 0.25
             },
             "module_delta_levels": {
               "m_downtime": 1
             },
             "module_evidence": {
-              "m_downtime": 0.12
+              "m_downtime": 0.2
             },
             "set_tags": [
               "d_resource_help"
@@ -6581,7 +6712,7 @@
               "structure": 1
             },
             "axis_evidence": {
-              "structure": 0.15
+              "structure": 0.25
             },
             "set_tags": [
               "d_resource_split"
@@ -6600,9 +6731,9 @@
               "agency": 1
             },
             "axis_evidence": {
-              "resolution": 0.12,
-              "focus": 0.12,
-              "agency": 0.12
+              "resolution": 0.2,
+              "focus": 0.2,
+              "agency": 0.2
             },
             "set_tags": [
               "d_resource_council"
@@ -6668,14 +6799,14 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "moral": 0.15,
-              "consequence": 0.15
+              "moral": 0.25,
+              "consequence": 0.25
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.12
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_rep_do"
@@ -6692,7 +6823,7 @@
               "moral": -1
             },
             "axis_evidence": {
-              "moral": 0.15
+              "moral": 0.25
             },
             "set_tags": [
               "d_rep_refuse"
@@ -6709,13 +6840,13 @@
               "agency": 1
             },
             "axis_evidence": {
-              "agency": 0.15
+              "agency": 0.25
             },
             "module_delta_levels": {
               "m_detective": 1
             },
             "module_evidence": {
-              "m_detective": 0.12
+              "m_detective": 0.2
             },
             "set_tags": [
               "d_rep_alt"
@@ -6733,8 +6864,8 @@
               "focus": -1
             },
             "axis_evidence": {
-              "tone": 0.12,
-              "focus": 0.12
+              "tone": 0.2,
+              "focus": 0.2
             },
             "set_tags": [
               "d_rep_apologize"
@@ -6799,7 +6930,7 @@
               "moral": 1
             },
             "axis_evidence": {
-              "moral": 0.15
+              "moral": 0.25
             },
             "set_tags": [
               "d_promise_keep"
@@ -6817,8 +6948,8 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "moral": 0.15,
-              "consequence": 0.15
+              "moral": 0.25,
+              "consequence": 0.25
             },
             "set_tags": [
               "d_promise_break"
@@ -6835,7 +6966,7 @@
               "structure": 1
             },
             "axis_evidence": {
-              "structure": 0.15
+              "structure": 0.25
             },
             "set_tags": [
               "d_promise_delegate"
@@ -6854,9 +6985,9 @@
               "tone": -1
             },
             "axis_evidence": {
-              "agency": 0.12,
-              "resolution": 0.12,
-              "tone": 0.12
+              "agency": 0.2,
+              "resolution": 0.2,
+              "tone": 0.2
             },
             "set_tags": [
               "d_promise_third_way"
@@ -6921,13 +7052,13 @@
               "m_world_mystery": 1
             },
             "module_evidence": {
-              "m_world_mystery": 0.15
+              "m_world_mystery": 0.25
             },
             "axis_deltas": {
               "consequence": 1
             },
             "axis_evidence": {
-              "consequence": 0.15
+              "consequence": 0.25
             },
             "set_tags": [
               "d_know_pay"
@@ -6944,7 +7075,7 @@
               "consequence": -1
             },
             "axis_evidence": {
-              "consequence": 0.15
+              "consequence": 0.25
             },
             "set_tags": [
               "d_know_refuse"
@@ -6961,13 +7092,13 @@
               "agency": 1
             },
             "axis_evidence": {
-              "agency": 0.15
+              "agency": 0.25
             },
             "module_delta_levels": {
               "m_detective": 1
             },
             "module_evidence": {
-              "m_detective": 0.12
+              "m_detective": 0.2
             },
             "set_tags": [
               "d_know_bargain"
@@ -6985,8 +7116,8 @@
               "focus": -1
             },
             "axis_evidence": {
-              "tone": 0.12,
-              "focus": 0.12
+              "tone": 0.2,
+              "focus": 0.2
             },
             "set_tags": [
               "d_know_walk_away"
@@ -7052,14 +7183,14 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "consequence": 0.15,
-              "pressure": 0.12
+              "consequence": 0.25,
+              "pressure": 0.2
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.12
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_work_force"
@@ -7076,7 +7207,7 @@
               "moral": -1
             },
             "axis_evidence": {
-              "moral": 0.15
+              "moral": 0.25
             },
             "set_tags": [
               "d_work_refuse"
@@ -7093,7 +7224,7 @@
               "structure": 1
             },
             "axis_evidence": {
-              "structure": 0.15
+              "structure": 0.25
             },
             "set_tags": [
               "d_work_incentive"

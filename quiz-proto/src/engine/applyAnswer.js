@@ -72,28 +72,48 @@ export function applyAnswer(state, bundle, answer) {
   }
 
   if (q.type === "safety") {
-    const selections = Array.isArray(answer.selections) ? answer.selections : [];
     const tags = new Set(q.tags ?? []);
-    if (tags.has("safety_lines")) {
-      state.safety.lines = [...new Set(selections)];
+    if (tags.has("safety_lines_veils")) {
+      const selections =
+        answer.selections && typeof answer.selections === "object" && !Array.isArray(answer.selections)
+          ? answer.selections
+          : {};
+      const lines = [];
+      const veils = [];
+      for (const [id, value] of Object.entries(selections)) {
+        if (value === "line") lines.push(id);
+        if (value === "veil") veils.push(id);
+      }
+      state.safety.lines = [...new Set(lines)];
+      state.safety.veils = [...new Set(veils)];
+      state.safety.completion_mode = "completed";
       log.safety_changes.lines = state.safety.lines;
-    }
-    if (tags.has("safety_veils")) {
-      state.safety.veils = [...new Set(selections)];
       log.safety_changes.veils = state.safety.veils;
-    }
-    if (!tags.has("safety_lines") && !tags.has("safety_veils")) {
-      if (Array.isArray(answer.lines)) {
-        state.safety.lines = [...new Set(answer.lines)];
+      log.safety_changes.completion_mode = "completed";
+    } else {
+      const selections = Array.isArray(answer.selections) ? answer.selections : [];
+      const tags = new Set(q.tags ?? []);
+      if (tags.has("safety_lines")) {
+        state.safety.lines = [...new Set(selections)];
         log.safety_changes.lines = state.safety.lines;
       }
-      if (Array.isArray(answer.veils)) {
-        state.safety.veils = [...new Set(answer.veils)];
+      if (tags.has("safety_veils")) {
+        state.safety.veils = [...new Set(selections)];
         log.safety_changes.veils = state.safety.veils;
       }
+      if (!tags.has("safety_lines") && !tags.has("safety_veils")) {
+        if (Array.isArray(answer.lines)) {
+          state.safety.lines = [...new Set(answer.lines)];
+          log.safety_changes.lines = state.safety.lines;
+        }
+        if (Array.isArray(answer.veils)) {
+          state.safety.veils = [...new Set(answer.veils)];
+          log.safety_changes.veils = state.safety.veils;
+        }
+      }
+      state.safety.completion_mode = "completed";
+      log.safety_changes.completion_mode = "completed";
     }
-    state.safety.completion_mode = "completed";
-    log.safety_changes.completion_mode = "completed";
   }
 
   if (effects.set_tags) {
