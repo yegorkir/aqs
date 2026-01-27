@@ -144,6 +144,12 @@ function onAnswer(answer) {
       qid: answer.qid,
       choice: answer.value ?? null,
     });
+  } else if (answer?.type === "safety") {
+    logEvent("ui_click", {
+      action: "answer_safety",
+      qid: answer.qid,
+      count: Array.isArray(answer.selections) ? answer.selections.length : 0,
+    });
   }
   const sourceQuestion = bundle.questionsById[answer.qid];
   const result = applyAnswer(state, bundle, answer);
@@ -395,6 +401,12 @@ function resolveAnswerLabel(question, answer) {
     const labels = question.slider?.labels ?? {};
     const label = labels[answer.value];
     return label ? `${answer.value} (${label})` : String(answer.value);
+  }
+  if (answer.type === "safety") {
+    const ids = Array.isArray(answer.selections) ? answer.selections : [];
+    const byId = new Map((question.options ?? []).map((o) => [o.id, o.label]));
+    const labels = ids.map((id) => byId.get(id) ?? id);
+    return labels.join(", ");
   }
   return "";
 }

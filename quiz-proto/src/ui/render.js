@@ -122,6 +122,43 @@ export function renderPlayer(root, view, handlers) {
     return;
   }
 
+  if (q.type === "safety") {
+    const wrapper = document.createElement("div");
+    wrapper.className = "options";
+
+    const selections = new Set();
+
+    for (const o of q.options ?? []) {
+      const label = document.createElement("label");
+      label.className = "option-checkbox";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.value = o.id;
+      input.addEventListener("change", () => {
+        if (input.checked) selections.add(o.id);
+        else selections.delete(o.id);
+      });
+      const text = document.createElement("span");
+      text.textContent = o.label ?? o.id;
+      label.appendChild(input);
+      label.appendChild(text);
+      wrapper.appendChild(label);
+    }
+
+    const submit = document.createElement("button");
+    submit.textContent = "Продолжить";
+    submit.addEventListener("click", () =>
+      handlers.onAnswer({
+        qid: q.id,
+        type: q.type,
+        selections: Array.from(selections),
+      })
+    );
+    wrapper.appendChild(submit);
+    root.appendChild(wrapper);
+    return;
+  }
+
   if (q.type === "slider") {
     const wrapper = document.createElement("div");
     wrapper.className = "slider";

@@ -30,7 +30,8 @@ export function pickNextQuestion(state, bundle) {
       rejected.pool_exclude += 1;
       continue;
     }
-    if (state.asked.includes(q.id)) {
+    const allowRepeatForMode = state.focus?.type === "mode";
+    if (state.asked.includes(q.id) && !allowRepeatForMode) {
       rejected.asked += 1;
       continue;
     }
@@ -111,6 +112,21 @@ function scoreQuestion(q, state, isVeiled) {
   const touchedAxes = new Set();
   const touchedModules = new Set();
   const touchedModes = new Set();
+
+  if (q.type === "safety") {
+    const penalty = (q.fatigue_cost ?? 0) * 0.15 + (isVeiled ? 0.4 : 0);
+    const base = 0.6;
+    const total = base - penalty;
+    return {
+      total,
+      why: { axes: {}, penalties: { fatigue: (q.fatigue_cost ?? 0) * 0.15, veil: isVeiled ? 0.4 : 0 } },
+      base,
+      penalty,
+      touchedAxes,
+      touchedModules,
+      touchedModes,
+    };
+  }
 
   if (q.type === "choice") {
     for (const o of q.options ?? []) {

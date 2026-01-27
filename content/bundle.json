@@ -671,6 +671,7 @@
       "title": "Явность романтики",
       "default": "hints",
       "options": [
+        "none",
         "hints",
         "scenes",
         "explicit"
@@ -748,8 +749,29 @@
       "ui_topic": "relationships"
     },
     {
+      "id": "intimacy",
+      "label": "Интимные сцены / секс",
+      "group": "sex",
+      "aliases": [],
+      "ui_topic": "sex"
+    },
+    {
       "id": "sexual_violence",
       "label": "Сексуализированное насилие",
+      "group": "sex",
+      "aliases": [],
+      "ui_topic": "sex"
+    },
+    {
+      "id": "coercion_sex",
+      "label": "Принуждение к сексу (даже без деталей)",
+      "group": "sex",
+      "aliases": [],
+      "ui_topic": "sex"
+    },
+    {
+      "id": "bdsm",
+      "label": "Секс с насилием / BDSM",
       "group": "sex",
       "aliases": [],
       "ui_topic": "sex"
@@ -771,8 +793,66 @@
       "ui_topic": "violence"
     },
     {
+      "id": "body_horror",
+      "label": "Body horror / гнетущая телесность",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "forced_body_change",
+      "label": "Невольное изменение тела / потеря частей тела",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
       "id": "torture",
       "label": "Пытки",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "domestic_violence",
+      "label": "Домашнее насилие",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "bullying",
+      "label": "Издевательства, буллинг",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "animal_cruelty",
+      "label": "Жестокость к животным",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "pet_death",
+      "label": "Жестокость к NPC-животным-компаньонам",
+      "group": "violence",
+      "aliases": [
+        "familiar_death"
+      ],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "elder_abuse",
+      "label": "Престарелые в роли жертв насилия",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "cannibalism",
+      "label": "Каннибализм",
       "group": "violence",
       "aliases": [],
       "ui_topic": "violence"
@@ -792,11 +872,200 @@
       "ui_topic": "selfharm"
     },
     {
+      "id": "suicidal_ideation",
+      "label": "Суицидальные мысли/состояния",
+      "group": "selfharm",
+      "aliases": [],
+      "ui_topic": "selfharm"
+    },
+    {
       "id": "child_harm",
       "label": "Насилие над детьми",
       "group": "violence",
       "aliases": [],
       "ui_topic": "violence"
+    },
+    {
+      "id": "child_death",
+      "label": "Жестокая смерть детей",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "slavery",
+      "label": "Рабство / торговля людьми",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "forced_kill_innocent",
+      "label": "Вынужденное убийство невиновных",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "death_close_npcs",
+      "label": "Смерть близких NPC",
+      "group": "death",
+      "aliases": [],
+      "ui_topic": "death"
+    },
+    {
+      "id": "pc_death",
+      "label": "Смерть персонажа игрока",
+      "group": "death",
+      "aliases": [],
+      "ui_topic": "death"
+    },
+    {
+      "id": "monster_suffering",
+      "label": "Мучения монстров",
+      "group": "violence",
+      "aliases": [],
+      "ui_topic": "violence"
+    },
+    {
+      "id": "racism",
+      "label": "Расизм",
+      "group": "discrimination",
+      "aliases": [],
+      "ui_topic": "discrimination"
+    },
+    {
+      "id": "sexism",
+      "label": "Сексизм",
+      "group": "discrimination",
+      "aliases": [],
+      "ui_topic": "discrimination"
+    },
+    {
+      "id": "homophobia",
+      "label": "Гомофобия",
+      "group": "discrimination",
+      "aliases": [],
+      "ui_topic": "discrimination"
+    },
+    {
+      "id": "religious_hate",
+      "label": "Религиозная ненависть / травля",
+      "group": "discrimination",
+      "aliases": [],
+      "ui_topic": "discrimination"
+    },
+    {
+      "id": "forced_conversion",
+      "label": "Насильственное обращение в веру / культ",
+      "group": "religion",
+      "aliases": [],
+      "ui_topic": "religion"
+    },
+    {
+      "id": "religious_themes",
+      "label": "Религиозные темы",
+      "group": "religion",
+      "aliases": [],
+      "ui_topic": "religion"
+    },
+    {
+      "id": "cult_rituals",
+      "label": "Культовые ритуалы / жертвоприношения",
+      "group": "religion",
+      "aliases": [],
+      "ui_topic": "religion"
+    },
+    {
+      "id": "historical_tragedy",
+      "label": "Реальные исторические трагедии",
+      "group": "history",
+      "aliases": [],
+      "ui_topic": "history"
+    },
+    {
+      "id": "alcohol",
+      "label": "Алкоголизм / употребление алкоголя",
+      "group": "addiction",
+      "aliases": [],
+      "ui_topic": "addiction"
+    },
+    {
+      "id": "drugs",
+      "label": "Наркомания / употребление наркотиков",
+      "group": "addiction",
+      "aliases": [],
+      "ui_topic": "addiction"
+    },
+    {
+      "id": "euthanasia",
+      "label": "Эвтаназия",
+      "group": "medical",
+      "aliases": [],
+      "ui_topic": "medical"
+    },
+    {
+      "id": "abortion",
+      "label": "Аборт / насильственное вмешательство в репродукцию",
+      "group": "medical",
+      "aliases": [],
+      "ui_topic": "medical"
+    },
+    {
+      "id": "pregnancy_childbirth",
+      "label": "Беременность / роды",
+      "group": "medical",
+      "aliases": [],
+      "ui_topic": "medical"
+    },
+    {
+      "id": "childbirth_explicit",
+      "label": "Эксплицитные сцены родов",
+      "group": "medical",
+      "aliases": [],
+      "ui_topic": "medical"
+    },
+    {
+      "id": "mental_illness",
+      "label": "Ментальные расстройства / психические болезни",
+      "group": "mental",
+      "aliases": [],
+      "ui_topic": "mental"
+    },
+    {
+      "id": "psychiatric_institutions",
+      "label": "Психиатрические учреждения",
+      "group": "mental",
+      "aliases": [],
+      "ui_topic": "mental"
+    },
+    {
+      "id": "panic_attacks",
+      "label": "Панические атаки, тревога, депрессия",
+      "group": "mental",
+      "aliases": [],
+      "ui_topic": "mental"
+    },
+    {
+      "id": "gaslighting",
+      "label": "Психологическое насилие / газлайтинг",
+      "group": "mental",
+      "aliases": [],
+      "ui_topic": "mental"
+    },
+    {
+      "id": "dehumanization",
+      "label": "Превращение в монстра / дегуманизация",
+      "group": "body",
+      "aliases": [],
+      "ui_topic": "body"
+    },
+    {
+      "id": "animal_death",
+      "label": "Смерть животных",
+      "group": "death",
+      "aliases": [],
+      "ui_topic": "death"
     },
     {
       "id": "spiders",
@@ -2187,6 +2456,618 @@
             "notes": ""
           }
         }
+      ]
+    },
+    {
+      "id": "q_mode_romance_pc_npc",
+      "type": "choice",
+      "title": "Формат: романтика PC↔NPC",
+      "prompt": "Насколько допустима романтика между персонажем игрока и NPC?",
+      "help": "Это про допустимость формата, не про «качество игры».",
+      "tags": [
+        "mode",
+        "romance",
+        "romance_pc_npc"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "yes",
+          "label": "Да, допустима",
+          "effects": {
+            "set_modes": {
+              "romance.pc_npc": "true"
+            },
+            "set_tags": [
+              "mode_romance_pc_npc_yes"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "no",
+          "label": "Нет, лучше без этого",
+          "effects": {
+            "set_modes": {
+              "romance.pc_npc": "false"
+            },
+            "set_tags": [
+              "mode_romance_pc_npc_no"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_modes": {
+              "romance.pc_npc": "unknown"
+            },
+            "set_tags": [
+              "mode_romance_pc_npc_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_mode_romance_pc_pc",
+      "type": "choice",
+      "title": "Формат: романтика PC↔PC",
+      "prompt": "Насколько допустима романтика между персонажами игроков?",
+      "help": "Это про допустимость формата, не про «качество игры».",
+      "tags": [
+        "mode",
+        "romance",
+        "romance_pc_pc"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "yes",
+          "label": "Да, допустима",
+          "effects": {
+            "set_modes": {
+              "romance.pc_pc": "true"
+            },
+            "set_tags": [
+              "mode_romance_pc_pc_yes"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "no",
+          "label": "Нет, лучше без этого",
+          "effects": {
+            "set_modes": {
+              "romance.pc_pc": "false"
+            },
+            "set_tags": [
+              "mode_romance_pc_pc_no"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_modes": {
+              "romance.pc_pc": "unknown"
+            },
+            "set_tags": [
+              "mode_romance_pc_pc_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_mode_romance_npc_npc",
+      "type": "choice",
+      "title": "Формат: романтика NPC↔NPC (фон)",
+      "prompt": "Насколько допустима романтика между NPC на фоне истории?",
+      "help": "Это про допустимость формата, не про «качество игры».",
+      "tags": [
+        "mode",
+        "romance",
+        "romance_npc_npc"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "yes",
+          "label": "Да, допустима",
+          "effects": {
+            "set_modes": {
+              "romance.npc_npc": "true"
+            },
+            "set_tags": [
+              "mode_romance_npc_npc_yes"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "no",
+          "label": "Нет, лучше без этого",
+          "effects": {
+            "set_modes": {
+              "romance.npc_npc": "false"
+            },
+            "set_tags": [
+              "mode_romance_npc_npc_no"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "set_modes": {
+              "romance.npc_npc": "unknown"
+            },
+            "set_tags": [
+              "mode_romance_npc_npc_unsure"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_mode_romance_explicitness",
+      "type": "choice",
+      "title": "Формат: явность романтики",
+      "prompt": "Какой уровень явности романтических сцен тебе комфортен?",
+      "help": "Это про стиль подачи, не про 18+.",
+      "tags": [
+        "mode",
+        "romance",
+        "romance_explicitness"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "none",
+          "label": "Не допустимо упоминание",
+          "effects": {
+            "set_modes": {
+              "romance.explicitness": "none"
+            },
+            "set_tags": [
+              "mode_romance_explicitness_none"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "hints",
+          "label": "Допустимо за кадром (намёки)",
+          "effects": {
+            "set_modes": {
+              "romance.explicitness": "hints"
+            },
+            "set_tags": [
+              "mode_romance_explicitness_hints"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "scenes",
+          "label": "Допустимо с описанием сцены",
+          "effects": {
+            "set_modes": {
+              "romance.explicitness": "scenes"
+            },
+            "set_tags": [
+              "mode_romance_explicitness_scenes"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "explicit",
+          "label": "Можно детальнее, если уместно",
+          "effects": {
+            "set_modes": {
+              "romance.explicitness": "explicit"
+            },
+            "set_tags": [
+              "mode_romance_explicitness_explicit"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_mode_character_loss",
+      "type": "choice",
+      "title": "Формат: потеря персонажа",
+      "prompt": "Насколько допустима потеря персонажа в ходе кампании?",
+      "help": "Это про рамки формата, а не про «токсичность».",
+      "tags": [
+        "mode",
+        "character_loss"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "never",
+          "label": "Почти никогда",
+          "effects": {
+            "set_modes": {
+              "character_loss": "never"
+            },
+            "set_tags": [
+              "mode_character_loss_never"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "rare",
+          "label": "Редко, как исключение",
+          "effects": {
+            "set_modes": {
+              "character_loss": "rare"
+            },
+            "set_tags": [
+              "mode_character_loss_rare"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "ok",
+          "label": "Нормально как часть игры",
+          "effects": {
+            "set_modes": {
+              "character_loss": "ok"
+            },
+            "set_tags": [
+              "mode_character_loss_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_mode_rules_complexity",
+      "type": "choice",
+      "title": "Формат: сложность правил",
+      "prompt": "Насколько сложные правила тебе комфортны?",
+      "help": "Это про удобство, а не «правильность» игры.",
+      "tags": [
+        "mode",
+        "rules_complexity"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "simple",
+          "label": "Простые правила",
+          "effects": {
+            "set_modes": {
+              "rules_complexity": "simple"
+            },
+            "set_tags": [
+              "mode_rules_complexity_simple"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "medium",
+          "label": "Умеренная сложность",
+          "effects": {
+            "set_modes": {
+              "rules_complexity": "medium"
+            },
+            "set_tags": [
+              "mode_rules_complexity_medium"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "complex",
+          "label": "Можно сложно",
+          "effects": {
+            "set_modes": {
+              "rules_complexity": "complex"
+            },
+            "set_tags": [
+              "mode_rules_complexity_complex"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_mode_narration_explicitness",
+      "type": "choice",
+      "title": "Формат: явность описаний",
+      "prompt": "Какой уровень подробности описаний тебе комфортен?",
+      "help": "Это про стиль подачи и «камеру».",
+      "tags": [
+        "mode",
+        "narration_explicitness"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "fade",
+          "label": "Без подробностей, многое за кадром",
+          "effects": {
+            "set_modes": {
+              "narration_explicitness": "fade"
+            },
+            "set_tags": [
+              "mode_narration_explicitness_fade"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "moderate",
+          "label": "Умеренно, без натурализма",
+          "effects": {
+            "set_modes": {
+              "narration_explicitness": "moderate"
+            },
+            "set_tags": [
+              "mode_narration_explicitness_moderate"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "detailed",
+          "label": "Можно детально, если уместно",
+          "effects": {
+            "set_modes": {
+              "narration_explicitness": "detailed"
+            },
+            "set_tags": [
+              "mode_narration_explicitness_detailed"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_mode_ambiguity_tolerance",
+      "type": "choice",
+      "title": "Формат: неопределённость мира",
+      "prompt": "Насколько тебе комфортно, когда многое можно додумывать?",
+      "help": "Это про степень ясности и «белые пятна».",
+      "tags": [
+        "mode",
+        "ambiguity_tolerance"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "clarity",
+          "label": "Хочу ясности и меньше неопределённости",
+          "effects": {
+            "set_modes": {
+              "ambiguity_tolerance": "clarity"
+            },
+            "set_tags": [
+              "mode_ambiguity_tolerance_clarity"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "balance",
+          "label": "Баланс: часть ясна, часть можно додумывать",
+          "effects": {
+            "set_modes": {
+              "ambiguity_tolerance": "balance"
+            },
+            "set_tags": [
+              "mode_ambiguity_tolerance_balance"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "mystery",
+          "label": "Норм, если многое остаётся в тумане",
+          "effects": {
+            "set_modes": {
+              "ambiguity_tolerance": "mystery"
+            },
+            "set_tags": [
+              "mode_ambiguity_tolerance_mystery"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_safety_lines",
+      "type": "safety",
+      "title": "Границы контента: линии",
+      "prompt": "Выбери темы, которые ты не хочешь видеть в игре вообще.",
+      "help": "Линии: тема полностью исключается из игры. Можно оставить список пустым.",
+      "tags": [
+        "safety",
+        "safety_lines"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 2,
+      "options": [
+        { "id": "romance", "label": "Романтика (в целом)", "effects": {} },
+        { "id": "romance_pc_pc", "label": "Романтика PC↔PC", "effects": {} },
+        { "id": "intimacy", "label": "Интимные сцены / секс", "effects": {} },
+        { "id": "sexual_violence", "label": "Сексуализированное насилие", "effects": {} },
+        { "id": "coercion_sex", "label": "Принуждение к сексу (даже без деталей)", "effects": {} },
+        { "id": "bdsm", "label": "Секс с насилием / BDSM", "effects": {} },
+        { "id": "explicit_gore", "label": "Подробное насилие/кровь", "effects": {} },
+        { "id": "dismemberment", "label": "Расчленение", "effects": {} },
+        { "id": "body_horror", "label": "Body horror / гнетущая телесность", "effects": {} },
+        { "id": "forced_body_change", "label": "Невольное изменение тела / потеря частей тела", "effects": {} },
+        { "id": "torture", "label": "Пытки", "effects": {} },
+        { "id": "domestic_violence", "label": "Домашнее насилие", "effects": {} },
+        { "id": "bullying", "label": "Издевательства, буллинг", "effects": {} },
+        { "id": "animal_cruelty", "label": "Жестокость к животным", "effects": {} },
+        { "id": "pet_death", "label": "Жестокость к NPC-животным-компаньонам", "effects": {} },
+        { "id": "elder_abuse", "label": "Престарелые в роли жертв насилия", "effects": {} },
+        { "id": "cannibalism", "label": "Каннибализм", "effects": {} },
+        { "id": "self_harm", "label": "Самоповреждение", "effects": {} },
+        { "id": "suicide", "label": "Самоубийство", "effects": {} },
+        { "id": "suicidal_ideation", "label": "Суицидальные мысли/состояния", "effects": {} },
+        { "id": "child_harm", "label": "Насилие над детьми", "effects": {} },
+        { "id": "child_death", "label": "Жестокая смерть детей", "effects": {} },
+        { "id": "slavery", "label": "Рабство / торговля людьми", "effects": {} },
+        { "id": "forced_kill_innocent", "label": "Вынужденное убийство невиновных", "effects": {} },
+        { "id": "death_close_npcs", "label": "Смерть близких NPC", "effects": {} },
+        { "id": "pc_death", "label": "Смерть персонажа игрока", "effects": {} },
+        { "id": "monster_suffering", "label": "Мучения монстров", "effects": {} },
+        { "id": "racism", "label": "Расизм", "effects": {} },
+        { "id": "sexism", "label": "Сексизм", "effects": {} },
+        { "id": "homophobia", "label": "Гомофобия", "effects": {} },
+        { "id": "religious_hate", "label": "Религиозная ненависть / травля", "effects": {} },
+        { "id": "forced_conversion", "label": "Насильственное обращение в веру / культ", "effects": {} },
+        { "id": "religious_themes", "label": "Религиозные темы", "effects": {} },
+        { "id": "cult_rituals", "label": "Культовые ритуалы / жертвоприношения", "effects": {} },
+        { "id": "historical_tragedy", "label": "Реальные исторические трагедии", "effects": {} },
+        { "id": "alcohol", "label": "Алкоголизм / употребление алкоголя", "effects": {} },
+        { "id": "drugs", "label": "Наркомания / употребление наркотиков", "effects": {} },
+        { "id": "euthanasia", "label": "Эвтаназия", "effects": {} },
+        { "id": "abortion", "label": "Аборт / насильственное вмешательство в репродукцию", "effects": {} },
+        { "id": "pregnancy_childbirth", "label": "Беременность / роды", "effects": {} },
+        { "id": "childbirth_explicit", "label": "Эксплицитные сцены родов", "effects": {} },
+        { "id": "mental_illness", "label": "Ментальные расстройства / психические болезни", "effects": {} },
+        { "id": "psychiatric_institutions", "label": "Психиатрические учреждения", "effects": {} },
+        { "id": "panic_attacks", "label": "Панические атаки, тревога, депрессия", "effects": {} },
+        { "id": "gaslighting", "label": "Психологическое насилие / газлайтинг", "effects": {} },
+        { "id": "dehumanization", "label": "Превращение в монстра / дегуманизация", "effects": {} },
+        { "id": "animal_death", "label": "Смерть животных", "effects": {} },
+        { "id": "spiders", "label": "Пауки (фобия)", "effects": {} },
+        { "id": "claustrophobia", "label": "Клаустрофобия", "effects": {} }
+      ]
+    },
+    {
+      "id": "q_safety_veils",
+      "type": "safety",
+      "title": "Границы контента: вуали",
+      "prompt": "Выбери темы, которые могут быть в мире, но должны оставаться за кадром.",
+      "help": "Вуали: тему можно упоминать, но без подробностей и сцен. Можно оставить список пустым.",
+      "tags": [
+        "safety",
+        "safety_veils"
+      ],
+      "content_tags": [],
+      "complexity": 2,
+      "fatigue_cost": 2,
+      "options": [
+        { "id": "romance", "label": "Романтика (в целом)", "effects": {} },
+        { "id": "romance_pc_pc", "label": "Романтика PC↔PC", "effects": {} },
+        { "id": "intimacy", "label": "Интимные сцены / секс", "effects": {} },
+        { "id": "sexual_violence", "label": "Сексуализированное насилие", "effects": {} },
+        { "id": "coercion_sex", "label": "Принуждение к сексу (даже без деталей)", "effects": {} },
+        { "id": "bdsm", "label": "Секс с насилием / BDSM", "effects": {} },
+        { "id": "explicit_gore", "label": "Подробное насилие/кровь", "effects": {} },
+        { "id": "dismemberment", "label": "Расчленение", "effects": {} },
+        { "id": "body_horror", "label": "Body horror / гнетущая телесность", "effects": {} },
+        { "id": "forced_body_change", "label": "Невольное изменение тела / потеря частей тела", "effects": {} },
+        { "id": "torture", "label": "Пытки", "effects": {} },
+        { "id": "domestic_violence", "label": "Домашнее насилие", "effects": {} },
+        { "id": "bullying", "label": "Издевательства, буллинг", "effects": {} },
+        { "id": "animal_cruelty", "label": "Жестокость к животным", "effects": {} },
+        { "id": "pet_death", "label": "Жестокость к NPC-животным-компаньонам", "effects": {} },
+        { "id": "elder_abuse", "label": "Престарелые в роли жертв насилия", "effects": {} },
+        { "id": "cannibalism", "label": "Каннибализм", "effects": {} },
+        { "id": "self_harm", "label": "Самоповреждение", "effects": {} },
+        { "id": "suicide", "label": "Самоубийство", "effects": {} },
+        { "id": "suicidal_ideation", "label": "Суицидальные мысли/состояния", "effects": {} },
+        { "id": "child_harm", "label": "Насилие над детьми", "effects": {} },
+        { "id": "child_death", "label": "Жестокая смерть детей", "effects": {} },
+        { "id": "slavery", "label": "Рабство / торговля людьми", "effects": {} },
+        { "id": "forced_kill_innocent", "label": "Вынужденное убийство невиновных", "effects": {} },
+        { "id": "death_close_npcs", "label": "Смерть близких NPC", "effects": {} },
+        { "id": "pc_death", "label": "Смерть персонажа игрока", "effects": {} },
+        { "id": "monster_suffering", "label": "Мучения монстров", "effects": {} },
+        { "id": "racism", "label": "Расизм", "effects": {} },
+        { "id": "sexism", "label": "Сексизм", "effects": {} },
+        { "id": "homophobia", "label": "Гомофобия", "effects": {} },
+        { "id": "religious_hate", "label": "Религиозная ненависть / травля", "effects": {} },
+        { "id": "forced_conversion", "label": "Насильственное обращение в веру / культ", "effects": {} },
+        { "id": "religious_themes", "label": "Религиозные темы", "effects": {} },
+        { "id": "cult_rituals", "label": "Культовые ритуалы / жертвоприношения", "effects": {} },
+        { "id": "historical_tragedy", "label": "Реальные исторические трагедии", "effects": {} },
+        { "id": "alcohol", "label": "Алкоголизм / употребление алкоголя", "effects": {} },
+        { "id": "drugs", "label": "Наркомания / употребление наркотиков", "effects": {} },
+        { "id": "euthanasia", "label": "Эвтаназия", "effects": {} },
+        { "id": "abortion", "label": "Аборт / насильственное вмешательство в репродукцию", "effects": {} },
+        { "id": "pregnancy_childbirth", "label": "Беременность / роды", "effects": {} },
+        { "id": "childbirth_explicit", "label": "Эксплицитные сцены родов", "effects": {} },
+        { "id": "mental_illness", "label": "Ментальные расстройства / психические болезни", "effects": {} },
+        { "id": "psychiatric_institutions", "label": "Психиатрические учреждения", "effects": {} },
+        { "id": "panic_attacks", "label": "Панические атаки, тревога, депрессия", "effects": {} },
+        { "id": "gaslighting", "label": "Психологическое насилие / газлайтинг", "effects": {} },
+        { "id": "dehumanization", "label": "Превращение в монстра / дегуманизация", "effects": {} },
+        { "id": "animal_death", "label": "Смерть животных", "effects": {} },
+        { "id": "spiders", "label": "Пауки (фобия)", "effects": {} },
+        { "id": "claustrophobia", "label": "Клаустрофобия", "effects": {} }
       ]
     },
     {
