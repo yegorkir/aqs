@@ -3788,7 +3788,7 @@
               "moral": 1
             },
             "axis_evidence": {
-              "moral": 0.1
+              "moral": 0.15
             },
             "set_tags": [
               "moral_often"
@@ -3807,7 +3807,7 @@
               "moral": 1
             },
             "axis_evidence": {
-              "moral": 0.1
+              "moral": 0.15
             },
             "set_tags": [
               "moral_often"
@@ -5625,14 +5625,14 @@
               "moral": 1
             },
             "axis_evidence": {
-              "consequence": 0.12,
-              "moral": 0.1
+              "consequence": 0.18,
+              "moral": 0.15
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.1
+              "m_politics": 0.15
             },
             "set_tags": [
               "d_water_fast"
@@ -5650,11 +5650,11 @@
               "structure": 1
             },
             "axis_evidence": {
-              "moral": 0.1,
-              "structure": 0.1
+              "moral": 0.15,
+              "structure": 0.15
             },
             "module_evidence": {
-              "m_politics": 0.1
+              "m_politics": 0.15
             },
             "set_tags": [
               "d_water_fair"
@@ -5672,11 +5672,11 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.1,
-              "consequence": 0.1
+              "structure": 0.15,
+              "consequence": 0.15
             },
             "module_evidence": {
-              "m_politics": 0.08
+              "m_politics": 0.12
             },
             "set_tags": [
               "d_water_mix"
@@ -5694,8 +5694,8 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "impulse": 0.12,
-              "pressure": 0.08
+              "impulse": 0.18,
+              "pressure": 0.12
             },
             "set_tags": [
               "d_water_rush"
@@ -5761,8 +5761,8 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "moral": 0.1,
-              "consequence": 0.1
+              "moral": 0.15,
+              "consequence": 0.15
             },
             "set_tags": [
               "d_grid_equal"
@@ -5781,9 +5781,9 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "moral": 0.1,
-              "consequence": 0.1,
-              "pressure": 0.08
+              "moral": 0.15,
+              "consequence": 0.15,
+              "pressure": 0.12
             },
             "set_tags": [
               "d_grid_priority"
@@ -5801,14 +5801,14 @@
               "moral": 1
             },
             "axis_evidence": {
-              "structure": 0.1,
-              "moral": 0.1
+              "structure": 0.15,
+              "moral": 0.15
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.08
+              "m_politics": 0.12
             },
             "set_tags": [
               "d_grid_local"
@@ -5826,8 +5826,8 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "impulse": 0.12,
-              "pressure": 0.08
+              "impulse": 0.18,
+              "pressure": 0.12
             },
             "set_tags": [
               "d_grid_flash"
@@ -5893,8 +5893,8 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "consequence": 0.1,
-              "pressure": 0.1
+              "consequence": 0.15,
+              "pressure": 0.15
             },
             "set_tags": [
               "d_truth_all"
@@ -5912,11 +5912,11 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.1,
-              "consequence": 0.1
+              "structure": 0.15,
+              "consequence": 0.15
             },
             "module_evidence": {
-              "m_detective": 0.08
+              "m_detective": 0.12
             },
             "set_tags": [
               "d_truth_some"
@@ -5933,7 +5933,7 @@
               "structure": 1
             },
             "axis_evidence": {
-              "structure": 0.12
+              "structure": 0.18
             },
             "set_tags": [
               "d_truth_stage"
@@ -5950,7 +5950,7 @@
               "impulse": 2
             },
             "axis_evidence": {
-              "impulse": 0.12
+              "impulse": 0.18
             },
             "set_tags": [
               "d_truth_prophecy"
@@ -5968,8 +5968,8 @@
               "focus": -1
             },
             "axis_evidence": {
-              "resolution": 0.08,
-              "focus": 0.08
+              "resolution": 0.12,
+              "focus": 0.12
             },
             "set_tags": [
               "d_truth_circle"
@@ -6035,11 +6035,11 @@
               "pressure": -1
             },
             "axis_evidence": {
-              "consequence": 0.1,
-              "pressure": 0.08
+              "consequence": 0.15,
+              "pressure": 0.12
             },
             "module_evidence": {
-              "m_travel": 0.1
+              "m_travel": 0.15
             },
             "set_tags": [
               "d_bridge_close"
@@ -6057,11 +6057,11 @@
               "moral": 1
             },
             "axis_evidence": {
-              "pressure": 0.1,
-              "moral": 0.08
+              "pressure": 0.15,
+              "moral": 0.12
             },
             "module_evidence": {
-              "m_travel": 0.1
+              "m_travel": 0.15
             },
             "set_tags": [
               "d_bridge_open"
@@ -6079,8 +6079,8 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.1,
-              "consequence": 0.1
+              "structure": 0.15,
+              "consequence": 0.15
             },
             "set_tags": [
               "d_bridge_schedule"
@@ -6098,8 +6098,8 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "impulse": 0.12,
-              "pressure": 0.08
+              "impulse": 0.18,
+              "pressure": 0.12
             },
             "set_tags": [
               "d_bridge_repair_now"
@@ -6165,14 +6165,14 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "moral": 0.1,
-              "pressure": 0.1
+              "moral": 0.15,
+              "pressure": 0.15
             },
             "module_delta_levels": {
               "m_downtime": 1
             },
             "module_evidence": {
-              "m_downtime": 0.08
+              "m_downtime": 0.12
             },
             "set_tags": [
               "d_refugees_accept"
@@ -6190,8 +6190,8 @@
               "pressure": -1
             },
             "axis_evidence": {
-              "consequence": 0.1,
-              "pressure": 0.1
+              "consequence": 0.15,
+              "pressure": 0.15
             },
             "set_tags": [
               "d_refugees_refuse"
@@ -6210,15 +6210,15 @@
               "moral": 1
             },
             "axis_evidence": {
-              "structure": 0.1,
-              "consequence": 0.1,
-              "moral": 0.1
+              "structure": 0.15,
+              "consequence": 0.15,
+              "moral": 0.15
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.08
+              "m_politics": 0.12
             },
             "set_tags": [
               "d_refugees_deal"
@@ -6236,8 +6236,8 @@
               "agency": 1
             },
             "axis_evidence": {
-              "focus": 0.08,
-              "agency": 0.08
+              "focus": 0.12,
+              "agency": 0.12
             },
             "set_tags": [
               "d_refugees_meet"
@@ -6303,14 +6303,14 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.1,
-              "consequence": 0.1
+              "structure": 0.15,
+              "consequence": 0.15
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.08
+              "m_politics": 0.12
             },
             "set_tags": [
               "d_market_control"
@@ -6328,11 +6328,11 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "moral": 0.1,
-              "consequence": 0.1
+              "moral": 0.15,
+              "consequence": 0.15
             },
             "module_evidence": {
-              "m_politics": 0.08
+              "m_politics": 0.12
             },
             "set_tags": [
               "d_market_free"
@@ -6351,9 +6351,9 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.1,
-              "moral": 0.1,
-              "consequence": 0.1
+              "structure": 0.15,
+              "moral": 0.15,
+              "consequence": 0.15
             },
             "set_tags": [
               "d_market_hybrid"
@@ -6419,14 +6419,14 @@
               "moral": 1
             },
             "axis_evidence": {
-              "consequence": 0.1,
-              "moral": 0.1
+              "consequence": 0.15,
+              "moral": 0.15
             },
             "module_delta_levels": {
               "m_world_mystery": 1
             },
             "module_evidence": {
-              "m_world_mystery": 0.1
+              "m_world_mystery": 0.15
             },
             "set_tags": [
               "d_invention_publish"
@@ -6444,14 +6444,14 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "structure": 0.1,
-              "consequence": 0.1
+              "structure": 0.15,
+              "consequence": 0.15
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.08
+              "m_politics": 0.12
             },
             "set_tags": [
               "d_invention_guard"
@@ -6468,7 +6468,7 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "consequence": 0.1
+              "consequence": 0.15
             },
             "set_tags": [
               "d_invention_hide"
@@ -6534,14 +6534,14 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "agency": 0.1,
-              "consequence": 0.1
+              "agency": 0.15,
+              "consequence": 0.15
             },
             "module_delta_levels": {
               "m_craft": 1
             },
             "module_evidence": {
-              "m_craft": 0.1
+              "m_craft": 0.15
             },
             "set_tags": [
               "d_resource_defense"
@@ -6558,13 +6558,13 @@
               "moral": -1
             },
             "axis_evidence": {
-              "moral": 0.1
+              "moral": 0.15
             },
             "module_delta_levels": {
               "m_downtime": 1
             },
             "module_evidence": {
-              "m_downtime": 0.08
+              "m_downtime": 0.12
             },
             "set_tags": [
               "d_resource_help"
@@ -6581,7 +6581,7 @@
               "structure": 1
             },
             "axis_evidence": {
-              "structure": 0.1
+              "structure": 0.15
             },
             "set_tags": [
               "d_resource_split"
@@ -6600,9 +6600,9 @@
               "agency": 1
             },
             "axis_evidence": {
-              "resolution": 0.08,
-              "focus": 0.08,
-              "agency": 0.08
+              "resolution": 0.12,
+              "focus": 0.12,
+              "agency": 0.12
             },
             "set_tags": [
               "d_resource_council"
@@ -6668,14 +6668,14 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "moral": 0.1,
-              "consequence": 0.1
+              "moral": 0.15,
+              "consequence": 0.15
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.08
+              "m_politics": 0.12
             },
             "set_tags": [
               "d_rep_do"
@@ -6692,7 +6692,7 @@
               "moral": -1
             },
             "axis_evidence": {
-              "moral": 0.1
+              "moral": 0.15
             },
             "set_tags": [
               "d_rep_refuse"
@@ -6709,13 +6709,13 @@
               "agency": 1
             },
             "axis_evidence": {
-              "agency": 0.1
+              "agency": 0.15
             },
             "module_delta_levels": {
               "m_detective": 1
             },
             "module_evidence": {
-              "m_detective": 0.08
+              "m_detective": 0.12
             },
             "set_tags": [
               "d_rep_alt"
@@ -6733,8 +6733,8 @@
               "focus": -1
             },
             "axis_evidence": {
-              "tone": 0.08,
-              "focus": 0.08
+              "tone": 0.12,
+              "focus": 0.12
             },
             "set_tags": [
               "d_rep_apologize"
@@ -6799,7 +6799,7 @@
               "moral": 1
             },
             "axis_evidence": {
-              "moral": 0.1
+              "moral": 0.15
             },
             "set_tags": [
               "d_promise_keep"
@@ -6817,8 +6817,8 @@
               "consequence": 1
             },
             "axis_evidence": {
-              "moral": 0.1,
-              "consequence": 0.1
+              "moral": 0.15,
+              "consequence": 0.15
             },
             "set_tags": [
               "d_promise_break"
@@ -6835,7 +6835,7 @@
               "structure": 1
             },
             "axis_evidence": {
-              "structure": 0.1
+              "structure": 0.15
             },
             "set_tags": [
               "d_promise_delegate"
@@ -6854,9 +6854,9 @@
               "tone": -1
             },
             "axis_evidence": {
-              "agency": 0.08,
-              "resolution": 0.08,
-              "tone": 0.08
+              "agency": 0.12,
+              "resolution": 0.12,
+              "tone": 0.12
             },
             "set_tags": [
               "d_promise_third_way"
@@ -6921,13 +6921,13 @@
               "m_world_mystery": 1
             },
             "module_evidence": {
-              "m_world_mystery": 0.1
+              "m_world_mystery": 0.15
             },
             "axis_deltas": {
               "consequence": 1
             },
             "axis_evidence": {
-              "consequence": 0.1
+              "consequence": 0.15
             },
             "set_tags": [
               "d_know_pay"
@@ -6944,7 +6944,7 @@
               "consequence": -1
             },
             "axis_evidence": {
-              "consequence": 0.1
+              "consequence": 0.15
             },
             "set_tags": [
               "d_know_refuse"
@@ -6961,13 +6961,13 @@
               "agency": 1
             },
             "axis_evidence": {
-              "agency": 0.1
+              "agency": 0.15
             },
             "module_delta_levels": {
               "m_detective": 1
             },
             "module_evidence": {
-              "m_detective": 0.08
+              "m_detective": 0.12
             },
             "set_tags": [
               "d_know_bargain"
@@ -6985,8 +6985,8 @@
               "focus": -1
             },
             "axis_evidence": {
-              "tone": 0.08,
-              "focus": 0.08
+              "tone": 0.12,
+              "focus": 0.12
             },
             "set_tags": [
               "d_know_walk_away"
@@ -7052,14 +7052,14 @@
               "pressure": 1
             },
             "axis_evidence": {
-              "consequence": 0.1,
-              "pressure": 0.08
+              "consequence": 0.15,
+              "pressure": 0.12
             },
             "module_delta_levels": {
               "m_politics": 1
             },
             "module_evidence": {
-              "m_politics": 0.08
+              "m_politics": 0.12
             },
             "set_tags": [
               "d_work_force"
@@ -7076,7 +7076,7 @@
               "moral": -1
             },
             "axis_evidence": {
-              "moral": 0.1
+              "moral": 0.15
             },
             "set_tags": [
               "d_work_refuse"
@@ -7093,7 +7093,7 @@
               "structure": 1
             },
             "axis_evidence": {
-              "structure": 0.1
+              "structure": 0.15
             },
             "set_tags": [
               "d_work_incentive"
