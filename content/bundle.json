@@ -1167,7 +1167,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_tone_unsure_01"
             ],
             "why": "clarify_unsure_seed"
           }
@@ -2116,7 +2116,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_slider_center_01"
+              "q_followup_cost_center_01"
             ],
             "why": "center_reason_consequence"
           }
@@ -3409,6 +3409,1287 @@
       ]
     },
     {
+      "id": "q_followup_tone_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про тон истории («согревает и дает надежду» vs «давит и становится тяжелой»): что мешает выбрать?",
+      "help": "Это поможет точнее подбирать формулировки.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба тона звучат нормально",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от конкретной истории",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Сложно представить тон без примера",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_last_refuge_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про вайб «последний островок тепла среди опасного мира»: что мешает ответить?",
+      "help": "Это поможет уточнить ощущение от вайба.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "И «да», и «нет» звучат ок",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от жанра и сеттинга",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Сложно представить без примеров",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_active_nature_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про историю, где природа активна (лес меняет тропы, болото «ведёт», погода отвечает): что мешает выбрать?",
+      "help": "Это поможет точнее задать вопросы про мир.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "И активная, и фоновая природа ок",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от темпа и фокуса истории",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Нужны примеры, чтобы представить",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_epic_scale_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про истории большого масштаба, где мир больше тебя: что мешает выбрать?",
+      "help": "Помогает понять твой комфорт с эпиком.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "И камерно, и эпично ок",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от темы и темпа",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает примеров масштаба",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_operation_entry_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Нужно попасть в охраняемое место — про способ проникновения: что мешает выбрать?",
+      "help": "Это про стиль сцены, а не про «правильный» ответ.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба стиля захода нравятся",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от контекста миссии",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не до конца понимаю разницу в игре",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_cold_throne_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про вайб «северный холодный эпос с интригами и тяжёлыми решениями»: что мешает выбрать?",
+      "help": "Это про ощущение вайба.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "И нравится, и нет — оба ок",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от конкретного сюжета",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Нужны примеры, чтобы представить",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_ashen_ruins_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про вайб «мрачный мир руин и упадка, где даже победа даётся тяжело»: что мешает выбрать?",
+      "help": "Это про комфорт от атмосферы.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "И да, и нет звучат нормально",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от жанра и темпа",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Сложно представить без примеров",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_green_tech_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про вайб «природа + технологии‑руины + охота»: что мешает выбрать?",
+      "help": "Это про вайб сеттинга.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "И нравится, и не нравится — ок",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от подачи и сюжета",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Нужны примеры, чтобы представить",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_water_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про источник воды (быстро, но зависимость vs честнее, но хуже сейчас): что мешает выбрать?",
+      "help": "Это уточнение про формат выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба исхода выглядят приемлемо",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от масштаба последствий",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о цене решения",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_powergrid_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про энергию в регионе (всем понемногу vs полная мощность важным местам): что мешает выбрать?",
+      "help": "Это про то, чего не хватает для выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба варианта звучат допустимо",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от приоритетов региона",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о рисках",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_truth_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про правду и беду (сообщить — паника, молчать — не успеют): что мешает выбрать?",
+      "help": "Это уточнение про формат дилеммы.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба пути выглядят приемлемо",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от масштаба угрозы",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Нужны примеры последствий",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_bridge_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про мост между сообществами (закрыть, рискнуть, или жёсткий контроль): что мешает выбрать?",
+      "help": "Это про критерий выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Все варианты звучат нормально",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от того, что важнее для сообщества",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о рисках",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_refugees_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про беженцев (принять — ресурсов не хватит, отказать — пострадают): что мешает выбрать?",
+      "help": "Это про то, что мешает выбрать.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба исхода выглядят приемлемо",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от ресурсов поселения",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о цене помощи",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_market_control_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про дефицит (жёсткий контроль цен vs свободный рынок): что мешает выбрать?",
+      "help": "Это про критерий выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба подхода звучат нормально",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от масштаба дефицита",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о последствиях",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_secret_invention_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про технологию/ритуал с риском сломать порядок: что мешает выбрать?",
+      "help": "Это про то, чего не хватает для выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба пути выглядят приемлемо",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от масштаба перемен",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о рисках",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_resource_tradeoff_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про редкий ресурс (защита в будущем vs помощь сейчас): что мешает выбрать?",
+      "help": "Это уточнение про критерий выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба варианта выглядят нормально",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от нужд людей сейчас",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о будущем эффекте",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_reputation_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про репутацию невиновного ради результата: что мешает выбрать?",
+      "help": "Это помогает понять, что мешает выбору.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба исхода звучат допустимо",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от контекста и репутации",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о последствиях",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_promise_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про обещание одному vs помощь многим: что мешает выбрать?",
+      "help": "Это про критерий выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба пути выглядят приемлемо",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от масштаба помощи",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о цене отказа",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_knowledge_trade_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про тайну и цену за неё: что мешает выбрать?",
+      "help": "Это уточнение про критерий выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба решения выглядят нормальными",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от важности тайны",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о цене",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_dilemma_public_work_unsure_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про обязательные работы ради восстановления: что мешает выбрать?",
+      "help": "Это про то, чего не хватает для выбора.",
+      "tags": [
+        "followup",
+        "meta",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "Оба исхода выглядят приемлемо",
+          "effects": {
+            "set_tags": [
+              "unsure_means_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от срочности восстановления",
+          "effects": {
+            "set_tags": [
+              "unsure_means_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не хватает деталей о доверии людей",
+          "effects": {
+            "set_tags": [
+              "unsure_means_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
+      "id": "q_followup_cost_center_01",
+      "type": "choice",
+      "title": "Уточнение",
+      "prompt": "Про цену ошибок (1 — бережно, 5 — жёстко): почему середина?",
+      "help": "Это поможет точнее понимать твой комфорт.",
+      "tags": [
+        "followup",
+        "slider_center",
+        "pool_exclude"
+      ],
+      "content_tags": [],
+      "complexity": 1,
+      "fatigue_cost": 1,
+      "options": [
+        {
+          "id": "both",
+          "label": "И мягко, и жестко звучит ок",
+          "effects": {
+            "set_tags": [
+              "slider_center_both_ok"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "depends",
+          "label": "Зависит от жанра и ставок",
+          "effects": {
+            "set_tags": [
+              "slider_center_depends"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unclear",
+          "label": "Не до конца понял шкалу",
+          "effects": {
+            "set_tags": [
+              "slider_center_unclear"
+            ],
+            "unset_tags": [],
+            "notes": ""
+          }
+        },
+        {
+          "id": "unsure",
+          "label": "Не знаю",
+          "effects": {
+            "axis_deltas": {},
+            "axis_evidence": {},
+            "set_tags": [],
+            "unset_tags": [],
+            "notes": "unsure"
+          }
+        }
+      ]
+    },
+    {
       "id": "q_clarify_center_01",
       "type": "choice",
       "title": "Уточнение",
@@ -4220,7 +5501,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_last_refuge_unsure_01"
             ],
             "why": "sig_unsure_meta"
           }
@@ -4317,7 +5598,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_active_nature_unsure_01"
             ],
             "why": "sig_unsure_meta"
           }
@@ -4595,7 +5876,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_epic_scale_unsure_01"
             ],
             "why": "sig_unsure_meta"
           }
@@ -5341,7 +6622,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_operation_entry_unsure_01"
             ],
             "why": "scene_unsure_meta"
           }
@@ -5525,7 +6806,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_cold_throne_unsure_01"
             ],
             "why": "reference_unsure_meta"
           }
@@ -5623,7 +6904,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_ashen_ruins_unsure_01"
             ],
             "why": "reference_unsure_meta"
           }
@@ -5719,7 +7000,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_green_tech_unsure_01"
             ],
             "why": "reference_unsure_meta"
           }
@@ -5855,7 +7136,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_water_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -5987,7 +7268,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_powergrid_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -6129,7 +7410,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_truth_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -6259,7 +7540,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_bridge_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -6397,7 +7678,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_refugees_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -6513,7 +7794,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_market_control_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -6628,7 +7909,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_secret_invention_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -6762,7 +8043,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_resource_tradeoff_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -6894,7 +8175,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_reputation_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -7016,7 +8297,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_promise_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -7146,7 +8427,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_knowledge_trade_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
@@ -7253,7 +8534,7 @@
           "policy": {
             "mode": "pick_from_pool",
             "pool": [
-              "q_meta_unsure_01"
+              "q_followup_dilemma_public_work_unsure_01"
             ],
             "why": "dilemma_unsure_meta"
           }
