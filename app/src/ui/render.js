@@ -108,13 +108,20 @@ export function renderPlayer(root, view, handlers) {
     helpIcon.type = "button";
     helpIcon.setAttribute("aria-label", "Пояснение к вопросу");
     helpIcon.setAttribute("aria-expanded", "false");
-    helpIcon.setAttribute("data-tooltip", q.help);
     helpIcon.appendChild(makeIcon(ICONS.info, ""));
+    const tooltip = document.createElement("span");
+    tooltip.className = "tooltip";
+    tooltip.textContent = q.help;
+    helpIcon.appendChild(tooltip);
+    const alignTooltip = () => positionTooltip(helpIcon, tooltip);
     helpIcon.addEventListener("click", (event) => {
       event.stopPropagation();
       const isOpen = helpIcon.classList.toggle("is-open");
       helpIcon.setAttribute("aria-expanded", String(isOpen));
+      if (isOpen) alignTooltip();
     });
+    helpIcon.addEventListener("mouseenter", alignTooltip);
+    helpIcon.addEventListener("focus", alignTooltip);
     helpIcon.addEventListener("blur", () => {
       helpIcon.classList.remove("is-open");
       helpIcon.setAttribute("aria-expanded", "false");
@@ -346,6 +353,26 @@ function makeIcon(src, alt) {
   icon.alt = alt;
   if (!alt) icon.setAttribute("aria-hidden", "true");
   return icon;
+}
+
+function positionTooltip(anchor, tooltip) {
+  const padding = 12;
+  tooltip.style.left = "50%";
+  tooltip.style.transform = "translateX(-50%)";
+  requestAnimationFrame(() => {
+    const rect = tooltip.getBoundingClientRect();
+    const vw = window.innerWidth;
+    let shift = 0;
+    if (rect.left < padding) {
+      shift += padding - rect.left;
+    }
+    if (rect.right > vw - padding) {
+      shift -= rect.right - (vw - padding);
+    }
+    if (shift !== 0) {
+      tooltip.style.left = `calc(50% + ${shift}px)`;
+    }
+  });
 }
 
 function getProgressStage(view) {

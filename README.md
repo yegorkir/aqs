@@ -23,3 +23,5 @@ python3 -m http.server
 ```
 
 Then open `http://localhost:8000/app/` in your browser.
+
+If you have a local file server already, ensure it serves the repo root and open the same URL.

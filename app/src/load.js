@@ -1,7 +1,7 @@
 export async function loadBundleAndSchema() {
   const [bundleRes, schemaRes] = await Promise.all([
-    fetch("./content/bundle.json"),
-    fetch("./schema/quiz.schema.json"),
+    fetchWithFallback("./content/bundle.json", "../content/bundle.json"),
+    fetchWithFallback("./schema/quiz.schema.json", "../schema/quiz.schema.json"),
   ]);
 
   if (!bundleRes.ok) {
@@ -20,6 +20,12 @@ export async function loadBundleAndSchema() {
   const schema = parseJsonWithFenceSupport(schemaText, "quiz.schema.json");
 
   return { bundle, schema };
+}
+
+async function fetchWithFallback(primary, fallback) {
+  const res = await fetch(primary);
+  if (res.ok) return res;
+  return fetch(fallback);
 }
 
 export function indexBundle(bundle) {

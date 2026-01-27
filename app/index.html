@@ -167,6 +167,7 @@
         align-items: center;
         justify-content: center;
         position: relative;
+        overflow: visible;
         cursor: help;
       }
 
@@ -175,20 +176,20 @@
         height: 16px;
       }
 
-      .help-icon::after {
-        content: attr(data-tooltip);
+      .tooltip {
         position: absolute;
         left: 50%;
         bottom: calc(100% + 12px);
         transform: translateX(-50%);
         width: max-content;
-        max-width: 280px;
+        max-width: min(280px, calc(100vw - 24px));
         padding: 10px 12px;
         border-radius: 10px;
         background: #1d1a17;
         color: #fff;
         font-size: 12px;
         line-height: 1.4;
+        display: block;
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.15s ease;
@@ -197,9 +198,9 @@
         z-index: 2;
       }
 
-      .help-icon:hover::after,
-      .help-icon:focus-visible::after,
-      .help-icon.is-open::after {
+      .help-icon:hover .tooltip,
+      .help-icon:focus-visible .tooltip,
+      .help-icon.is-open .tooltip {
         opacity: 1;
       }
 
