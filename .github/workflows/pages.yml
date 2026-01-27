@@ -29,8 +29,8 @@ jobs:
 
       - name: Write Pages runtime config
         run: |
-          mkdir -p aqs/config
-          cat <<'EOF' > aqs/config/runtime.json
+          mkdir -p app/config
+          cat <<'EOF' > app/config/runtime.json
           {
             "showDebugPanel": false
           }
@@ -39,7 +39,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./aqs
+          path: ./app
 
       - name: Deploy to GitHub Pages
         id: deployment

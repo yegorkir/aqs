@@ -1,4 +1,4 @@
-# Checklist: aqs
+# Checklist: app
 
 ## 2026-01-26
 - [x] Create minimal static prototype files.
