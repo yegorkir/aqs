@@ -40,6 +40,18 @@ export function renderPlayer(root, view, handlers) {
     return;
   }
 
+  if (view.phase === "preconfig") {
+    screen.appendChild(renderPreconfigScreen(view, handlers));
+    root.appendChild(screen);
+    return;
+  }
+
+  if (view.phase === "preconfig_specify") {
+    screen.appendChild(renderPreconfigSpecifyScreen(view, handlers));
+    root.appendChild(screen);
+    return;
+  }
+
   if (view.phase === "result") {
     screen.appendChild(renderResultScreen(view, handlers));
     root.appendChild(screen);
@@ -294,6 +306,408 @@ export function renderPlayer(root, view, handlers) {
   root.appendChild(screen);
 }
 
+function renderPreconfigScreen(view, handlers) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "card";
+  const title = document.createElement("h2");
+  title.textContent = "Предварительная настройка";
+  wrapper.appendChild(title);
+
+  const lead = document.createElement("p");
+  lead.className = "muted";
+  lead.textContent =
+    "Выбери значения по ощущениям. Это не финальный результат — мы будем уточнять.";
+  wrapper.appendChild(lead);
+
+  const form = document.createElement("div");
+  form.className = "preconfig-form";
+
+  const axesBlock = document.createElement("div");
+  axesBlock.className = "preconfig-block";
+  const axesTitle = document.createElement("h3");
+  axesTitle.textContent = "Оси";
+  axesBlock.appendChild(axesTitle);
+  for (const axis of view.bundle?.axes ?? []) {
+    axesBlock.appendChild(renderPreconfigAxis(axis));
+  }
+  form.appendChild(axesBlock);
+
+  const modulesBlock = document.createElement("div");
+  modulesBlock.className = "preconfig-block";
+  const modulesTitle = document.createElement("h3");
+  modulesTitle.textContent = "Модули интереса";
+  modulesBlock.appendChild(modulesTitle);
+  for (const mod of view.bundle?.modules ?? []) {
+    modulesBlock.appendChild(renderPreconfigModule(mod));
+  }
+  form.appendChild(modulesBlock);
+
+  wrapper.appendChild(form);
+
+  const actions = document.createElement("div");
+  actions.className = "actions";
+  const nextBtn = makeButton("Продолжить", "btn", ICONS.arrow);
+  nextBtn.addEventListener("click", () => {
+    const axes = {};
+    const modules = {};
+    const inputs = form.querySelectorAll("input[data-kind]");
+    for (const input of inputs) {
+      const value = Number(input.value);
+      if (!Number.isFinite(value)) continue;
+      const normalized = value / 100;
+      if (input.dataset.kind === "axis") {
+        axes[input.dataset.id] = normalized;
+      } else if (input.dataset.kind === "module") {
+        modules[input.dataset.id] = normalized;
+      }
+    }
+    handlers.onPreconfigSubmit?.({ axes, modules });
+  });
+  actions.appendChild(nextBtn);
+  wrapper.appendChild(actions);
+
+  return wrapper;
+}
+
+function renderPreconfigAxis(axis) {
+  const item = document.createElement("div");
+  item.className = "preconfig-item";
+
+  const head = document.createElement("div");
+  head.className = "preconfig-head";
+  const labelWrap = document.createElement("div");
+  labelWrap.className = "preconfig-title-wrap";
+  const label = document.createElement("div");
+  label.className = "preconfig-title";
+  label.textContent = axis.title ?? axis.id;
+  const notAbout = axis.not_about?.length ? `Не про: ${axis.not_about.join(", ")}` : "";
+  labelWrap.appendChild(label);
+  if (notAbout) labelWrap.appendChild(makeHelpIcon(notAbout));
+  head.appendChild(labelWrap);
+  item.appendChild(head);
+
+  if (axis.goal) {
+    const goal = document.createElement("p");
+    goal.className = "muted";
+    goal.textContent = axis.goal;
+    item.appendChild(goal);
+  }
+
+  const slider = document.createElement("div");
+  slider.className = "slider";
+  const labels = document.createElement("div");
+  labels.className = "slider-labels";
+  const neg = document.createElement("span");
+  neg.className = "slider-label";
+  neg.textContent = axis.polarity?.neg_label ?? "Низко";
+  const pos = document.createElement("span");
+  pos.className = "slider-label";
+  pos.textContent = axis.polarity?.pos_label ?? "Высоко";
+  labels.appendChild(neg);
+  labels.appendChild(pos);
+  slider.appendChild(labels);
+  slider.appendChild(
+    buildPreconfigTextCol(
+      axis.polarity?.pos_label ?? "Высоко",
+      axis.polarity?.pos_tooltip ?? "",
+      axis.polarity?.neg_label ?? "Низко",
+      axis.polarity?.neg_tooltip ?? ""
+    )
+  );
+  const input = document.createElement("input");
+  input.type = "range";
+  input.min = "0";
+  input.max = "100";
+  input.step = "1";
+  input.value = "50";
+  input.dataset.kind = "axis";
+  input.dataset.id = axis.id;
+  slider.appendChild(input);
+  item.appendChild(slider);
+
+  const poles = document.createElement("div");
+  poles.className = "preconfig-poles";
+  const left = document.createElement("div");
+  left.className = "preconfig-pole pole-neg";
+  left.textContent = axis.polarity?.neg_tooltip ?? "";
+  const sep = document.createElement("div");
+  sep.className = "preconfig-sep";
+  const right = document.createElement("div");
+  right.className = "preconfig-pole pole-pos";
+  right.textContent = axis.polarity?.pos_tooltip ?? "";
+  poles.appendChild(left);
+  poles.appendChild(sep);
+  poles.appendChild(right);
+  item.appendChild(poles);
+
+  return item;
+}
+
+function renderPreconfigModule(mod) {
+  const item = document.createElement("div");
+  item.className = "preconfig-item";
+
+  const head = document.createElement("div");
+  head.className = "preconfig-head";
+  const labelWrap = document.createElement("div");
+  labelWrap.className = "preconfig-title-wrap";
+  const label = document.createElement("div");
+  label.className = "preconfig-title";
+  label.textContent = mod.title ?? mod.id;
+  const notAbout = mod.not_about?.length ? `Не про: ${mod.not_about.join(", ")}` : "";
+  labelWrap.appendChild(label);
+  if (notAbout) labelWrap.appendChild(makeHelpIcon(notAbout));
+  head.appendChild(labelWrap);
+  item.appendChild(head);
+
+  if (mod.goal) {
+    const goal = document.createElement("p");
+    goal.className = "muted";
+    goal.textContent = mod.goal;
+    item.appendChild(goal);
+  }
+
+  const slider = document.createElement("div");
+  slider.className = "slider";
+  const labels = document.createElement("div");
+  labels.className = "slider-labels";
+  const levels = mod.levels ?? [];
+  const neg = document.createElement("span");
+  neg.className = "slider-label";
+  neg.textContent = levels[0] ?? "нет";
+  const pos = document.createElement("span");
+  pos.className = "slider-label";
+  pos.textContent = levels[levels.length - 1] ?? "в центре";
+  labels.appendChild(neg);
+  labels.appendChild(pos);
+  slider.appendChild(labels);
+  slider.appendChild(
+    buildPreconfigTextCol(
+      levels[levels.length - 1] ?? "в центре",
+      (mod.level_tooltips ?? []).slice(-1)[0] ?? "",
+      levels[0] ?? "нет",
+      (mod.level_tooltips ?? [])[0] ?? ""
+    )
+  );
+  const input = document.createElement("input");
+  input.type = "range";
+  input.min = "0";
+  input.max = "100";
+  input.step = "1";
+  input.value = "50";
+  input.dataset.kind = "module";
+  input.dataset.id = mod.id;
+  slider.appendChild(input);
+  item.appendChild(slider);
+
+  const poles = document.createElement("div");
+  poles.className = "preconfig-poles";
+  const left = document.createElement("div");
+  left.className = "preconfig-pole pole-neg";
+  left.textContent = (mod.level_tooltips ?? [])[0] ?? "";
+  const sep = document.createElement("div");
+  sep.className = "preconfig-sep";
+  const right = document.createElement("div");
+  right.className = "preconfig-pole pole-pos";
+  right.textContent = (mod.level_tooltips ?? []).slice(-1)[0] ?? "";
+  poles.appendChild(left);
+  poles.appendChild(sep);
+  poles.appendChild(right);
+  item.appendChild(poles);
+
+  return item;
+}
+
+function renderPreconfigSpecifyScreen(view, handlers) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "card";
+  const title = document.createElement("h2");
+  title.textContent = "Уточнение приоритетов";
+  wrapper.appendChild(title);
+
+  const lead = document.createElement("p");
+  lead.className = "muted";
+  lead.textContent = "Сдвинь ползунок в сторону того, что важнее.";
+  wrapper.appendChild(lead);
+
+  const form = document.createElement("div");
+  form.className = "preconfig-form";
+  const pairs = view.state?.preconfig?.pending_pairs ?? [];
+  const config = view.bundle?.preconfig?.clarify ?? {};
+  const chosen = view.state?.preconfig?.choose?.axes ?? {};
+  for (const [leftId, rightId] of pairs) {
+    const left = view.bundle?.axesById?.[leftId];
+    const right = view.bundle?.axesById?.[rightId];
+    form.appendChild(
+      renderPreconfigPair(
+        leftId,
+        rightId,
+        left?.title ?? leftId,
+        right?.title ?? rightId,
+        left,
+        right,
+        chosen,
+        config
+      )
+    );
+  }
+  wrapper.appendChild(form);
+
+  const actions = document.createElement("div");
+  actions.className = "actions";
+  const nextBtn = makeButton("Продолжить", "btn", ICONS.arrow);
+  nextBtn.addEventListener("click", () => {
+    const specify = {};
+    const step = Number(config.step ?? 0.1);
+    const inputs = form.querySelectorAll("input[data-pair]");
+    for (const input of inputs) {
+      const value = Number(input.value);
+      if (!Number.isFinite(value)) continue;
+      const key = input.dataset.pair;
+      specify[key] = Number((value * step).toFixed(2));
+    }
+    handlers.onPreconfigSpecifySubmit?.({ specify });
+  });
+  actions.appendChild(nextBtn);
+  wrapper.appendChild(actions);
+
+  return wrapper;
+}
+
+function renderPreconfigPair(leftId, rightId, leftLabel, rightLabel, leftAxis, rightAxis, chosen, config) {
+  const item = document.createElement("div");
+  item.className = "preconfig-item";
+
+  const head = document.createElement("div");
+  head.className = "preconfig-head";
+  const labelWrap = document.createElement("div");
+  labelWrap.className = "preconfig-title-wrap";
+  const leftSpan = document.createElement("span");
+  leftSpan.className = "preconfig-title";
+  leftSpan.textContent = leftLabel;
+  if (leftAxis?.goal) leftSpan.appendChild(makeHelpIcon(leftAxis.goal));
+  const mid = document.createElement("span");
+  mid.textContent = "↔";
+  const rightSpan = document.createElement("span");
+  rightSpan.className = "preconfig-title";
+  rightSpan.textContent = rightLabel;
+  if (rightAxis?.goal) rightSpan.appendChild(makeHelpIcon(rightAxis.goal));
+  labelWrap.appendChild(leftSpan);
+  labelWrap.appendChild(mid);
+  labelWrap.appendChild(rightSpan);
+  head.appendChild(labelWrap);
+  item.appendChild(head);
+
+  const leftValue = Number(chosen?.[leftId]);
+  const rightValue = Number(chosen?.[rightId]);
+  const leftText = leftAxis ? formatAxisSummary(leftAxis, leftValue) : "";
+  const rightText = rightAxis ? formatAxisSummary(rightAxis, rightValue) : "";
+
+  const slider = document.createElement("div");
+  slider.className = "slider";
+  const labels = document.createElement("div");
+  labels.className = "slider-labels";
+  const neg = document.createElement("span");
+  neg.className = "slider-label";
+  neg.textContent = leftLabel;
+  const pos = document.createElement("span");
+  pos.className = "slider-label";
+  pos.textContent = rightLabel;
+  labels.appendChild(neg);
+  labels.appendChild(pos);
+  slider.appendChild(labels);
+  slider.appendChild(
+    buildPreconfigTextCol(
+      rightLabel,
+      rightAxis?.polarity?.pos_tooltip ?? "",
+      leftLabel,
+      leftAxis?.polarity?.neg_tooltip ?? ""
+    )
+  );
+  const input = document.createElement("input");
+  const stepsEachSide = Number(config.steps_each_side ?? 5);
+  input.type = "range";
+  input.min = String(-stepsEachSide);
+  input.max = String(stepsEachSide);
+  input.step = "1";
+  input.value = "0";
+  input.dataset.pair = `${leftId}-${rightId}`;
+  slider.appendChild(input);
+  item.appendChild(slider);
+
+  const resultsRow = document.createElement("div");
+  resultsRow.className = "preconfig-poles";
+  const leftResult = document.createElement("div");
+  leftResult.className = "preconfig-pole pole-neg";
+  leftResult.textContent = leftText;
+  const sep = document.createElement("div");
+  sep.className = "preconfig-sep";
+  const rightResult = document.createElement("div");
+  rightResult.className = "preconfig-pole pole-pos";
+  rightResult.textContent = rightText;
+  resultsRow.appendChild(leftResult);
+  resultsRow.appendChild(sep);
+  resultsRow.appendChild(rightResult);
+  item.appendChild(resultsRow);
+
+  return item;
+}
+
+function buildPreconfigTextCol(posLabel, posTooltip, negLabel, negTooltip) {
+  const col = document.createElement("div");
+  col.className = "preconfig-text-col";
+  const posTitle = document.createElement("div");
+  posTitle.className = "preconfig-title";
+  posTitle.textContent = posLabel;
+  const posText = document.createElement("div");
+  posText.className = "preconfig-pole";
+  posText.textContent = posTooltip;
+  const sep = document.createElement("div");
+  sep.className = "preconfig-sep";
+  const negTitle = document.createElement("div");
+  negTitle.className = "preconfig-title";
+  negTitle.textContent = negLabel;
+  const negText = document.createElement("div");
+  negText.className = "preconfig-pole";
+  negText.textContent = negTooltip;
+  col.appendChild(posTitle);
+  col.appendChild(posText);
+  col.appendChild(sep);
+  col.appendChild(negTitle);
+  col.appendChild(negText);
+  return col;
+}
+function formatAxisSummary(axis, value) {
+  if (!Number.isFinite(value)) return "";
+  const bucket = Math.max(-2, Math.min(2, Math.round(value * 4 - 2)));
+  const text = axis.result?.texts?.[String(bucket)] ?? "";
+  const desc = axis.description ?? axis.title ?? "";
+  if (!text) return desc;
+  return `${desc}: ${text}`;
+}
+
+function makeHelpIcon(text) {
+  const btn = document.createElement("button");
+  btn.className = "help-icon";
+  btn.type = "button";
+  btn.setAttribute("aria-label", "Пояснение");
+  btn.setAttribute("aria-expanded", "false");
+  btn.appendChild(makeIcon(ICONS.info, ""));
+  const tooltip = document.createElement("span");
+  tooltip.className = "tooltip";
+  tooltip.textContent = text;
+  btn.appendChild(tooltip);
+  const alignTooltip = () => positionTooltip(btn, tooltip);
+  btn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const isOpen = btn.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", String(isOpen));
+    if (isOpen) alignTooltip();
+  });
+  window.addEventListener("resize", alignTooltip);
+  return btn;
+}
+
 function renderTop(view) {
   const top = document.createElement("div");
   top.className = "screen-top";
@@ -475,14 +889,18 @@ function buildResultView(view) {
     const score = Number(state.score ?? 0);
     const bucket = bucketValue(score, scale);
     const texts = axis.result?.texts ?? {};
-    const description = texts[String(bucket)] ?? axis.description ?? "";
+    const description = axis.goal ?? axis.description ?? texts[String(bucket)] ?? "";
     const confidence = Number(state.confidence ?? 0);
     const thresholds = axis.result?.confidence_thresholds;
     return {
       id: axis.id,
       title: axis.title ?? axis.id,
+      goal: axis.goal ?? "",
+      notAbout: axis.not_about ?? [],
       negLabel: axis.polarity?.neg_label ?? "Низко",
       posLabel: axis.polarity?.pos_label ?? "Высоко",
+      negTooltip: axis.polarity?.neg_tooltip ?? "",
+      posTooltip: axis.polarity?.pos_tooltip ?? "",
       scale,
       bucket,
       description,
@@ -499,9 +917,12 @@ function buildResultView(view) {
     return {
       id: mod.id,
       title: mod.title ?? mod.id,
+      goal: mod.goal ?? "",
+      notAbout: mod.not_about ?? [],
       level,
       evidence: Number(state.evidence ?? 0),
       levels: mod.levels ?? [],
+      levelTooltips: mod.level_tooltips ?? [],
       confidence,
       confidenceLabel: confidenceLabel(confidence, thresholds),
       canEdit: true,
@@ -619,6 +1040,10 @@ function renderAxisList(axes, handlers) {
     const title = document.createElement("div");
     title.className = "result-card-title";
     title.textContent = axis.title;
+    const axisTooltip = [axis.goal, axis.notAbout?.length ? `Не про: ${axis.notAbout.join(", ")}` : ""]
+      .filter(Boolean)
+      .join("\n");
+    if (axisTooltip) title.title = axisTooltip;
     const headActions = document.createElement("div");
     headActions.className = "result-card-actions";
     const badge = document.createElement("span");
@@ -649,7 +1074,14 @@ function renderAxisList(axes, handlers) {
 
     const labels = document.createElement("div");
     labels.className = "scale-labels";
-    labels.innerHTML = `<span>${axis.negLabel}</span><span>${axis.posLabel}</span>`;
+    const negSpan = document.createElement("span");
+    negSpan.textContent = axis.negLabel;
+    if (axis.negTooltip) negSpan.title = axis.negTooltip;
+    const posSpan = document.createElement("span");
+    posSpan.textContent = axis.posLabel;
+    if (axis.posTooltip) posSpan.title = axis.posTooltip;
+    labels.appendChild(negSpan);
+    labels.appendChild(posSpan);
 
     const desc = document.createElement("p");
     desc.className = "muted";
@@ -676,6 +1108,10 @@ function renderModuleList(modules, handlers) {
     const title = document.createElement("div");
     title.className = "result-card-title";
     title.textContent = mod.title;
+    const modTooltip = [mod.goal, mod.notAbout?.length ? `Не про: ${mod.notAbout.join(", ")}` : ""]
+      .filter(Boolean)
+      .join("\n");
+    if (modTooltip) title.title = modTooltip;
     const headActions = document.createElement("div");
     headActions.className = "result-card-actions";
     const badge = document.createElement("span");
@@ -698,6 +1134,8 @@ function renderModuleList(modules, handlers) {
     for (let i = 0; i < steps; i += 1) {
       const seg = document.createElement("span");
       seg.className = "intensity-step";
+      const levelTip = mod.levelTooltips?.[i];
+      if (levelTip) seg.title = levelTip;
       if (i <= mod.level) seg.classList.add("active");
       bar.appendChild(seg);
     }

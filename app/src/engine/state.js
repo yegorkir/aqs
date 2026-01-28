@@ -27,6 +27,12 @@ export function initState(bundle) {
   return {
     session_id: getSessionId(),
     phase: "quiz",
+    preconfig: {
+      choose: { axes: {}, modules: {} },
+      specify: {},
+      adjusted: { axes: {}, modules: {} },
+      pending_pairs: [],
+    },
     asked: [],
     answers: [],
     pending_followups: [],

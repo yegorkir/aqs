@@ -21,13 +21,17 @@
         "id": { "$ref": "#/$defs/IdString" },
         "title": { "$ref": "#/$defs/NonEmptyString" },
         "description": { "type": "string" },
+        "goal": { "type": "string" },
+        "not_about": { "type": "array", "items": { "type": "string" } },
         "polarity": {
           "type": "object",
           "required": ["neg_label", "pos_label"],
           "additionalProperties": false,
           "properties": {
             "neg_label": { "$ref": "#/$defs/NonEmptyString" },
-            "pos_label": { "$ref": "#/$defs/NonEmptyString" }
+            "pos_label": { "$ref": "#/$defs/NonEmptyString" },
+            "neg_tooltip": { "type": "string" },
+            "pos_tooltip": { "type": "string" }
           }
         },
         "scale": {
@@ -100,7 +104,10 @@
       "properties": {
         "id": { "$ref": "#/$defs/IdString" },
         "title": { "$ref": "#/$defs/NonEmptyString" },
+        "goal": { "type": "string" },
+        "not_about": { "type": "array", "items": { "type": "string" } },
         "levels": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/NonEmptyString" } },
+        "level_tooltips": { "type": "array", "items": { "type": "string" } },
         "defaults": {
           "type": "object",
           "required": ["level", "confidence", "evidence"],
@@ -121,6 +128,41 @@
         "level": { "type": "integer", "minimum": 0 },
         "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
         "evidence": { "type": "number", "minimum": 0 }
+      }
+    },
+    "PreconfigAxisPair": {
+      "type": "object",
+      "required": ["pair"],
+      "additionalProperties": false,
+      "properties": {
+        "pair": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "$ref": "#/$defs/IdString" }
+        }
+      }
+    },
+    "PreconfigClarify": {
+      "type": "object",
+      "required": ["min_percent", "max_diff", "step", "steps_each_side", "min_multiplier", "max_multiplier"],
+      "additionalProperties": false,
+      "properties": {
+        "min_percent": { "type": "number", "minimum": 0, "maximum": 100 },
+        "max_diff": { "type": "number", "minimum": 0, "maximum": 100 },
+        "step": { "type": "number", "exclusiveMinimum": 0 },
+        "steps_each_side": { "type": "integer", "minimum": 1 },
+        "min_multiplier": { "type": "number", "minimum": 0 },
+        "max_multiplier": { "type": "number", "minimum": 0 }
+      }
+    },
+    "PreconfigConfig": {
+      "type": "object",
+      "required": ["axis_pairs", "clarify"],
+      "additionalProperties": false,
+      "properties": {
+        "axis_pairs": { "type": "array", "items": { "$ref": "#/$defs/PreconfigAxisPair" } },
+        "clarify": { "$ref": "#/$defs/PreconfigClarify" }
       }
     },
     "ModeDefinition": {
@@ -417,7 +459,8 @@
         "modes": { "type": "array", "items": { "$ref": "#/$defs/ModeDefinition" } },
         "safety_tags": { "type": "array", "items": { "$ref": "#/$defs/SafetyTagDefinition" } },
         "questions": { "type": "array", "items": { "$ref": "#/$defs/QuestionContract" } },
-        "safety_config": { "$ref": "#/$defs/SafetyConfig" }
+        "safety_config": { "$ref": "#/$defs/SafetyConfig" },
+        "preconfig": { "$ref": "#/$defs/PreconfigConfig" }
       }
     }
   }

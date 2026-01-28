@@ -153,7 +153,7 @@ function scoreQuestion(q, state, isVeiled) {
   const w1 = 1.0;
   const w2 = 1.2;
   let base = 0;
-  const why = { axes: {}, penalties: {} };
+  const why = { axes: {}, penalties: {}, prior: {} };
 
   for (const axisId of touchedAxes) {
     const ax = state.axes[axisId];
@@ -165,6 +165,10 @@ function scoreQuestion(q, state, isVeiled) {
     why.axes[axisId] = { need_conf, need_conflict, need };
   }
 
+  const prior = computePriorGain(state, touchedAxes, touchedModules);
+  const priorGain = prior.total;
+  why.prior = prior.why;
+
   let penalty = 0;
   penalty += (q.fatigue_cost ?? 0) * 0.15;
   if (isVeiled) penalty += 0.4;
@@ -174,6 +178,48 @@ function scoreQuestion(q, state, isVeiled) {
     veil: isVeiled ? 0.4 : 0,
   };
 
-  const total = base - penalty;
-  return { total, why, base, penalty, touchedAxes, touchedModules, touchedModes };
+  const total = base + priorGain - penalty;
+  return { total, why, base, priorGain, penalty, touchedAxes, touchedModules, touchedModes };
+}
+
+function computePriorGain(state, touchedAxes, touchedModules) {
+  const adjusted = state?.preconfig?.adjusted;
+  const axisValues = adjusted?.axes ?? {};
+  const moduleValues = adjusted?.modules ?? {};
+  const axisIds = Object.keys(axisValues);
+  const values = axisIds.map((id) => Number(axisValues[id])).filter((v) => Number.isFinite(v));
+  if (!values.length) {
+    return { total: 0, why: { axes: {}, modules: {} } };
+  }
+
+  const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+  const variance =
+    values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / Math.max(values.length, 1);
+  const std = Math.sqrt(variance);
+  const denom = Math.max(std, 0.05);
+  const weight = 0.8;
+
+  let total = 0;
+  const why = { axes: {}, modules: {} };
+
+  for (const axisId of touchedAxes) {
+    const val = Number(axisValues[axisId]);
+    if (!Number.isFinite(val)) continue;
+    const conf = state.axes[axisId]?.confidence ?? 0;
+    const peak = Math.abs(val - mean) / denom;
+    const gain = weight * peak * (1 - conf);
+    total += gain;
+    why.axes[axisId] = { value: val, mean, std, peak, gain };
+  }
+
+  for (const modId of touchedModules) {
+    const val = Number(moduleValues[modId]);
+    if (!Number.isFinite(val)) continue;
+    const conf = state.modules[modId]?.confidence ?? 0;
+    const gain = weight * val * (1 - conf);
+    total += gain;
+    why.modules[modId] = { value: val, gain };
+  }
+
+  return { total, why };
 }

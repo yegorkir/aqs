@@ -285,7 +285,48 @@ function render() {
       onAnswer,
       onStart: () => {
         logEvent("ui_click", { action: "start", phase: state?.phase ?? "unknown" });
+        state.phase = bundle.preconfig ? "preconfig" : "quiz";
+        render();
+      },
+      onPreconfigSubmit: (values) => {
+        if (!state || !bundle) return;
+        state.preconfig.choose = values;
+        logEvent("preconfig_choose", { choose: values });
+        const pairs = computeClarifyPairs(values?.axes ?? {}, bundle.preconfig);
+        state.preconfig.pending_pairs = pairs;
+        if (pairs.length) {
+          state.phase = "preconfig_specify";
+          render();
+          return;
+        }
+        state.preconfig.adjusted = {
+          axes: values?.axes ?? {},
+          modules: values?.modules ?? {},
+        };
+        applyPreconfigToState(state, bundle);
+        logEvent("preconfig_apply", { adjusted: state.preconfig.adjusted });
         state.phase = "quiz";
+        stepPick();
+        render();
+      },
+      onPreconfigSpecifySubmit: (values) => {
+        if (!state || !bundle) return;
+        state.preconfig.specify = values?.specify ?? {};
+        state.preconfig.adjusted = {
+          axes: applyPreconfigAdjustments(
+            state.preconfig.choose?.axes ?? {},
+            state.preconfig.specify,
+            bundle.preconfig
+          ),
+          modules: state.preconfig.choose?.modules ?? {},
+        };
+        applyPreconfigToState(state, bundle);
+        logEvent("preconfig_specify", {
+          specify: state.preconfig.specify,
+          adjusted_axes: state.preconfig.adjusted.axes,
+        });
+        state.phase = "quiz";
+        stepPick();
         render();
       },
       onContinue: () => {
@@ -437,6 +478,8 @@ function buildSharePayload(state) {
     session_id: state?.session_id ?? "unknown",
     exported_at: Date.now(),
     answers,
+    choose: state?.preconfig?.choose ?? {},
+    specify: state?.preconfig?.specify ?? {},
   };
 }
 
@@ -448,6 +491,62 @@ function logEvent(type, payload) {
     ts: Date.now(),
     payload,
   });
+}
+
+function computeClarifyPairs(axisValues, preconfig) {
+  const pairs = preconfig?.axis_pairs ?? [];
+  const minPercent = preconfig?.clarify?.min_percent ?? 50;
+  const maxDiff = preconfig?.clarify?.max_diff ?? 10;
+  const result = [];
+  for (const item of pairs) {
+    const [left, right] = item?.pair ?? [];
+    if (!left || !right) continue;
+    const leftValue = Number(axisValues[left]);
+    const rightValue = Number(axisValues[right]);
+    if (!Number.isFinite(leftValue) || !Number.isFinite(rightValue)) continue;
+    const leftPct = leftValue * 100;
+    const rightPct = rightValue * 100;
+    const bothHigh = leftPct >= minPercent && rightPct >= minPercent;
+    const diffLow = Math.abs(leftPct - rightPct) <= maxDiff;
+    if (bothHigh || diffLow) result.push([left, right]);
+  }
+  return result;
+}
+
+function applyPreconfigAdjustments(axisValues, specify, preconfig) {
+  const minMul = preconfig?.clarify?.min_multiplier ?? 0.5;
+  const maxMul = preconfig?.clarify?.max_multiplier ?? 1.5;
+  const adjusted = { ...axisValues };
+  for (const [pairKey, delta] of Object.entries(specify ?? {})) {
+    const [left, right] = pairKey.split("-");
+    if (!left || !right) continue;
+    const shift = Number(delta);
+    if (!Number.isFinite(shift)) continue;
+    const leftMul = Math.max(minMul, Math.min(maxMul, 1 - shift));
+    const rightMul = Math.max(minMul, Math.min(maxMul, 1 + shift));
+    if (Number.isFinite(axisValues[left])) adjusted[left] = axisValues[left] * leftMul;
+    if (Number.isFinite(axisValues[right])) adjusted[right] = axisValues[right] * rightMul;
+  }
+  return adjusted;
+}
+
+function applyPreconfigToState(state, bundle) {
+  const adjustedAxes = state.preconfig?.adjusted?.axes ?? {};
+  for (const axisDef of bundle.axes ?? []) {
+    const value = adjustedAxes[axisDef.id];
+    if (!Number.isFinite(value)) continue;
+    const min = axisDef.score_range?.min ?? -10;
+    const max = axisDef.score_range?.max ?? 10;
+    const score = min + (max - min) * value;
+    state.axes[axisDef.id].score = score;
+  }
+  const adjustedModules = state.preconfig?.adjusted?.modules ?? {};
+  for (const modDef of bundle.modules ?? []) {
+    const value = adjustedModules[modDef.id];
+    if (!Number.isFinite(value)) continue;
+    const level = Math.round(Math.max(0, Math.min(3, value * 3)));
+    state.modules[modDef.id].level = level;
+  }
 }
 
 function resolveAnswerLabel(question, answer) {
