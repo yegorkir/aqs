@@ -3,6 +3,7 @@ export function evaluateStop(state, bundle) {
     min_questions,
     min_axis_confidence,
     target_margin,
+    max_questions,
   } = state.stop;
 
   const keyAxes = bundle.key_axes ?? (bundle.axes ?? []).map((a) => a.id);
@@ -30,6 +31,9 @@ export function evaluateStop(state, bundle) {
   }
 
   const n = state.asked.length;
+  if (typeof max_questions === "number" && n >= max_questions) {
+    return { propose: true, reasons: ["max_questions_forced", n] };
+  }
   if (n < min_questions) return { propose: false, reasons: ["min_questions"] };
 
   const minConf = Math.min(...axisConf);

@@ -444,6 +444,7 @@ Normalize: привести все `cluster_score` к [0..1] через деле
 - margin ≥ threshold
 - **override:** если есть хотя бы 1 axis с high confidence и 1 axis с medium confidence — можно предложить результат сразу, независимо от остальных условий
 - **override:** если у всех ключевых осей и всех модулей confidence ≥ low (то есть нет «неопределено») — можно предложить результат сразу, независимо от остальных условий
+- **forced:** если `questions_count >= max_questions` — принудительно предложить результат
 
 После этого — **S6 PROPOSE_RESULT**.
 
