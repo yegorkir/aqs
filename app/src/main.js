@@ -26,6 +26,7 @@ let nextDebug = null;
 let stopInfo = null;
 let proposeSeen = false;
 let runtimeConfig = { showDebugPanel: true };
+let lastRenderedScreen = null;
 
 const logger = createLogger();
 let eventSeq = 0;
@@ -250,6 +251,10 @@ function onAnswer(answer) {
 
 function renderStatus(status, message = "") {
   renderPlayer(playerRoot, { status, message }, { onAnswer });
+  if (lastRenderedScreen !== status) {
+    lastRenderedScreen = status;
+    window.scrollTo(0, 0);
+  }
   renderDebug(debugRoot, {
     validationWarnings,
     validationBlockers,
@@ -449,6 +454,10 @@ function render() {
     lastLog,
     stopInfo,
   });
+  if (lastRenderedScreen !== state.phase) {
+    lastRenderedScreen = state.phase;
+    window.scrollTo(0, 0);
+  }
 
   if (continueBtn) {
     continueBtn.disabled = state.phase !== "propose_result";

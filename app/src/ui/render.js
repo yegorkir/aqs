@@ -526,8 +526,9 @@ function renderPreconfigSpecifyScreen(view, handlers) {
   wrapper.appendChild(title);
 
   const lead = document.createElement("p");
-  lead.className = "muted";
-  lead.textContent = "Сдвинь ползунок в сторону того, что важнее.";
+  lead.className = "lead-strong";
+  lead.textContent =
+    "Сдвинь ползунок в сторону того, что важнее. Если не понимаешь, как сравнивать, оставь ползунок на середине.";
   wrapper.appendChild(lead);
 
   const form = document.createElement("div");
@@ -681,9 +682,7 @@ function formatAxisSummary(axis, value) {
   if (!Number.isFinite(value)) return "";
   const bucket = Math.max(-2, Math.min(2, Math.round(value * 4 - 2)));
   const text = axis.result?.texts?.[String(bucket)] ?? "";
-  const desc = axis.description ?? axis.title ?? "";
-  if (!text) return desc;
-  return `${desc}: ${text}`;
+  return text;
 }
 
 function makeHelpIcon(text) {
