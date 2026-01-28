@@ -352,6 +352,7 @@ function renderPreconfigScreen(view, handlers) {
     const modules = {};
     const inputs = form.querySelectorAll("input[data-kind]");
     for (const input of inputs) {
+      if (input.dataset.touched !== "1") continue;
       const value = Number(input.value);
       if (!Number.isFinite(value)) continue;
       const normalized = value / 100;
@@ -422,6 +423,10 @@ function renderPreconfigAxis(axis) {
   input.value = "50";
   input.dataset.kind = "axis";
   input.dataset.id = axis.id;
+  input.dataset.touched = "0";
+  input.addEventListener("input", () => {
+    input.dataset.touched = "1";
+  });
   slider.appendChild(input);
   item.appendChild(slider);
 
@@ -497,6 +502,10 @@ function renderPreconfigModule(mod) {
   input.value = "50";
   input.dataset.kind = "module";
   input.dataset.id = mod.id;
+  input.dataset.touched = "0";
+  input.addEventListener("input", () => {
+    input.dataset.touched = "1";
+  });
   slider.appendChild(input);
   item.appendChild(slider);
 

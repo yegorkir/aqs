@@ -4,6 +4,11 @@ import { initState } from "./engine/state.js";
 import { applyAnswer } from "./engine/applyAnswer.js";
 import { pickNextQuestion } from "./engine/pickNext.js";
 import { evaluateStop } from "./engine/stop.js";
+import {
+  applyPreconfigAdjustments,
+  clamp01,
+  computeClarifyPairs,
+} from "./engine/preconfig.js";
 import { resolveFollowup } from "./engine/followup.js";
 import { questionSafetyStatus } from "./engine/safety.js";
 import { passesEligibilityFocus } from "./engine/eligibility.js";
@@ -127,7 +132,7 @@ function resetFlow() {
 function stepPick() {
   const next = pickNextQuestion(state, bundle);
   nextDebug = next.debug;
-  state.candidates = next.debug ? { margin: null } : null;
+  state.candidates = next.debug ? { margin: next.debug.margin ?? null } : null;
   if (next.pick) {
     state.next_qid = next.pick;
   } else {
@@ -502,43 +507,6 @@ function logEvent(type, payload) {
   });
 }
 
-function computeClarifyPairs(axisValues, preconfig) {
-  const pairs = preconfig?.axis_pairs ?? [];
-  const minPercent = preconfig?.clarify?.min_percent ?? 50;
-  const maxDiff = preconfig?.clarify?.max_diff ?? 10;
-  const result = [];
-  for (const item of pairs) {
-    const [left, right] = item?.pair ?? [];
-    if (!left || !right) continue;
-    const leftValue = Number(axisValues[left]);
-    const rightValue = Number(axisValues[right]);
-    if (!Number.isFinite(leftValue) || !Number.isFinite(rightValue)) continue;
-    const leftPct = leftValue * 100;
-    const rightPct = rightValue * 100;
-    const bothHigh = leftPct >= minPercent && rightPct >= minPercent;
-    const diffLow = Math.abs(leftPct - rightPct) <= maxDiff;
-    if (bothHigh || diffLow) result.push([left, right]);
-  }
-  return result;
-}
-
-function applyPreconfigAdjustments(axisValues, specify, preconfig) {
-  const minMul = preconfig?.clarify?.min_multiplier ?? 0.5;
-  const maxMul = preconfig?.clarify?.max_multiplier ?? 1.5;
-  const adjusted = { ...axisValues };
-  for (const [pairKey, delta] of Object.entries(specify ?? {})) {
-    const [left, right] = pairKey.split("-");
-    if (!left || !right) continue;
-    const shift = Number(delta);
-    if (!Number.isFinite(shift)) continue;
-    const leftMul = Math.max(minMul, Math.min(maxMul, 1 - shift));
-    const rightMul = Math.max(minMul, Math.min(maxMul, 1 + shift));
-    if (Number.isFinite(axisValues[left])) adjusted[left] = axisValues[left] * leftMul;
-    if (Number.isFinite(axisValues[right])) adjusted[right] = axisValues[right] * rightMul;
-  }
-  return adjusted;
-}
-
 function applyPreconfigToState(state, bundle) {
   const adjustedAxes = state.preconfig?.adjusted?.axes ?? {};
   for (const axisDef of bundle.axes ?? []) {
@@ -546,7 +514,7 @@ function applyPreconfigToState(state, bundle) {
     if (!Number.isFinite(value)) continue;
     const min = axisDef.score_range?.min ?? -10;
     const max = axisDef.score_range?.max ?? 10;
-    const score = min + (max - min) * value;
+    const score = min + (max - min) * clamp01(value);
     state.axes[axisDef.id].score = score;
   }
   const adjustedModules = state.preconfig?.adjusted?.modules ?? {};

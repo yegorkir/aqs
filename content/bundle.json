@@ -1427,301 +1427,6 @@
   },
   "questions": [
     {
-      "id": "q_a4_cost_01",
-      "type": "slider",
-      "title": "Цена ошибки",
-      "prompt": "Насколько тебе комфортно, если ошибки в игре стоят дорого? (1 — бережно, 5 — жёстко)",
-      "tags": [
-        "refine",
-        "core",
-        "consequence"
-      ],
-      "content_tags": [],
-      "slider": {
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 3,
-        "labels": {
-          "min": "Бережно",
-          "max": "Жёстко"
-        },
-        "snap_points": [
-          1,
-          3,
-          5
-        ]
-      },
-      "effects_by_range": [
-        {
-          "range": {
-            "min": 1,
-            "max": 2
-          },
-          "effects": {
-            "axis_deltas": {
-              "consequence": -1
-            },
-            "axis_evidence": {
-              "consequence": 0.18
-            }
-          }
-        },
-        {
-          "range": {
-            "min": 3,
-            "max": 3
-          },
-          "effects": {
-            "axis_deltas": {
-              "consequence": 0
-            },
-            "axis_evidence": {
-              "consequence": 0.1
-            }
-          }
-        },
-        {
-          "range": {
-            "min": 4,
-            "max": 5
-          },
-          "effects": {
-            "axis_deltas": {
-              "consequence": 1
-            },
-            "axis_evidence": {
-              "consequence": 0.18
-            }
-          }
-        }
-      ]
-    },
-    {
-      "id": "q_module_detective",
-      "type": "slider",
-      "title": "Интерес: детективность",
-      "prompt": "Насколько тебе хочется расследований и загадок?",
-      "help": "Не про сложность, а про частоту и важность.",
-      "tags": [
-        "module",
-        "m_detective"
-      ],
-      "content_tags": [],
-      "complexity": 2,
-      "fatigue_cost": 1,
-      "slider": {
-        "min": 1,
-        "max": 4,
-        "step": 1,
-        "default": 2,
-        "min_label": "Не хочу",
-        "max_label": "В центре",
-        "labels": {
-          "1": "Не хочу",
-          "2": "Фоном",
-          "3": "Заметно",
-          "4": "В центре"
-        }
-      },
-      "effects_by_range": [
-        {
-          "range": {
-            "min": 1,
-            "max": 1
-          },
-          "effects": {
-            "set_module_level": {
-              "m_detective": 0
-            },
-            "module_evidence": {
-              "m_detective": 0.22
-            },
-            "unset_tags": [],
-            "set_tags": [
-              "m_detective_0"
-            ],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 2,
-            "max": 2
-          },
-          "effects": {
-            "set_module_level": {
-              "m_detective": 1
-            },
-            "module_evidence": {
-              "m_detective": 0.22
-            },
-            "unset_tags": [],
-            "set_tags": [
-              "m_detective_1"
-            ],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 3,
-            "max": 3
-          },
-          "effects": {
-            "set_module_level": {
-              "m_detective": 2
-            },
-            "module_evidence": {
-              "m_detective": 0.22
-            },
-            "unset_tags": [],
-            "set_tags": [
-              "m_detective_2"
-            ],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 4,
-            "max": 4
-          },
-          "effects": {
-            "set_module_level": {
-              "m_detective": 3
-            },
-            "module_evidence": {
-              "m_detective": 0.22
-            },
-            "unset_tags": [],
-            "set_tags": [
-              "m_detective_3"
-            ],
-            "notes": ""
-          }
-        }
-      ]
-    },
-    {
-      "id": "q_module_romance",
-      "type": "slider",
-      "title": "Интерес: романтика",
-      "prompt": "Насколько романтические линии вообще уместны в истории?",
-      "help": "Формат (между кем) уточним отдельно, если нужно.",
-      "tags": [
-        "module",
-        "m_romance"
-      ],
-      "content_tags": [
-        "romance"
-      ],
-      "complexity": 2,
-      "fatigue_cost": 1,
-      "veil_variants": {
-        "prompt": "Насколько уместны «личные отношения» как тема в истории?",
-        "help": "Можно выбрать «не хочу», и это нормально.",
-        "options": {
-          "l0": "Не хочу",
-          "l1": "Фоном",
-          "l2": "Заметно",
-          "l3": "В центре"
-        }
-      },
-      "slider": {
-        "min": 1,
-        "max": 4,
-        "step": 1,
-        "default": 2,
-        "min_label": "Не хочу",
-        "max_label": "В центре",
-        "labels": {
-          "1": "Не хочу",
-          "2": "Фоном",
-          "3": "Заметно",
-          "4": "В центре"
-        }
-      },
-      "effects_by_range": [
-        {
-          "range": {
-            "min": 1,
-            "max": 1
-          },
-          "effects": {
-            "set_module_level": {
-              "m_romance": 0
-            },
-            "module_evidence": {
-              "m_romance": 0.22
-            },
-            "set_tags": [
-              "m_romance_0"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 2,
-            "max": 2
-          },
-          "effects": {
-            "set_module_level": {
-              "m_romance": 1
-            },
-            "module_evidence": {
-              "m_romance": 0.22
-            },
-            "set_tags": [
-              "m_romance_1"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 3,
-            "max": 3
-          },
-          "effects": {
-            "set_module_level": {
-              "m_romance": 2
-            },
-            "module_evidence": {
-              "m_romance": 0.22
-            },
-            "set_tags": [
-              "m_romance_2"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 4,
-            "max": 4
-          },
-          "effects": {
-            "set_module_level": {
-              "m_romance": 3
-            },
-            "module_evidence": {
-              "m_romance": 0.22
-            },
-            "set_tags": [
-              "m_romance_3"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        }
-      ]
-    },
-    {
       "id": "q_mode_party_conflict",
       "type": "slider",
       "title": "Формат: конфликт в партии",
@@ -2094,616 +1799,11 @@
       ]
     },
     {
-      "id": "q_clarify_center_02",
-      "type": "slider",
-      "title": "Уточнение",
-      "prompt": "Если говорить про напряжение: тебе хочется больше спокойных пауз или больше постоянного давления?",
-      "help": "Можно выбрать интуитивно.",
-      "tags": [
-        "followup",
-        "clarify",
-        "pressure",
-        "pool_exclude"
-      ],
-      "content_tags": [],
-      "complexity": 1,
-      "fatigue_cost": 1,
-      "slider": {
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 3,
-        "min_label": "Больше пауз",
-        "max_label": "Больше давления",
-        "labels": {
-          "1": "Паузы",
-          "2": "Скорее паузы",
-          "3": "Баланс",
-          "4": "Скорее давление",
-          "5": "Давление"
-        }
-      },
-      "effects_by_range": [
-        {
-          "range": {
-            "min": 1,
-            "max": 1
-          },
-          "effects": {
-            "axis_deltas": {
-              "pressure": -1
-            },
-            "axis_evidence": {
-              "pressure": 0.1
-            },
-            "set_tags": [
-              "pref_pauses"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 2,
-            "max": 2
-          },
-          "effects": {
-            "axis_deltas": {
-              "pressure": -1
-            },
-            "axis_evidence": {
-              "pressure": 0.1
-            },
-            "set_tags": [
-              "pref_pauses"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 3,
-            "max": 3
-          },
-          "effects": {
-            "axis_evidence": {
-              "pressure": 0.08
-            },
-            "set_tags": [
-              "pref_pressure_mix"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 4,
-            "max": 4
-          },
-          "effects": {
-            "axis_deltas": {
-              "pressure": 1
-            },
-            "axis_evidence": {
-              "pressure": 0.1
-            },
-            "set_tags": [
-              "pref_more_pressure"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 5,
-            "max": 5
-          },
-          "effects": {
-            "axis_deltas": {
-              "pressure": 1
-            },
-            "axis_evidence": {
-              "pressure": 0.1
-            },
-            "set_tags": [
-              "pref_more_pressure"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        }
-      ]
-    },
-    {
-      "id": "q_clarify_center_03",
-      "type": "slider",
-      "title": "Уточнение",
-      "prompt": "Про формат: тебе важно завершать «главу» за вечер или скорее важно выбирать направление?",
-      "help": "Оба варианта нормальны.",
-      "tags": [
-        "followup",
-        "clarify",
-        "structure",
-        "pool_exclude"
-      ],
-      "content_tags": [],
-      "complexity": 1,
-      "fatigue_cost": 1,
-      "slider": {
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 3,
-        "min_label": "Главу за вечер",
-        "max_label": "Свободное направление",
-        "labels": {
-          "1": "Главу",
-          "2": "Скорее главу",
-          "3": "Баланс",
-          "4": "Скорее свобода",
-          "5": "Свобода"
-        }
-      },
-      "effects_by_range": [
-        {
-          "range": {
-            "min": 1,
-            "max": 1
-          },
-          "effects": {
-            "axis_deltas": {
-              "structure": 1
-            },
-            "axis_evidence": {
-              "structure": 0.1
-            },
-            "set_tags": [
-              "pref_closure"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 2,
-            "max": 2
-          },
-          "effects": {
-            "axis_deltas": {
-              "structure": 1
-            },
-            "axis_evidence": {
-              "structure": 0.1
-            },
-            "set_tags": [
-              "pref_closure"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 3,
-            "max": 3
-          },
-          "effects": {
-            "axis_evidence": {
-              "structure": 0.08
-            },
-            "set_tags": [
-              "pref_structure_mix"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 4,
-            "max": 4
-          },
-          "effects": {
-            "axis_deltas": {
-              "structure": -1
-            },
-            "axis_evidence": {
-              "structure": 0.1
-            },
-            "set_tags": [
-              "pref_direction_choice"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 5,
-            "max": 5
-          },
-          "effects": {
-            "axis_deltas": {
-              "structure": -1
-            },
-            "axis_evidence": {
-              "structure": 0.1
-            },
-            "set_tags": [
-              "pref_direction_choice"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        }
-      ]
-    },
-    {
-      "id": "q_clarify_center_04",
-      "type": "slider",
-      "title": "Уточнение",
-      "prompt": "Если выбирать, что важнее для удовольствия: люди/отношения или открытия/мир — что ближе?",
-      "help": "Можно выбрать «баланс», если так честнее.",
-      "tags": [
-        "followup",
-        "clarify",
-        "focus",
-        "pool_exclude"
-      ],
-      "content_tags": [],
-      "complexity": 1,
-      "fatigue_cost": 1,
-      "slider": {
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 3,
-        "min_label": "Люди/отношения",
-        "max_label": "Открытия/мир",
-        "labels": {
-          "1": "Люди",
-          "2": "Скорее люди",
-          "3": "Баланс",
-          "4": "Скорее мир",
-          "5": "Мир"
-        }
-      },
-      "effects_by_range": [
-        {
-          "range": {
-            "min": 1,
-            "max": 1
-          },
-          "effects": {
-            "axis_deltas": {
-              "focus": -1
-            },
-            "axis_evidence": {
-              "focus": 0.1
-            },
-            "set_tags": [
-              "focus_people"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 2,
-            "max": 2
-          },
-          "effects": {
-            "axis_deltas": {
-              "focus": -1
-            },
-            "axis_evidence": {
-              "focus": 0.1
-            },
-            "set_tags": [
-              "focus_people"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 3,
-            "max": 3
-          },
-          "effects": {
-            "axis_evidence": {
-              "focus": 0.08
-            },
-            "set_tags": [
-              "focus_mix"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 4,
-            "max": 4
-          },
-          "effects": {
-            "axis_deltas": {
-              "focus": 1
-            },
-            "axis_evidence": {
-              "focus": 0.1
-            },
-            "set_tags": [
-              "focus_world"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 5,
-            "max": 5
-          },
-          "effects": {
-            "axis_deltas": {
-              "focus": 1
-            },
-            "axis_evidence": {
-              "focus": 0.1
-            },
-            "set_tags": [
-              "focus_world"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        }
-      ]
-    },
-    {
-      "id": "q_clarify_center_05",
-      "type": "slider",
-      "title": "Уточнение",
-      "prompt": "Про моральные дилеммы: тебе скорее хочется их редко или часто?",
-      "help": "Это только про комфорт, не про «правильность».",
-      "tags": [
-        "followup",
-        "clarify",
-        "moral",
-        "pool_exclude"
-      ],
-      "content_tags": [],
-      "complexity": 1,
-      "fatigue_cost": 1,
-      "slider": {
-        "min": 1,
-        "max": 4,
-        "step": 1,
-        "default": 2,
-        "min_label": "Редко",
-        "max_label": "Часто",
-        "labels": {
-          "1": "Редко",
-          "2": "Иногда",
-          "3": "Часто",
-          "4": "Очень часто"
-        }
-      },
-      "effects_by_range": [
-        {
-          "range": {
-            "min": 1,
-            "max": 1
-          },
-          "effects": {
-            "axis_deltas": {
-              "moral": -1
-            },
-            "axis_evidence": {
-              "moral": 0.1
-            },
-            "set_tags": [
-              "moral_rare"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 2,
-            "max": 2
-          },
-          "effects": {
-            "axis_evidence": {
-              "moral": 0.08
-            },
-            "set_tags": [
-              "moral_mix"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 3,
-            "max": 3
-          },
-          "effects": {
-            "axis_deltas": {
-              "moral": 1
-            },
-            "axis_evidence": {
-              "moral": 0.15
-            },
-            "set_tags": [
-              "moral_often"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 4,
-            "max": 4
-          },
-          "effects": {
-            "axis_deltas": {
-              "moral": 1
-            },
-            "axis_evidence": {
-              "moral": 0.15
-            },
-            "set_tags": [
-              "moral_often"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        }
-      ]
-    },
-    {
-      "id": "q_clarify_center_06",
-      "type": "slider",
-      "title": "Уточнение",
-      "prompt": "В целом тебе приятнее побеждать словами или поступком?",
-      "help": "Можно выбрать баланс.",
-      "tags": [
-        "followup",
-        "clarify",
-        "resolution",
-        "pool_exclude"
-      ],
-      "content_tags": [],
-      "complexity": 1,
-      "fatigue_cost": 1,
-      "slider": {
-        "min": 1,
-        "max": 5,
-        "step": 1,
-        "default": 3,
-        "min_label": "Словами",
-        "max_label": "Поступком",
-        "labels": {
-          "1": "Словами",
-          "2": "Скорее словами",
-          "3": "Баланс",
-          "4": "Скорее поступком",
-          "5": "Поступком"
-        }
-      },
-      "effects_by_range": [
-        {
-          "range": {
-            "min": 1,
-            "max": 1
-          },
-          "effects": {
-            "axis_deltas": {
-              "resolution": -1
-            },
-            "axis_evidence": {
-              "resolution": 0.1
-            },
-            "set_tags": [
-              "resolution_talk"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 2,
-            "max": 2
-          },
-          "effects": {
-            "axis_deltas": {
-              "resolution": -1
-            },
-            "axis_evidence": {
-              "resolution": 0.1
-            },
-            "set_tags": [
-              "resolution_talk"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 3,
-            "max": 3
-          },
-          "effects": {
-            "axis_evidence": {
-              "resolution": 0.08
-            },
-            "set_tags": [
-              "resolution_mix"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 4,
-            "max": 4
-          },
-          "effects": {
-            "axis_deltas": {
-              "resolution": 1
-            },
-            "axis_evidence": {
-              "resolution": 0.1
-            },
-            "set_tags": [
-              "resolution_act"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        },
-        {
-          "range": {
-            "min": 5,
-            "max": 5
-          },
-          "effects": {
-            "axis_deltas": {
-              "resolution": 1
-            },
-            "axis_evidence": {
-              "resolution": 0.1
-            },
-            "set_tags": [
-              "resolution_act"
-            ],
-            "unset_tags": [],
-            "notes": ""
-          }
-        }
-      ]
-    },
-    {
       "id": "q_dilemma_water_01",
       "type": "choice",
       "title": "Дилемма: вода для города",
-      "prompt": "Город держится на единственном источнике воды. Ты можешь починить его быстро, но это закрепит зависимость от одной семьи/группы. Или можно сделать систему честнее, но это дольше и часть города будет жить хуже какое-то время. Как поступишь?",
-      "help": "Это про вкус истории: быстрый результат vs долгий справедливый путь.",
+      "prompt": "Воду в этом пустынном городе контролирует одна Семья уже многие века, но вот у города иссяк источник. Ты можешь быстро починить систему, но тогда город останется в зависимости от этой Семьи. Или можно перестроить всё честно, но это займёт время, и какое‑то время части города будет еще хуже. Как поступишь?",
+      "help": "Это про вкус истории: быстрый результат или долгий справедливый путь.",
       "tags": [
         "dilemma",
         "scene",
@@ -2721,7 +1821,7 @@
       "options": [
         {
           "id": "fast",
-          "label": "Быстро починить, принять зависимость",
+          "label": "Быстро починить и оставить в зависимости, за то вода вернётся людям",
           "effects": {
             "axis_deltas": {
               "consequence": 1,
@@ -2746,7 +1846,7 @@
         },
         {
           "id": "fair",
-          "label": "Дольше, но сделать систему честнее",
+          "label": "Дольше, но перестроить систему честнее",
           "effects": {
             "axis_deltas": {
               "moral": -1,
@@ -2768,7 +1868,7 @@
         },
         {
           "id": "mix",
-          "label": "Компромисс: временная заплатка + план реформы",
+          "label": "Компромисс: дать людям воду сейчас, но начать перестройку системы, начав готовиться к проиводействию со стороны Семьи",
           "effects": {
             "axis_deltas": {
               "structure": 1,
@@ -2790,15 +1890,23 @@
         },
         {
           "id": "rush",
-          "label": "Сниму пломбы и включу всё на максимум — спасаем сейчас",
+          "label": "Использовать момент, чтобы свергнуть власть Семьи, а с водой разбираться потом",
           "effects": {
             "axis_deltas": {
-              "impulse": 2,
-              "pressure": 1
+              "agency": 1,
+              "pressure": 1,
+              "consequence": 1
             },
             "axis_evidence": {
-              "impulse": 0.3,
-              "pressure": 0.2
+              "agency": 0.25,
+              "pressure": 0.2,
+              "consequence": 0.2
+            },
+            "module_delta_levels": {
+              "m_politics": 1
+            },
+            "module_evidence": {
+              "m_politics": 0.2
             },
             "set_tags": [
               "d_water_rush"
@@ -2976,7 +2084,7 @@
         },
         {
           "id": "tell_some",
-          "label": "Сообщить только тем, кто может действовать",
+          "label": "Сообщить только тем, кто может действовать. Будем готовиться тихо",
           "effects": {
             "axis_deltas": {
               "structure": 1,
@@ -3015,7 +2123,7 @@
         },
         {
           "id": "prophecy",
-          "label": "Скажу всё как легенду/пророчество — пусть готовятся без паники",
+          "label": "Расскажу как легенду/пророчество — пусть готовятся без паники",
           "effects": {
             "axis_deltas": {
               "impulse": 2
@@ -3032,7 +2140,7 @@
         },
         {
           "id": "circle",
-          "label": "Соберу круг доверия и решу с ними, как говорить с остальными",
+          "label": "Соберу круг доверенных мне и решу с ними, как говорить с остальными",
           "effects": {
             "axis_deltas": {
               "resolution": -1,
@@ -3064,7 +2172,7 @@
       "id": "q_dilemma_bridge_01",
       "type": "choice",
       "title": "Дилемма: мост и торговля",
-      "prompt": "Единственный мост соединяет два сообщества. Он рушится. Можно закрыть его ради безопасности, можно рискнуть и оставить ради связи и торговли, или ввести жёсткий контроль и пропускной график. Как поступишь?",
+      "prompt": "Единственный мост соединяет два сообщества. Он рушится и денег на ремонт почти нет. Можно закрыть его ради безопасности, можно рискнуть и оставить ради связи и торговли в надежде накопить немного больше. Как поступишь?",
       "help": "Компромисс: безопасность vs жизнь региона.",
       "tags": [
         "dilemma",
@@ -3105,7 +2213,7 @@
         },
         {
           "id": "keep_open",
-          "label": "Оставить открытым ради связи и торговли, несмотря на риск",
+          "label": "Оставить открытым, несмотря на риск",
           "effects": {
             "axis_deltas": {
               "pressure": 1,
@@ -3178,7 +2286,7 @@
       "id": "q_dilemma_refugees_01",
       "type": "choice",
       "title": "Дилемма: принять людей",
-      "prompt": "В ваше поселение приходят люди, которым негде жить. Если принять — ресурсов не хватит и всем станет тяжелее. Если отказать — они пострадают. Какие последствия будет интереснее?",
+      "prompt": "В ваше поселение приходят люди, которым негде жить. Если принять — ресурсов не хватит и всем станет тяжелее. Если отказать — они пострадают. Какие последствия для тебя будут интереснее?",
       "help": "Это про социальную цену и ответственность.",
       "tags": [
         "dilemma",
@@ -3222,7 +2330,7 @@
         },
         {
           "id": "refuse",
-          "label": "Отказать: иначе не справимся все",
+          "label": "Отказать: риски мы не сможем прокормить и своих и чужих",
           "effects": {
             "axis_deltas": {
               "consequence": 1,
@@ -3499,7 +2607,7 @@
       "id": "q_dilemma_resource_tradeoff_01",
       "type": "choice",
       "title": "Дилемма: редкий ресурс",
-      "prompt": "У вас есть редкий ресурс. Его можно потратить на улучшение защиты (меньше рисков в будущем) или на помощь людям сейчас (больше доверия и стабильности). Что интереснее играть?",
+      "prompt": "У вас есть редкий ресурс. Его можно потратить на улучшение защиты (меньше рисков в будущем) или на помощь людям сейчас (больше доверия и стабильности). Как будет интереснее поступить в твоей игре мечты?",
       "help": "Про выбор «сейчас vs потом».",
       "tags": [
         "dilemma",
@@ -3617,7 +2725,7 @@
       "id": "q_dilemma_reputation_01",
       "type": "choice",
       "title": "Дилемма: репутация",
-      "prompt": "Чтобы добиться результата, нужно испортить репутацию невиновного человека. Это можно будет исправить позже, но не факт. Как поступишь?",
+      "prompt": "Чтобы спасти близкого от несправедливых обвинений, нужно испортить репутацию невиновного человека. Неизвестно получится ли исправить это позже. Как поступишь?",
       "help": "Про цену результата без прямого вреда телу/жизни.",
       "tags": [
         "dilemma",
@@ -3636,7 +2744,7 @@
       "options": [
         {
           "id": "do_it",
-          "label": "Сделать: цель важнее",
+          "label": "Сделать: я спасусь любой ценой",
           "effects": {
             "axis_deltas": {
               "moral": 1,
@@ -3678,7 +2786,7 @@
         },
         {
           "id": "alt",
-          "label": "Искать третий путь: другой рычаг/другие доказательства",
+          "label": "Искать другой способ, чтобы отвлечь внимание, даже если есть риск провала",
           "effects": {
             "axis_deltas": {
               "agency": 1
@@ -3701,7 +2809,7 @@
         },
         {
           "id": "apologize",
-          "label": "Публично извиниться и взять удар на себя",
+          "label": "Взять вину на себя, чтобы защитить невиновного",
           "effects": {
             "axis_deltas": {
               "tone": -1,
@@ -3805,7 +2913,7 @@
         },
         {
           "id": "third_way",
-          "label": "Попробовать третий путь: и обещание, и помощь другим",
+          "label": "Разделить усилия: немного от обещания, немного помощи, но ни один не получит полного результата",
           "effects": {
             "axis_deltas": {
               "agency": 1,

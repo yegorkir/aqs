@@ -1,3 +1,5 @@
 .DS_Store
 
 docs/agent_tasks/
+_merged/
+.merge_ui.json

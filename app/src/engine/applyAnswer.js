@@ -54,6 +54,20 @@ export function applyAnswer(state, bundle, answer) {
     }
   }
 
+  if (effects.set_module_level) {
+    for (const [mid, level] of Object.entries(effects.set_module_level)) {
+      const ms = state.modules[mid];
+      if (!ms) continue;
+      const lv = clamp(Math.round(level), 0, 3);
+      ms.level = lv;
+      log.module_changes[mid] = {
+        ...(log.module_changes[mid] ?? {}),
+        set_level: lv,
+        level: ms.level,
+      };
+    }
+  }
+
   if (effects.module_evidence) {
     for (const [mid, ev] of Object.entries(effects.module_evidence)) {
       const ms = state.modules[mid];
