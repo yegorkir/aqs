@@ -311,12 +311,25 @@
       .screen.phase-preconfig_specify {
         --range-track: #e2d9cd;
         --range-progress: #2f6bff;
+        --range-active: #2f6bff;
+        --range-active-glow: rgba(47, 107, 255, 0.2);
         --range-thumb-size: 18px;
         --range-track-size: 6px;
       }
 
-      .screen.phase-preconfig_specify {
-        --range-progress: var(--range-track);
+      .screen.phase-preconfig .slider,
+      .screen.phase-preconfig_specify .slider {
+        border: 1px solid var(--range-track);
+        border-radius: 14px;
+        padding: 10px 12px 12px;
+        background: #fff;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .screen.phase-preconfig .slider.is-touched,
+      .screen.phase-preconfig_specify .slider.is-touched {
+        border-color: var(--range-active);
+        box-shadow: 0 0 0 3px var(--range-active-glow);
       }
 
       .screen.phase-preconfig .slider input[type="range"],
@@ -331,6 +344,11 @@
           linear-gradient(var(--range-progress), var(--range-progress)) 0/var(--range-fill) 100%
             no-repeat,
           linear-gradient(var(--range-track), var(--range-track)) 0/100% 100% no-repeat;
+      }
+
+      .screen.phase-preconfig .slider.slider--no-fill input[type="range"],
+      .screen.phase-preconfig_specify .slider.slider--no-fill input[type="range"] {
+        background: linear-gradient(var(--range-track), var(--range-track)) 0/100% 100% no-repeat;
       }
 
       .screen.phase-preconfig .slider input[type="range"]::-webkit-slider-runnable-track,
@@ -356,6 +374,12 @@
       .screen.phase-preconfig .slider input[type="range"][data-touched="0"]::-webkit-slider-thumb,
       .screen.phase-preconfig_specify .slider input[type="range"][data-touched="0"]::-webkit-slider-thumb {
         background: var(--range-track);
+      }
+
+      .screen.phase-preconfig .slider input[type="range"][data-touched="1"]::-webkit-slider-thumb,
+      .screen.phase-preconfig_specify .slider input[type="range"][data-touched="1"]::-webkit-slider-thumb {
+        background: var(--range-active);
+        box-shadow: 0 0 0 4px var(--range-active-glow);
       }
 
       .screen.phase-preconfig .slider input[type="range"]::-moz-range-track,

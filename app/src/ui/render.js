@@ -353,6 +353,7 @@ function renderPreconfigScreen(view, handlers) {
     const modules = {};
     const inputs = form.querySelectorAll("input[data-kind]");
     for (const input of inputs) {
+      if (input.dataset.touched !== "1") continue;
       const value = Number(input.value);
       if (!Number.isFinite(value)) continue;
       const normalized = value / 100;
@@ -395,7 +396,7 @@ function renderPreconfigAxis(axis) {
   }
 
   const slider = document.createElement("div");
-  slider.className = "slider";
+  slider.className = "slider slider--no-fill";
   const labels = document.createElement("div");
   labels.className = "slider-labels";
   const neg = document.createElement("span");
@@ -429,15 +430,13 @@ function renderPreconfigAxis(axis) {
   input.min = "0";
   input.max = "100";
   input.step = "1";
-  input.value = "0";
+  input.value = "50";
+  input.defaultValue = "50";
   input.dataset.kind = "axis";
   input.dataset.id = axis.id;
   input.dataset.touched = "0";
   setRangeFill(input);
-  input.addEventListener("input", () => {
-    input.dataset.touched = "1";
-    setRangeFill(input);
-  });
+  attachSliderTouchBehavior(input, slider);
   slider.appendChild(input);
   slider.appendChild(mobileLabels);
   item.appendChild(slider);
@@ -485,7 +484,7 @@ function renderPreconfigModule(mod) {
   }
 
   const slider = document.createElement("div");
-  slider.className = "slider";
+  slider.className = "slider slider--no-fill";
   const labels = document.createElement("div");
   labels.className = "slider-labels";
   const levels = mod.levels ?? [];
@@ -520,15 +519,13 @@ function renderPreconfigModule(mod) {
   input.min = "0";
   input.max = "100";
   input.step = "1";
-  input.value = "0";
+  input.value = "50";
+  input.defaultValue = "50";
   input.dataset.kind = "module";
   input.dataset.id = mod.id;
   input.dataset.touched = "0";
   setRangeFill(input);
-  input.addEventListener("input", () => {
-    input.dataset.touched = "1";
-    setRangeFill(input);
-  });
+  attachSliderTouchBehavior(input, slider);
   slider.appendChild(input);
   slider.appendChild(mobileLabels);
   item.appendChild(slider);
@@ -638,7 +635,7 @@ function renderPreconfigPair(leftId, rightId, leftLabel, rightLabel, leftAxis, r
   const rightText = rightAxis ? formatAxisSummary(rightAxis, rightValue) : "";
 
   const slider = document.createElement("div");
-  slider.className = "slider";
+  slider.className = "slider slider--no-fill";
   const labels = document.createElement("div");
   labels.className = "slider-labels";
   const neg = document.createElement("span");
@@ -677,10 +674,7 @@ function renderPreconfigPair(leftId, rightId, leftLabel, rightLabel, leftAxis, r
   input.dataset.pair = `${leftId}-${rightId}`;
   input.dataset.touched = "0";
   setRangeFill(input);
-  input.addEventListener("input", () => {
-    input.dataset.touched = "1";
-    setRangeFill(input);
-  });
+  attachSliderTouchBehavior(input, slider);
   slider.appendChild(input);
   slider.appendChild(mobileLabels);
   item.appendChild(slider);
@@ -729,6 +723,11 @@ function buildPreconfigTextCol(posLabel, posTooltip, negLabel, negTooltip) {
 }
 
 function setRangeFill(input) {
+  const slider = input.closest?.(".slider");
+  if (slider?.classList.contains("slider--no-fill")) {
+    input.style.setProperty("--range-fill", "0%");
+    return;
+  }
   const min = Number(input.min ?? 0);
   const max = Number(input.max ?? 100);
   const value = Number(input.value ?? min);
@@ -740,6 +739,17 @@ function setRangeFill(input) {
   const pct = ((value - min) / span) * 100;
   const clamped = Math.max(0, Math.min(100, pct));
   input.style.setProperty("--range-fill", `${clamped}%`);
+}
+
+function attachSliderTouchBehavior(input, slider) {
+  const markTouched = () => {
+    if (input.dataset.touched === "1") return;
+    input.dataset.touched = "1";
+    slider.classList.add("is-touched");
+    setRangeFill(input);
+  };
+  input.addEventListener("input", markTouched);
+  input.addEventListener("change", markTouched);
 }
 
 function formatAxisSummary(axis, value) {
@@ -777,10 +787,10 @@ function renderTop(view) {
   const left = document.createElement("div");
   const brand = document.createElement("h1");
   brand.className = "brand";
-  brand.textContent = "Адаптивный опросник";
+  brand.textContent = "Определитель пожеланий";
   const tagline = document.createElement("p");
   tagline.className = "tagline";
-  tagline.textContent = "Диалог, который помогает понять себя.";
+  tagline.textContent = "Помогаем решить какое приключение подходит именно тебе.";
   left.appendChild(brand);
   left.appendChild(tagline);
   const stage = document.createElement("div");
