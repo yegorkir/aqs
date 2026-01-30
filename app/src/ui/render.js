@@ -8,7 +8,8 @@ export function renderPlayer(root, view, handlers) {
   root.innerHTML = "";
 
   const screen = document.createElement("div");
-  screen.className = "screen";
+  const phaseClass = view.phase ? ` phase-${view.phase}` : "";
+  screen.className = `screen${phaseClass}`;
   screen.appendChild(renderTop(view));
 
   if (view.status === "loading") {
@@ -352,7 +353,6 @@ function renderPreconfigScreen(view, handlers) {
     const modules = {};
     const inputs = form.querySelectorAll("input[data-kind]");
     for (const input of inputs) {
-      if (input.dataset.touched !== "1") continue;
       const value = Number(input.value);
       if (!Number.isFinite(value)) continue;
       const normalized = value / 100;
@@ -407,27 +407,39 @@ function renderPreconfigAxis(axis) {
   labels.appendChild(neg);
   labels.appendChild(pos);
   slider.appendChild(labels);
-  slider.appendChild(
-    buildPreconfigTextCol(
-      axis.polarity?.pos_label ?? "Высоко",
-      axis.polarity?.pos_tooltip ?? "",
-      axis.polarity?.neg_label ?? "Низко",
-      axis.polarity?.neg_tooltip ?? ""
-    )
+  const textCol = buildPreconfigTextCol(
+    axis.polarity?.pos_label ?? "Высоко",
+    axis.polarity?.pos_tooltip ?? "",
+    axis.polarity?.neg_label ?? "Низко",
+    axis.polarity?.neg_tooltip ?? ""
   );
+  slider.appendChild(textCol);
+  const mobileLabels = document.createElement("div");
+  mobileLabels.className = "slider-mobile-labels";
+  const mobileLeft = document.createElement("span");
+  mobileLeft.className = "slider-mobile-label";
+  mobileLeft.textContent = axis.polarity?.neg_label ?? "Низко";
+  const mobileRight = document.createElement("span");
+  mobileRight.className = "slider-mobile-label";
+  mobileRight.textContent = axis.polarity?.pos_label ?? "Высоко";
+  mobileLabels.appendChild(mobileLeft);
+  mobileLabels.appendChild(mobileRight);
   const input = document.createElement("input");
   input.type = "range";
   input.min = "0";
   input.max = "100";
   input.step = "1";
-  input.value = "50";
+  input.value = "0";
   input.dataset.kind = "axis";
   input.dataset.id = axis.id;
   input.dataset.touched = "0";
+  setRangeFill(input);
   input.addEventListener("input", () => {
     input.dataset.touched = "1";
+    setRangeFill(input);
   });
   slider.appendChild(input);
+  slider.appendChild(mobileLabels);
   item.appendChild(slider);
 
   const poles = document.createElement("div");
@@ -486,27 +498,39 @@ function renderPreconfigModule(mod) {
   labels.appendChild(neg);
   labels.appendChild(pos);
   slider.appendChild(labels);
-  slider.appendChild(
-    buildPreconfigTextCol(
-      levels[levels.length - 1] ?? "в центре",
-      (mod.level_tooltips ?? []).slice(-1)[0] ?? "",
-      levels[0] ?? "нет",
-      (mod.level_tooltips ?? [])[0] ?? ""
-    )
+  const textCol = buildPreconfigTextCol(
+    levels[levels.length - 1] ?? "в центре",
+    (mod.level_tooltips ?? []).slice(-1)[0] ?? "",
+    levels[0] ?? "нет",
+    (mod.level_tooltips ?? [])[0] ?? ""
   );
+  slider.appendChild(textCol);
+  const mobileLabels = document.createElement("div");
+  mobileLabels.className = "slider-mobile-labels";
+  const mobileLeft = document.createElement("span");
+  mobileLeft.className = "slider-mobile-label";
+  mobileLeft.textContent = levels[0] ?? "нет";
+  const mobileRight = document.createElement("span");
+  mobileRight.className = "slider-mobile-label";
+  mobileRight.textContent = levels[levels.length - 1] ?? "в центре";
+  mobileLabels.appendChild(mobileLeft);
+  mobileLabels.appendChild(mobileRight);
   const input = document.createElement("input");
   input.type = "range";
   input.min = "0";
   input.max = "100";
   input.step = "1";
-  input.value = "50";
+  input.value = "0";
   input.dataset.kind = "module";
   input.dataset.id = mod.id;
   input.dataset.touched = "0";
+  setRangeFill(input);
   input.addEventListener("input", () => {
     input.dataset.touched = "1";
+    setRangeFill(input);
   });
   slider.appendChild(input);
+  slider.appendChild(mobileLabels);
   item.appendChild(slider);
 
   const poles = document.createElement("div");
@@ -626,14 +650,23 @@ function renderPreconfigPair(leftId, rightId, leftLabel, rightLabel, leftAxis, r
   labels.appendChild(neg);
   labels.appendChild(pos);
   slider.appendChild(labels);
-  slider.appendChild(
-    buildPreconfigTextCol(
-      rightLabel,
-      rightAxis?.polarity?.pos_tooltip ?? "",
-      leftLabel,
-      leftAxis?.polarity?.neg_tooltip ?? ""
-    )
+  const textCol = buildPreconfigTextCol(
+    rightLabel,
+    rightAxis?.polarity?.pos_tooltip ?? "",
+    leftLabel,
+    leftAxis?.polarity?.neg_tooltip ?? ""
   );
+  slider.appendChild(textCol);
+  const mobileLabels = document.createElement("div");
+  mobileLabels.className = "slider-mobile-labels";
+  const mobileLeft = document.createElement("span");
+  mobileLeft.className = "slider-mobile-label";
+  mobileLeft.textContent = leftLabel;
+  const mobileRight = document.createElement("span");
+  mobileRight.className = "slider-mobile-label";
+  mobileRight.textContent = rightLabel;
+  mobileLabels.appendChild(mobileLeft);
+  mobileLabels.appendChild(mobileRight);
   const input = document.createElement("input");
   const stepsEachSide = Number(config.steps_each_side ?? 5);
   input.type = "range";
@@ -642,7 +675,14 @@ function renderPreconfigPair(leftId, rightId, leftLabel, rightLabel, leftAxis, r
   input.step = "1";
   input.value = "0";
   input.dataset.pair = `${leftId}-${rightId}`;
+  input.dataset.touched = "0";
+  setRangeFill(input);
+  input.addEventListener("input", () => {
+    input.dataset.touched = "1";
+    setRangeFill(input);
+  });
   slider.appendChild(input);
+  slider.appendChild(mobileLabels);
   item.appendChild(slider);
 
   const resultsRow = document.createElement("div");
@@ -687,6 +727,21 @@ function buildPreconfigTextCol(posLabel, posTooltip, negLabel, negTooltip) {
   col.appendChild(negText);
   return col;
 }
+
+function setRangeFill(input) {
+  const min = Number(input.min ?? 0);
+  const max = Number(input.max ?? 100);
+  const value = Number(input.value ?? min);
+  const span = max - min;
+  if (!Number.isFinite(span) || span <= 0) {
+    input.style.setProperty("--range-fill", "0%");
+    return;
+  }
+  const pct = ((value - min) / span) * 100;
+  const clamped = Math.max(0, Math.min(100, pct));
+  input.style.setProperty("--range-fill", `${clamped}%`);
+}
+
 function formatAxisSummary(axis, value) {
   if (!Number.isFinite(value)) return "";
   const bucket = Math.max(-2, Math.min(2, Math.round(value * 4 - 2)));

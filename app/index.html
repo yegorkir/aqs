@@ -294,6 +294,99 @@
         gap: 6px;
       }
 
+      .slider-mobile-labels {
+        display: none;
+        justify-content: space-between;
+        font-size: 14px;
+        color: var(--muted-dark);
+      }
+
+      .slider-mobile-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .screen.phase-preconfig,
+      .screen.phase-preconfig_specify {
+        --range-track: #e2d9cd;
+        --range-progress: #2f6bff;
+        --range-thumb-size: 18px;
+        --range-track-size: 6px;
+      }
+
+      .screen.phase-preconfig_specify {
+        --range-progress: var(--range-track);
+      }
+
+      .screen.phase-preconfig .slider input[type="range"],
+      .screen.phase-preconfig_specify .slider input[type="range"] {
+        --range-fill: 0%;
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: var(--range-track-size);
+        border-radius: 999px;
+        background:
+          linear-gradient(var(--range-progress), var(--range-progress)) 0/var(--range-fill) 100%
+            no-repeat,
+          linear-gradient(var(--range-track), var(--range-track)) 0/100% 100% no-repeat;
+      }
+
+      .screen.phase-preconfig .slider input[type="range"]::-webkit-slider-runnable-track,
+      .screen.phase-preconfig_specify .slider input[type="range"]::-webkit-slider-runnable-track {
+        height: var(--range-track-size);
+        background: transparent;
+        border-radius: 999px;
+      }
+
+      .screen.phase-preconfig .slider input[type="range"]::-webkit-slider-thumb,
+      .screen.phase-preconfig_specify .slider input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: var(--range-thumb-size);
+        height: var(--range-thumb-size);
+        border-radius: 50%;
+        background: var(--range-progress);
+        border: 2px solid #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        margin-top: calc((var(--range-track-size) - var(--range-thumb-size)) / 2);
+      }
+
+      .screen.phase-preconfig .slider input[type="range"][data-touched="0"]::-webkit-slider-thumb,
+      .screen.phase-preconfig_specify .slider input[type="range"][data-touched="0"]::-webkit-slider-thumb {
+        background: var(--range-track);
+      }
+
+      .screen.phase-preconfig .slider input[type="range"]::-moz-range-track,
+      .screen.phase-preconfig_specify .slider input[type="range"]::-moz-range-track {
+        height: var(--range-track-size);
+        background: var(--range-track);
+        border-radius: 999px;
+      }
+
+      .screen.phase-preconfig .slider input[type="range"]::-moz-range-progress,
+      .screen.phase-preconfig_specify .slider input[type="range"]::-moz-range-progress {
+        height: var(--range-track-size);
+        background: var(--range-progress);
+        border-radius: 999px;
+      }
+
+      .screen.phase-preconfig .slider input[type="range"]::-moz-range-thumb,
+      .screen.phase-preconfig_specify .slider input[type="range"]::-moz-range-thumb {
+        width: var(--range-thumb-size);
+        height: var(--range-thumb-size);
+        border-radius: 50%;
+        background: var(--range-progress);
+        border: 2px solid #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .screen.phase-preconfig .slider input[type="range"][data-touched="0"]::-moz-range-thumb,
+      .screen.phase-preconfig_specify .slider input[type="range"][data-touched="0"]::-moz-range-thumb {
+        background: var(--range-track);
+      }
+
       .preconfig-poles {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
@@ -318,11 +411,6 @@
       }
 
       @media (max-width: 520px) {
-        .slider {
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: stretch;
-        }
-
         .slider-labels,
         .preconfig-poles {
           display: none;
@@ -338,14 +426,8 @@
           height: 1px;
         }
 
-        .slider input[type="range"] {
-          writing-mode: bt-lr;
-          -webkit-appearance: slider-vertical;
-          width: 28px;
-          height: calc(100% - var(--space-2));
-          min-height: 180px;
-          justify-self: end;
-          align-self: stretch;
+        .slider-mobile-labels {
+          display: flex;
         }
       }
 

@@ -138,6 +138,22 @@ function stepPick() {
   } else {
     state.next_qid = null;
   }
+  if (!stopInfo) {
+    stopInfo = evaluateStop(state, bundle);
+    logEvent("stop_check", {
+      ...stopInfo,
+      metrics: computeStopMetrics(state, bundle),
+    });
+  }
+  const fallback = pickFallbackQuestion(state, bundle);
+  if (fallback) {
+    state.next_qid = fallback;
+    nextDebug = {
+      ...(nextDebug ?? {}),
+      fallback: { qid: fallback, reason: "no_candidates" },
+    };
+    logEvent("pick_fallback", { qid: fallback, reason: "no_candidates" });
+  }
   logEvent("pick_next", {
     pick: state.next_qid,
     debug: nextDebug,
@@ -614,6 +630,20 @@ function hasAvailableFocusQuestion(state, bundle) {
     if (touches) return true;
   }
   return false;
+}
+
+function pickFallbackQuestion(state, bundle) {
+  for (const q of bundle.questions ?? []) {
+    if (q.tags?.includes("pool_exclude")) continue;
+    if (state.asked.includes(q.id)) continue;
+    const safety = questionSafetyStatus(q, state, bundle);
+    if (!safety.allowed) continue;
+    if (state.focus) {
+      if (!questionTouchesFocus(q, state.focus)) continue;
+    }
+    return q.id;
+  }
+  return null;
 }
 
 function applyVeilVariants(q, safetyStatus) {
