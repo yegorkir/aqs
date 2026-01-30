@@ -281,7 +281,8 @@
         gap: var(--space-3);
       }
 
-      .slider-labels {
+      .slider-labels,
+      .slider-poles {
         display: flex;
         justify-content: space-between;
         font-size: 14px;
@@ -292,6 +293,28 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
+      }
+
+      .slider-pole {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        color: var(--text-strong);
+      }
+
+      .slider-levels {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+        padding: 4px 0;
+        color: var(--muted-dark);
+        font-size: 13px;
+      }
+
+      .slider-level {
+        display: flex;
+        align-items: flex-start;
       }
 
       .slider-mobile-labels {

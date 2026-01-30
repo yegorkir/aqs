@@ -274,6 +274,26 @@ export function renderPlayer(root, view, handlers) {
     const wrapper = document.createElement("div");
     wrapper.className = "slider";
 
+    const minLabel =
+      q.slider?.min_label ??
+      q.slider?.labels?.[String(q.slider?.min)] ??
+      "Минимум";
+    const maxLabel =
+      q.slider?.max_label ??
+      q.slider?.labels?.[String(q.slider?.max)] ??
+      "Максимум";
+
+    const poles = document.createElement("div");
+    poles.className = "slider-poles";
+    const leftPole = document.createElement("span");
+    leftPole.className = "slider-pole";
+    leftPole.textContent = minLabel;
+    const rightPole = document.createElement("span");
+    rightPole.className = "slider-pole";
+    rightPole.textContent = maxLabel;
+    poles.appendChild(leftPole);
+    poles.appendChild(rightPole);
+
     const input = document.createElement("input");
     input.type = "range";
     input.min = q.slider?.min ?? 0;
@@ -281,9 +301,25 @@ export function renderPlayer(root, view, handlers) {
     input.step = q.slider?.step ?? 1;
     input.value = q.slider?.default ?? input.min;
 
-    const labels = document.createElement("div");
-    labels.className = "slider-labels";
-    labels.textContent = `${q.slider?.min_label ?? "Минимум"} — ${q.slider?.max_label ?? "Максимум"}`;
+    const labels = q.slider?.labels ?? {};
+    const labelEntries = Object.entries(labels)
+      .map(([value, label]) => [Number(value), label])
+      .filter(([value, label]) => Number.isFinite(value) && label)
+      .sort((a, b) => a[0] - b[0]);
+    let levels = null;
+    if (labelEntries.length) {
+      levels = document.createElement("div");
+      levels.className = "slider-levels";
+      for (const [value, label] of labelEntries) {
+        const level = document.createElement("div");
+        level.className = "slider-level";
+        const text = document.createElement("span");
+        text.className = "slider-level-text";
+        text.textContent = label;
+        level.appendChild(text);
+        levels.appendChild(level);
+      }
+    }
 
     const submit = makeButton("Продолжить", "btn", ICONS.arrow);
     submit.addEventListener("click", () =>
@@ -294,8 +330,9 @@ export function renderPlayer(root, view, handlers) {
       })
     );
 
-    wrapper.appendChild(labels);
+    wrapper.appendChild(poles);
     wrapper.appendChild(input);
+    if (levels) wrapper.appendChild(levels);
     wrapper.appendChild(submit);
     const actionCard = document.createElement("div");
     actionCard.className = "card soft";
