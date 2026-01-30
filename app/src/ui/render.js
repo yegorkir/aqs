@@ -26,8 +26,8 @@ export function renderPlayer(root, view, handlers) {
 
   if (view.phase === "welcome") {
     const intro = renderCard(
-      "Поможем найти твоё приключение",
-      "Не нужно ничего знать заранее. Можно отвечать интуитивно — мы подстроимся."
+      "Важная инфоррмация!",
+      "Когда отвечаешь, прислушивайся к себе - нет неправильны ответов, а отсутсвие ответа - тоже ответ.\n\nКогда получишь результат - это я не заставляю ответить больше и ты можешь остановиться, но если есть желание - ты всегда можешь отвечать еще и еще пока не закончатся вопросы.\n\n**Чем больше ответишь - тем точнее мы сможем подобрать приключение!**"
     );
     const actions = document.createElement("div");
     actions.className = "actions";
@@ -63,7 +63,7 @@ export function renderPlayer(root, view, handlers) {
     const forced = view.stopInfo?.reasons?.includes("max_questions_forced");
     const text = forced
       ? "Спасибо, что отвечаешь так внимательно. Мы уже можем показать результат, но он пока не уверен."
-      : "Кажется, у нас уже достаточно данных. Можно посмотреть результат или продолжить.";
+      : "Кажется ты уже готов получить результат, но если хочешь можешь ответить на ещё несколько вопросов **для большей точности**.";
     const card = renderCard("Можно перейти к результату", text);
     const actions = document.createElement("div");
     actions.className = "actions";
@@ -313,9 +313,13 @@ export function renderPlayer(root, view, handlers) {
       for (const [value, label] of labelEntries) {
         const level = document.createElement("div");
         level.className = "slider-level";
+        const val = document.createElement("span");
+        val.className = "slider-level-value";
+        val.textContent = String(value);
         const text = document.createElement("span");
         text.className = "slider-level-text";
         text.textContent = label;
+        level.appendChild(val);
         level.appendChild(text);
         levels.appendChild(level);
       }
@@ -846,7 +850,7 @@ function renderCard(titleText, bodyText) {
   title.textContent = titleText;
   const body = document.createElement("p");
   body.className = "hint";
-  body.textContent = bodyText;
+  appendTextWithBold(body, bodyText);
   card.appendChild(title);
   card.appendChild(body);
   return card;
@@ -855,8 +859,30 @@ function renderCard(titleText, bodyText) {
 function renderHint(text) {
   const hint = document.createElement("p");
   hint.className = "hint";
-  hint.textContent = text;
+  appendTextWithBold(hint, text);
   return hint;
+}
+
+function appendTextWithBold(target, text) {
+  if (text == null || text === "") {
+    return;
+  }
+  const input = String(text);
+  const boldPattern = /\*\*(.+?)\*\*/g;
+  let lastIndex = 0;
+  let match;
+  while ((match = boldPattern.exec(input))) {
+    if (match.index > lastIndex) {
+      target.appendChild(document.createTextNode(input.slice(lastIndex, match.index)));
+    }
+    const strong = document.createElement("strong");
+    strong.textContent = match[1];
+    target.appendChild(strong);
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < input.length) {
+    target.appendChild(document.createTextNode(input.slice(lastIndex)));
+  }
 }
 
 function makeButton(label, className, iconSrc) {
