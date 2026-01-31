@@ -56,7 +56,7 @@ export function pickNextQuestion(state, bundle) {
       continue;
     }
 
-    const score = scoreQuestion(q, state, s.veiled);
+    const score = scoreQuestion(q, state, s.veiled, bundle);
     if (state.focus) {
       if (state.focus.type === "axis" && !score.touchedAxes.has(state.focus.id)) {
         rejected.eligibility += 1;
@@ -134,7 +134,12 @@ function pickPriorityCandidate(state, candidates) {
     pick,
     top,
     margin: computeMargin(prioritized),
-    debug: { tier: Math.max(...tierAxes.map((id) => priority[id]?.tier ?? 0)), axes: tierAxes },
+    debug: {
+      tier: Math.max(...tierAxes.map((id) => priority[id]?.tier ?? 0)),
+      axes: tierAxes,
+      candidates_count: prioritized.length,
+      pick: pick?.qid ?? null,
+    },
   };
 }
 
@@ -160,7 +165,7 @@ function computeMargin(candidates) {
   return ordered.length >= 2 ? ordered[0].score.total - ordered[1].score.total : null;
 }
 
-function scoreQuestion(q, state, isVeiled) {
+function scoreQuestion(q, state, isVeiled, bundle) {
   const touchedAxes = new Set();
   const touchedModules = new Set();
   const touchedModes = new Set();
@@ -217,7 +222,7 @@ function scoreQuestion(q, state, isVeiled) {
     why.axes[axisId] = { need_conf, need_conflict, need };
   }
 
-  const prior = computePriorGain(state, touchedAxes, touchedModules);
+  const prior = computePriorGain(state, touchedAxes, touchedModules, bundle);
   const priorGain = prior.total;
   why.prior = prior.why;
 
@@ -234,15 +239,20 @@ function scoreQuestion(q, state, isVeiled) {
   return { total, why, base, priorGain, penalty, touchedAxes, touchedModules, touchedModes };
 }
 
-function computePriorGain(state, touchedAxes, touchedModules) {
+function computePriorGain(state, touchedAxes, touchedModules, bundle) {
   const adjusted = state?.preconfig?.adjusted;
   const axisValues = adjusted?.axes ?? {};
   const moduleValues = adjusted?.modules ?? {};
-  const axisIds = Object.keys(axisValues);
-  const values = axisIds.map((id) => Number(axisValues[id])).filter((v) => Number.isFinite(v));
-  if (!values.length) {
-    return { total: 0, why: { axes: {}, modules: {} } };
-  }
+  const axisUniverse = (bundle?.axes ?? []).map((a) => a.id);
+  const values = axisUniverse.length
+    ? axisUniverse.map((id) => {
+        const v = Number(axisValues[id]);
+        return Number.isFinite(v) ? v : 0.5;
+      })
+    : Object.keys(axisValues)
+        .map((id) => Number(axisValues[id]))
+        .filter((v) => Number.isFinite(v));
+  if (!values.length) return { total: 0, why: { axes: {}, modules: {} } };
 
   const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
   const variance =
