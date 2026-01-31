@@ -14,6 +14,7 @@ export function applyAnswer(state, bundle, answer) {
   };
 
   const effects = resolveEffects(q, answer);
+  updateAxisPriority(state, q, answer, effects);
 
   if (effects.axis_deltas) {
     for (const [axisId, delta] of Object.entries(effects.axis_deltas)) {
@@ -173,6 +174,38 @@ function resolveEffects(q, answer) {
     return hit?.effects ?? {};
   }
   return {};
+}
+
+function updateAxisPriority(state, q, answer, effects) {
+  const priority = state.axis_priority;
+  if (!priority || !q?.tags?.includes("dilemma")) return;
+
+  const axisIds = new Set([
+    ...Object.keys(effects.axis_deltas ?? {}),
+    ...Object.keys(effects.axis_evidence ?? {}),
+  ]);
+  if (!axisIds.size) return;
+
+  const choice = resolveChoiceOption(q, answer);
+  if (choice?.id === "unsure") return;
+
+  for (const axisId of axisIds) {
+    const entry = priority[axisId];
+    if (!entry) continue;
+    if (choice?.id === "no_choice") {
+      entry.tier = 0;
+      entry.answered = 2;
+      continue;
+    }
+    const nextAnswered = Math.min((entry.answered ?? 0) + 1, 2);
+    entry.answered = nextAnswered;
+    entry.tier = nextAnswered >= 2 ? 0 : 1;
+  }
+}
+
+function resolveChoiceOption(q, answer) {
+  if (q?.type !== "choice") return null;
+  return q.options?.find((o) => o.id === answer?.oid) ?? null;
 }
 
 function detectConflicts(state, bundle, log) {

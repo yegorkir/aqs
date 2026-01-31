@@ -157,6 +157,7 @@ function stepPick() {
   logEvent("pick_next", {
     pick: state.next_qid,
     debug: nextDebug,
+    axis_priority: state.axis_priority ?? null,
   });
 }
 
@@ -317,6 +318,7 @@ function render() {
       onPreconfigSubmit: (values) => {
         if (!state || !bundle) return;
         state.preconfig.choose = values;
+        state.axis_priority = buildAxisPriority(bundle, values);
         logEvent("preconfig_choose", { choose: values });
         const pairs = computeClarifyPairs(values?.axes ?? {}, bundle.preconfig);
         state.preconfig.pending_pairs = pairs;
@@ -560,6 +562,18 @@ function resolveAnswerLabel(question, answer) {
     return labels.join(", ");
   }
   return "";
+}
+
+function buildAxisPriority(bundle, values) {
+  const touchedAxes = new Set(Object.keys(values?.axes ?? {}));
+  const priority = {};
+  for (const axisDef of bundle?.axes ?? []) {
+    const axisId = axisDef?.id;
+    if (!axisId || !axisId.startsWith("A")) continue;
+    if (touchedAxes.has(axisId)) continue;
+    priority[axisId] = { tier: 2, answered: 0 };
+  }
+  return priority;
 }
 
 async function copyToClipboard(text) {

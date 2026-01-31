@@ -48,6 +48,7 @@ export function initState(bundle) {
     tags: [],
     cooldowns: {},
     candidates: null,
+    axis_priority: {},
     stop: bundle.stop ?? {
       min_questions: 10,
       max_questions: 20,

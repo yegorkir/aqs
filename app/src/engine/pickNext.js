@@ -23,6 +23,7 @@ export function pickNextQuestion(state, bundle) {
     eligibility: 0,
     safety: 0,
     pool_exclude: 0,
+    priority: 0,
   };
 
   for (const q of bundle.questions ?? []) {
@@ -70,24 +71,29 @@ export function pickNextQuestion(state, bundle) {
         continue;
       }
     }
-    candidates.push({ qid: q.id, score, veiled: s.veiled, why: score.why });
+    candidates.push({
+      qid: q.id,
+      score,
+      veiled: s.veiled,
+      why: score.why,
+      isDilemma: q.tags?.includes("dilemma") ?? false,
+    });
   }
 
   candidates.sort((a, b) => b.score.total - a.score.total);
-  const pick = candidates[0] ?? null;
-  const margin =
-    candidates.length >= 2
-      ? candidates[0].score.total - candidates[1].score.total
-      : null;
+  const priorityPick = pickPriorityCandidate(state, candidates);
+  const pick = priorityPick?.pick ?? candidates[0] ?? null;
+  const margin = priorityPick?.margin ?? computeMargin(candidates);
 
   return {
     pick: pick?.qid ?? null,
     debug: {
-      top: candidates.slice(0, 5),
+      top: priorityPick?.top ?? candidates.slice(0, 5),
       count: candidates.length,
       rejected,
       followup_forced: false,
       margin,
+      priority: priorityPick?.debug ?? null,
     },
   };
 }
@@ -106,6 +112,52 @@ function pickAllowedFollowup(state, bundle) {
     return qid;
   }
   return null;
+}
+
+function pickPriorityCandidate(state, candidates) {
+  const priority = state.axis_priority ?? {};
+  const tierAxes = getPriorityTierAxes(priority);
+  if (!tierAxes.length) return null;
+
+  const axesSet = new Set(tierAxes);
+  const prioritized = candidates.filter(
+    (c) => c.isDilemma && hasAnyAxis(c.score.touchedAxes, axesSet)
+  );
+  if (!prioritized.length) {
+    return null;
+  }
+
+  const pick = prioritized[Math.floor(Math.random() * prioritized.length)];
+  const top = [...prioritized].sort((a, b) => b.score.total - a.score.total).slice(0, 5);
+
+  return {
+    pick,
+    top,
+    margin: computeMargin(prioritized),
+    debug: { tier: Math.max(...tierAxes.map((id) => priority[id]?.tier ?? 0)), axes: tierAxes },
+  };
+}
+
+function getPriorityTierAxes(priority) {
+  const tier2 = [];
+  const tier1 = [];
+  for (const [axisId, entry] of Object.entries(priority)) {
+    if (entry?.tier === 2) tier2.push(axisId);
+    else if (entry?.tier === 1) tier1.push(axisId);
+  }
+  return tier2.length ? tier2 : tier1;
+}
+
+function hasAnyAxis(touchedAxes, axesSet) {
+  for (const axisId of touchedAxes) {
+    if (axesSet.has(axisId)) return true;
+  }
+  return false;
+}
+
+function computeMargin(candidates) {
+  const ordered = [...candidates].sort((a, b) => b.score.total - a.score.total);
+  return ordered.length >= 2 ? ordered[0].score.total - ordered[1].score.total : null;
 }
 
 function scoreQuestion(q, state, isVeiled) {
